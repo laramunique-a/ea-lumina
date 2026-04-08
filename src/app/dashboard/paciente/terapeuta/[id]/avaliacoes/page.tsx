@@ -13,7 +13,11 @@ interface Review {
   rating: number
   comment: string | null
   createdAt: string
-  author: { name: string; avatarUrl: string | null }
+  author: { 
+    name: string; 
+    avatarUrl: string | null;
+    patientProfile?: { socialName: string | null } | null;
+  }
   appointment: { service: { name: string } | null }
 }
 
@@ -78,15 +82,17 @@ export default function TherapistPublicReviewsPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-[1.25rem] bg-slate-50 flex items-center justify-center text-slate-500 font-black text-sm border border-slate-100 shadow-sm overflow-hidden">
                      <Image 
-                      src={getAvatarUrl(rev.author.name, rev.author.avatarUrl)} 
-                      alt={rev.author.name}
+                      src={getAvatarUrl(rev.author.patientProfile?.socialName || rev.author.name, rev.author.avatarUrl)} 
+                      alt={rev.author.patientProfile?.socialName || rev.author.name}
                       width={48}
                       height={48}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
-                    <p className="font-bold text-slate-900 tracking-tight leading-none text-lg">{rev.author.name.split(' ')[0]}</p>
+                    <p className="font-bold text-slate-900 tracking-tight leading-none text-lg">
+                      {(rev.author.patientProfile?.socialName || rev.author.name).split(' ')[0]}
+                    </p>
                     <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider mt-2 flex items-center gap-2 leading-none">
                       <Calendar size={12} className="text-[#0090FF]" />
                       {new Date(rev.createdAt).toLocaleDateString('pt-BR')} • {rev.appointment.service?.name || 'Sessão Individual'}

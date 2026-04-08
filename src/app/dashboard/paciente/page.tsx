@@ -24,7 +24,8 @@ async function getDashboardData(userId: string) {
                 service: {
                   include: {
                     therapist: {
-                      include: {
+                      select: {
+                        professionalName: true,
                         user: { select: { name: true, avatarUrl: true } }
                       }
                     }
@@ -50,7 +51,12 @@ async function getDashboardData(userId: string) {
     },
     orderBy: { date: 'asc' },
     include: {
-      therapist: { include: { user: true } },
+      therapist: { 
+        select: {
+          professionalName: true,
+          user: { select: { name: true, avatarUrl: true } }
+        }
+      },
       service: true
     }
   })
@@ -90,7 +96,12 @@ async function getDashboardData(userId: string) {
       review: null
     },
     include: {
-      therapist: { include: { user: { select: { name: true, avatarUrl: true } } } },
+      therapist: { 
+        select: {
+          professionalName: true,
+          user: { select: { name: true, avatarUrl: true } }
+        }
+      },
       service: true
     },
     orderBy: { date: 'desc' }
@@ -152,7 +163,7 @@ export default async function PacienteDashboardPage() {
                   {formataDataBR(data.nextAppointment.date)} às {formataHoraBR(data.nextAppointment.date)}
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider truncate">
-                  {data.nextAppointment.service?.name} • {data.nextAppointment.therapist?.user?.name}
+                  {data.nextAppointment.service?.name} • {data.nextAppointment.therapist?.professionalName || data.nextAppointment.therapist?.user?.name}
                 </span>
               </div>
             ) : (
@@ -193,7 +204,7 @@ export default async function PacienteDashboardPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.patient.packages.map((p) => {
-              const therapistName = p.package.service?.therapist?.user?.name || 'Terapeuta'
+              const therapistName = p.package.service?.therapist?.professionalName || p.package.service?.therapist?.user?.name || 'Terapeuta'
               const therapistAvatar = getAvatarUrl(therapistName, p.package.service?.therapist?.user?.avatarUrl)
               const usedSessions = p.totalSessions - p.remainingSessions
 

@@ -63,6 +63,21 @@ export function getInitials(name: string): string {
     .toUpperCase()
 }
 
+// Retorna o nome de exibição prioritário (Social/Profissional ou Civil)
+export function getUserDisplayName(user?: { 
+  name?: string; 
+  socialName?: string | null; 
+  professionalName?: string | null;
+  role?: string;
+} | null): string {
+  if (!user) return 'Usuário'
+  
+  if (user.role === 'PACIENTE' && user.socialName) return user.socialName
+  if (user.role === 'TERAPEUTA' && user.professionalName) return user.professionalName
+  
+  return user.name || 'Usuário'
+}
+
 // URL de avatar gerado (fallback)
 export function getAvatarUrl(name: string, avatarUrl?: string | null): string {
   if (avatarUrl) return avatarUrl

@@ -34,7 +34,13 @@ export async function POST(request: NextRequest) {
 
     const { email, password } = validated.data
 
-    const user = await prisma.user.findUnique({ where: { email } })
+    const user = await prisma.user.findUnique({ 
+      where: { email },
+      include: {
+        patientProfile: { select: { socialName: true } },
+        therapistProfile: { select: { professionalName: true } }
+      }
+    })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return NextResponse.json(
@@ -59,7 +65,15 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({
       success: true,
       data: {
-        user: { id: user.id, name: user.name, email: user.email, role: user.role, avatarUrl: user.avatarUrl },
+        user: { 
+          id: user.id, 
+          name: user.name, 
+          email: user.email, 
+          role: user.role, 
+          avatarUrl: user.avatarUrl,
+          socialName: user.patientProfile?.socialName ?? null,
+          professionalName: user.therapistProfile?.professionalName ?? null
+        },
         accessToken,
       },
     })

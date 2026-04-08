@@ -26,6 +26,7 @@ interface RescheduleModalProps {
     therapistId: string
     date: string
     therapist: {
+        professionalName?: string | null
         user: { name: string }
     }
   }
@@ -142,7 +143,7 @@ export function RescheduleModal({
           <div>
             <p className="text-sm font-bold text-slate-800">Reagendamento de Sessão</p>
             <p className="text-xs text-slate-500 font-medium leading-relaxed">
-              Escolha uma nova data e horário para sua sessão com <strong>{appointment.therapist.user.name}</strong>.
+              Escolha uma nova data e horário para sua sessão com <strong>{appointment.therapist.professionalName || appointment.therapist.user.name}</strong>.
             </p>
           </div>
         </div>

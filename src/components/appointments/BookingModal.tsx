@@ -59,6 +59,7 @@ interface BookingModalProps {
     id: string
     price: number | string
     user: { name: string }
+    professionalName?: string | null
     availability: Availability[]
     services?: TherapistService[]
   }
@@ -412,7 +413,7 @@ export function BookingModal({
           </div>
           <h3 className="text-xl font-bold text-slate-900 mb-2">Solicitação enviada!</h3>
           <p className="text-slate-500 text-sm mb-8 px-4">
-            Aguarde a confirmação de <strong>{therapist.user.name}</strong>. Você receberá uma notificação quando confirmado.
+            Aguarde a confirmação de <strong>{therapist.professionalName || therapist.user.name}</strong>. Você receberá uma notificação quando confirmado.
           </p>
           <Button onClick={handleClose} fullWidth size="lg">Fechar</Button>
         </div>

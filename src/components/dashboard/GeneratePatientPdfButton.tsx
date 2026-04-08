@@ -29,7 +29,8 @@ export function GeneratePatientPdfButton({ patient }: GeneratePdfButtonProps) {
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(22)
       doc.setFont('helvetica', 'bold')
-      doc.text(patient.user.name, 20, 22)
+      const displayName = patient.socialName || patient.user.name
+      doc.text(displayName, 20, 22)
       
       doc.setFontSize(10)
       doc.setFont('helvetica', 'normal')
@@ -133,7 +134,8 @@ export function GeneratePatientPdfButton({ patient }: GeneratePdfButtonProps) {
       })
 
       // Salvar
-      doc.save(`Relatorio_Paciente_${patient.user.name.replace(/\s+/g, '_')}.pdf`)
+      const fileName = `Relatorio_Paciente_${displayName.replace(/\s+/g, '_')}.pdf`
+      doc.save(fileName)
       toast.success('PDF gerado com sucesso!')
     } catch (error) {
       console.error('Erro ao gerar PDF:', error)

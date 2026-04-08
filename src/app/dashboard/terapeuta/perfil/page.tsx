@@ -21,7 +21,7 @@ interface LoadedTherapistProfile {
 }
 
 export default function TerapeutaPerfilPage() {
-  const { user } = useAuthStore()
+  const { user, setUser } = useAuthStore()
   const [loading, setLoading] = useState(false)
   const [profile, setProfile] = useState<LoadedTherapistProfile | null>(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
@@ -431,6 +431,11 @@ export default function TerapeutaPerfilPage() {
 
       if (userData.success && profileData.success && paymentData.success) {
         toast.success('Perfil atualizado com sucesso!')
+        setUser({
+          ...user,
+          name: name ?? user.name,
+          professionalName: professionalName ?? null,
+        })
         await loadProfile({ silent: true })
       } else {
         const parts = [

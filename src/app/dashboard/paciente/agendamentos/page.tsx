@@ -21,6 +21,7 @@ interface Appointment {
   therapist: {
     id: string
     therapies: string[]
+    professionalName?: string | null
     user: { name: string; avatarUrl: string | null }
   }
   review: { rating: number; comment: string | null } | null
@@ -144,8 +145,9 @@ export default function AgendamentosPage() {
           </div>
         ) : (
           appointments.map((apt) => {
+            const therapistDisplayName = apt.therapist.professionalName || apt.therapist.user.name
             const statusConfig = appointmentStatusConfig[apt.status as keyof typeof appointmentStatusConfig] || { label: apt.status, color: 'bg-slate-100 text-slate-700' }
-            const avatarFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(apt.therapist.user.name)}&background=14b8a6&color=fff&size=64`
+            const avatarFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(therapistDisplayName)}&background=14b8a6&color=fff&size=64`
             
             const dateObj = new Date(apt.date)
             // Extraindo componentes para o bloco de calendário (usando timezone local assumido, ou ajusta)
@@ -175,7 +177,7 @@ export default function AgendamentosPage() {
                     />
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-slate-900 text-lg tracking-tight">{apt.therapist.user.name}</h3>
+                        <h3 className="font-bold text-slate-900 text-lg tracking-tight">{therapistDisplayName}</h3>
                         <Badge variant={statusVariant[apt.status]} size="sm" className="shadow-sm">
                           {statusConfig.label}
                         </Badge>
@@ -196,7 +198,7 @@ export default function AgendamentosPage() {
                         <Button
                           size="sm"
                           className="rounded-xl w-full md:w-auto shadow-sm"
-                          onClick={() => setReviewModal({ appointmentId: apt.id, therapistName: apt.therapist.user.name })}
+                          onClick={() => setReviewModal({ appointmentId: apt.id, therapistName: therapistDisplayName })}
                         >
                           <MessageSquare size={16} />
                           Avaliar

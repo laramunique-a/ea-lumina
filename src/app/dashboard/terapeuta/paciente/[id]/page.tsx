@@ -94,8 +94,8 @@ export default async function TherapistPatientProfilePage({
         <div className="relative">
           <div className="w-32 h-32 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl ring-4 ring-blue-50/50">
             <img 
-              src={getAvatarUrl(patient.user.name, patient.user.avatarUrl)} 
-              alt={patient.user.name}
+              src={getAvatarUrl(patient.socialName || patient.user.name, patient.user.avatarUrl)} 
+              alt={patient.socialName || patient.user.name}
               className="w-full h-full object-cover"
             />
           </div>
@@ -104,10 +104,12 @@ export default async function TherapistPatientProfilePage({
         <div className="flex-1 text-center sm:text-left space-y-3 z-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-none">{patient.user.name}</h1>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-none">
+                {patient.socialName || patient.user.name}
+              </h1>
               {patient.socialName && (
-                <span className="bg-blue-50 text-[#0090FF] text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-blue-100/50">
-                  {patient.socialName}
+                <span className="bg-slate-50 text-slate-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-slate-100/50">
+                  Nome Civil: {patient.user.name}
                 </span>
               )}
             </div>

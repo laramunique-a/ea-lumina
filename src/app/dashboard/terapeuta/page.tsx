@@ -148,7 +148,7 @@ export default async function TerapeutaDashboardPage() {
                     </Link>
                     <div>
                       <Link href={`/dashboard/terapeuta/paciente/${apt.patient.id}`} className="text-base font-bold text-slate-900 tracking-tight hover:text-[#0090FF] transition-colors block leading-tight">
-                        {apt.patient.user.name}
+                        {apt.patient.socialName || apt.patient.user.name}
                       </Link>
                       <p className="text-xs font-medium text-slate-400 mt-1">{formatDateTime(apt.date)}</p>
                     </div>

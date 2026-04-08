@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               therapies: true,
+              professionalName: true,
               user: { select: { name: true, avatarUrl: true } },
             },
           },
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
 
     const patientProfile = await prisma.patientProfile.findUnique({
       where: { userId: session.sub },
-      select: { id: true, user: { select: { name: true } } },
+      select: { id: true, socialName: true, user: { select: { name: true } } },
     })
     if (!patientProfile) {
       return NextResponse.json({ success: false, error: 'Perfil de paciente não encontrado' }, { status: 404 })
@@ -308,7 +309,7 @@ export async function POST(request: NextRequest) {
       })
     })
 
-    const patientName = patientProfile.user?.name ?? 'Paciente'
+    const patientName = patientProfile.socialName || patientProfile.user?.name || 'Paciente'
     const datetime = appointment.date.toLocaleString('pt-BR', {
       timeZone: 'America/Sao_Paulo',
       dateStyle: 'short',

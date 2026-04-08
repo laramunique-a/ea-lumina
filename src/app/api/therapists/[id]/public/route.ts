@@ -68,7 +68,7 @@ export async function GET(
             rating: true,
             comment: true,
             createdAt: true,
-            author: { select: { name: true, avatarUrl: true } },
+            author: { select: { name: true, avatarUrl: true, patientProfile: { select: { socialName: true } } } },
             appointment: { 
               select: { 
                 service: { select: { name: true } } 

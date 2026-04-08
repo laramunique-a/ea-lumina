@@ -262,6 +262,7 @@ export default function PacientePerfilPage() {
         setUser({
           ...user,
           name: d.name ?? user.name,
+          socialName: d.socialName ?? null,
         })
         if (box === 'seguranca') {
           setCurrentPassword('')

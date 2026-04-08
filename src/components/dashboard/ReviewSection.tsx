@@ -15,6 +15,7 @@ interface PendingReview {
     user: {
       name: string
       avatarUrl: string | null
+      professionalName?: string | null
     }
   }
   service: {
@@ -93,7 +94,7 @@ export function ReviewSection({ reviews }: ReviewSectionProps) {
         {reviews.map((rev) => {
           if (completed[rev.id]) return null
 
-          const therapistName = rev.therapist.user.name
+          const therapistName = rev.therapist.user.professionalName || rev.therapist.user.name
           const therapistAvatar = getAvatarUrl(therapistName, rev.therapist.user.avatarUrl)
           const dateStr = new Date(rev.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })
 

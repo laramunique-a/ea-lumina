@@ -9,6 +9,8 @@ interface AuthUser {
   email: string
   role: 'ADMIN' | 'TERAPEUTA' | 'PACIENTE'
   avatarUrl: string | null
+  socialName?: string | null
+  professionalName?: string | null
 }
 
 interface AuthStore {

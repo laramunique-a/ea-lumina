@@ -2,8 +2,9 @@
 
 import { Bell } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
-import { cn } from '@/lib/utils'
+import { cn, getUserDisplayName } from '@/lib/utils'
 import { Avatar } from '@/components/ui/Avatar'
+import { useAuthStore } from '@/hooks/useAuth'
 
 interface HeaderProps {
   title?: string
@@ -26,7 +27,9 @@ function getGreeting() {
   return 'Boa noite'
 }
 
-export function Header({ userName, userRole = 'PACIENTE', avatarUrl }: HeaderProps) {
+export function Header({ title, description, userRole = 'PACIENTE', avatarUrl }: HeaderProps) {
+  const { user } = useAuthStore()
+  const userName = user ? getUserDisplayName(user) : ''
   const [showNotifications, setShowNotifications] = useState(false)
   const [notifications, setNotifications] = useState([
     { id: '1', title: 'Bem-vinda ao EA Lumina!', message: 'Seu perfil foi configurado com sucesso.', time: 'Agora' },

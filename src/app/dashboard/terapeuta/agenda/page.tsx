@@ -287,8 +287,9 @@ function TerapeutaAgendaContent() {
               </div>
             ) : (
               appointments.map((apt) => {
+                const patientDisplayName = apt.patient.socialName || apt.patient.user.name
                 const statusConfig = appointmentStatusConfig[apt.status as keyof typeof appointmentStatusConfig] || { label: apt.status, color: 'bg-slate-100 text-slate-700' }
-                const avatarFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(apt.patient.user.name)}&background=0090FF&color=fff&size=64`
+                const avatarFallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(patientDisplayName)}&background=0090FF&color=fff&size=64`
 
                 return (
                   <div key={apt.id} className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
@@ -306,7 +307,7 @@ function TerapeutaAgendaContent() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3">
                           <Link href={`/dashboard/terapeuta/paciente/${apt.patientId}`} className="font-black text-slate-900 text-lg hover:text-[#0090FF] transition-colors">
-                            {apt.patient.user.name}
+                            {patientDisplayName}
                           </Link>
                           <Badge variant={statusVariant[apt.status]} size="sm">
                             {statusConfig.label}
