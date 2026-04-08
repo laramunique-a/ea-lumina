@@ -1,0 +1,130 @@
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+import { format, parseISO } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+// Formatar moeda (BRL por padrão)
+export function formatCurrency(
+  value: number | string | null | undefined,
+  currency: string = 'BRL'
+): string {
+  if (value === null || value === undefined) {
+    return currency === 'BRL' ? 'R$ 0,00' : new Intl.NumberFormat('pt-BR', { style: 'currency', currency }).format(0)
+  }
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency,
+  }).format(Number(value))
+}
+
+// Formatar data
+export function formatDate(date: Date | string): string {
+  const d = typeof date === 'string' ? parseISO(date) : date
+  return format(d, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+}
+
+export function formatDateTime(date: Date | string): string {
+  const d = typeof date === 'string' ? parseISO(date) : date
+  return format(d, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+}
+
+export function formatDateShort(date: Date | string): string {
+  const d = typeof date === 'string' ? parseISO(date) : date
+  return format(d, 'dd/MM/yyyy', { locale: ptBR })
+}
+
+// Calcular comissão da plataforma
+export function calculateCommission(
+  price: number,
+  commissionRate: number
+): { commission: number; therapistNet: number; platformRevenue: number } {
+  const commission = price * (commissionRate / 100)
+  const therapistNet = price - commission
+  const platformRevenue = commission
+
+  return {
+    commission: Math.round(commission * 100) / 100,
+    therapistNet: Math.round(therapistNet * 100) / 100,
+    platformRevenue: Math.round(platformRevenue * 100) / 100,
+  }
+}
+
+// Iniciais para avatar fallback
+export function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+}
+
+// URL de avatar gerado (fallback)
+export function getAvatarUrl(name: string, avatarUrl?: string | null): string {
+  if (avatarUrl) return avatarUrl
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=14b8a6&color=fff&size=128`
+}
+
+// Sanitizar string (básico)
+export function sanitizeString(str: string): string {
+  return str.trim().replace(/[<>]/g, '')
+}
+
+// Status do agendamento em português com cor
+export const appointmentStatusConfig = {
+  PENDENTE:   { label: 'Pendente',   color: 'bg-yellow-100 text-yellow-800' },
+  CONFIRMADO: { label: 'Confirmado', color: 'bg-blue-50 text-[#0090FF] border-blue-100'  },
+  CONCLUIDO:  { label: 'Concluído',  color: 'bg-amber-50 text-[#C5A03F] border-amber-100' },
+  CANCELADO:  { label: 'Cancelado',  color: 'bg-red-50 text-red-600 border-red-100'     },
+  ATRAZADO:   { label: 'Em Atraso',  color: 'bg-orange-50 text-orange-600 border-orange-100' },
+} as const
+
+// Nomes dos dias da semana
+export const daysOfWeek = [
+  'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado',
+]
+
+// Modalidade em PT
+export const modalityLabels: Record<string, string> = {
+  ONLINE: 'Online',
+  PRESENCIAL: 'Presencial',
+  AMBOS: 'Online e Presencial',
+}
+
+// Validar email
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+// Gerar horários disponíveis baseado em start/end/duration
+export function generateTimeSlots(
+  startTime: string,
+  endTime: string,
+  durationMinutes: number
+): string[] {
+  const slots: string[] = []
+  const [startHour, startMin] = startTime.split(':').map(Number)
+  const [endHour, endMin] = endTime.split(':').map(Number)
+
+  let current = startHour * 60 + startMin
+  const end = endHour * 60 + endMin
+
+  // Fix: `current + duration <= end` dropped the last start (e.g. 17:00 for 09:00–17:00 with 60m slots).
+  // endTime is treated as inclusive for slot *starts* (último horário exibido = endTime).
+  while (current <= end) {
+    const h = Math.floor(current / 60).toString().padStart(2, '0')
+    const m = (current % 60).toString().padStart(2, '0')
+    slots.push(`${h}:${m}`)
+    current += durationMinutes
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.debug('[generateTimeSlots]', { startTime, endTime, durationMinutes, count: slots.length, slots })
+  }
+
+  return slots
+}
