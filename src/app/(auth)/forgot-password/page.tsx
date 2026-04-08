@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 mb-5 group">
-            <Logo className="scale-150 mb-4" />
+            <Logo size="lg" iconOnly className="mb-4" />
             <span className="font-semibold text-slate-900 text-xl sr-only">EA Lumina</span>
           </Link>
         </div>

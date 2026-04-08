@@ -63,7 +63,7 @@ export default function LoginPage() {
         {/* Logo Centralizado (Aumentado para presença forte) */}
         <div className="mb-12 flex justify-center">
           <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500">
-            <Logo className="scale-[2.4]" />
+            <Logo size="xl" iconOnly />
           </Link>
         </div>
 

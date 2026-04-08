@@ -9,9 +9,10 @@ interface LogoProps {
   iconOnly?: boolean
   light?: boolean
   monumental?: boolean
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export function Logo({ className, iconOnly = false, light = false, monumental = false }: LogoProps) {
+export function Logo({ className, iconOnly = false, light = false, monumental = false, size }: LogoProps) {
   const goldColor = '#C5A03F'
   const blueColor = '#0090FF'
 
@@ -20,6 +21,8 @@ export function Logo({ className, iconOnly = false, light = false, monumental = 
       <div className={cn(
         "relative flex items-center justify-center transition-all duration-500",
         monumental ? "w-64 h-64 sm:w-80 sm:h-80 md:w-[480px] md:h-[480px]" : 
+        size === 'xl' ? "w-40 h-40 md:w-48 md:h-48" :
+        size === 'lg' ? "w-24 h-24 md:w-32 md:h-32" :
         iconOnly ? "w-10 h-10 md:w-12 md:h-12" : "w-16 h-16"
       )}>
         <div className="relative z-10 w-full h-full animate-in fade-in zoom-in duration-700">
