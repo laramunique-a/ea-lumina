@@ -19,7 +19,7 @@ export function Logo({ className, iconOnly = false, light = false, monumental = 
     <div className={cn("flex flex-col items-center gap-2 group", className)}>
       <div className={cn(
         "relative flex items-center justify-center transition-all duration-500",
-        monumental ? "w-80 h-80 md:w-[480px] md:h-[480px]" : 
+        monumental ? "w-64 h-64 sm:w-80 sm:h-80 md:w-[480px] md:h-[480px]" : 
         iconOnly ? "w-10 h-10 md:w-12 md:h-12" : "w-16 h-16"
       )}>
         <div className="relative z-10 w-full h-full animate-in fade-in zoom-in duration-700">

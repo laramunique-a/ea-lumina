@@ -60,10 +60,10 @@ export function Header({ userName, userRole = 'PACIENTE', avatarUrl }: HeaderPro
       <div className="flex items-center gap-4 flex-1">
         {/* Saudação do Usuário (Canto Esquerdo) */}
         {userName && (
-          <div className="flex items-center gap-3">
-            <Avatar src={avatarUrl} alt={userName} size="md" className="border-2 border-slate-50 ring-2 ring-white shadow-sm" />
-            <div className="text-left">
-              <p suppressHydrationWarning className="text-[14px] md:text-[15px] font-semibold text-slate-900 leading-tight tracking-tight line-clamp-1">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <Avatar src={avatarUrl} alt={userName} size="md" className="border-2 border-slate-50 ring-2 ring-white shadow-sm shrink-0" />
+            <div className="text-left min-w-0">
+              <p suppressHydrationWarning className="text-[13px] md:text-[15px] font-semibold text-slate-900 leading-tight tracking-tight truncate">
                 {getGreeting()}, {userName}!
               </p>
             </div>
