@@ -29,8 +29,8 @@ export default function LandingPage() {
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100/50 h-16">
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
-            <Logo className="scale-75 origin-left" iconOnly />
-            <span className="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-[#0090FF] transition-colors">EA Lumina</span>
+            <Logo iconOnly />
+            <span className="hidden xs:block text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 group-hover:text-[#0090FF] transition-colors">EA Lumina</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
@@ -64,7 +64,7 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-4xl animate-in slide-in-from-bottom-8 duration-1000">
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8 text-slate-900">
+          <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight md:leading-[0.9] mb-8 text-slate-900">
             Sua jornada de <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A03F] via-slate-900 to-[#0090FF]">Luz e Equilíbrio.</span>
           </h1>

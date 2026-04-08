@@ -154,7 +154,7 @@ export default function RegisterForm() {
               className="bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-200 h-11 rounded-xl transition-all"
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Senha"
                 type="password"
