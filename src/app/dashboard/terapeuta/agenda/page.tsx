@@ -525,35 +525,45 @@ function TerapeutaAgendaContent() {
 
 function SlotItem({ slot, onUpdate, onRemove }: { slot: any, onUpdate: any, onRemove: any }) {
   return (
-    <div className="flex items-center gap-3 p-2 bg-slate-50/50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-all">
-      <div className="grid grid-cols-3 gap-3 flex-1">
-        <select
-          value={slot.startTime}
-          onChange={(e) => onUpdate(slot.index, 'startTime', e.target.value)}
-          className="px-3 py-1.5 text-xs border-2 border-white rounded-lg font-bold text-slate-700 bg-white shadow-sm"
-        >
-          {TIME_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
-        </select>
-        <select
-          value={slot.endTime}
-          onChange={(e) => onUpdate(slot.index, 'endTime', e.target.value)}
-          className="px-3 py-1.5 text-xs border-2 border-white rounded-lg font-bold text-slate-700 bg-white shadow-sm"
-        >
-          {TIME_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
-        </select>
-        <select
-          value={slot.slotDuration}
-          onChange={(e) => onUpdate(slot.index, 'slotDuration', Number(e.target.value))}
-          className="px-3 py-1.5 text-xs border-2 border-white rounded-lg font-bold text-slate-700 bg-white shadow-sm"
-        >
-          {DURATION_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
-        </select>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100 group hover:border-blue-200 transition-all relative">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 flex-1 w-full sm:w-auto">
+        <div className="flex flex-col gap-1">
+          <label className="sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Início</label>
+          <select
+            value={slot.startTime}
+            onChange={(e) => onUpdate(slot.index, 'startTime', e.target.value)}
+            className="w-full px-3 py-2 text-xs border-2 border-white rounded-xl font-bold text-slate-700 bg-white shadow-sm focus:border-[#C5A03F] outline-none transition-all"
+          >
+            {TIME_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Fim</label>
+          <select
+            value={slot.endTime}
+            onChange={(e) => onUpdate(slot.index, 'endTime', e.target.value)}
+            className="w-full px-3 py-2 text-xs border-2 border-white rounded-xl font-bold text-slate-700 bg-white shadow-sm focus:border-[#C5A03F] outline-none transition-all"
+          >
+            {TIME_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1 col-span-2 sm:col-span-1">
+          <label className="sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Duração da Sessão</label>
+          <select
+            value={slot.slotDuration}
+            onChange={(e) => onUpdate(slot.index, 'slotDuration', Number(e.target.value))}
+            className="w-full px-3 py-2 text-xs border-2 border-white rounded-xl font-bold text-slate-700 bg-white shadow-sm focus:border-[#C5A03F] outline-none transition-all"
+          >
+            {DURATION_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
+          </select>
+        </div>
       </div>
       <button
         onClick={() => onRemove(slot.index)}
-        className="p-2 text-slate-300 hover:text-red-500 transition-all"
+        className="absolute top-2 right-2 sm:relative sm:top-0 sm:right-0 p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+        title="Remover horário"
       >
-        <Trash2 size={14} />
+        <Trash2 size={16} />
       </button>
     </div>
   )
