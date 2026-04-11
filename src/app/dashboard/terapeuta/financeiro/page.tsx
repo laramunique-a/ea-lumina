@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth-client' // ou server-side eq
 import StripeConnectButton from './stripe-connect-button'
 import StripeDashboardButton from './stripe-dashboard-button'
 import { cookies } from 'next/headers'
