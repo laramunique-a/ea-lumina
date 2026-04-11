@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
+import { stripe } from '@/lib/stripe'
 import { z } from 'zod'
 import { calculateCommission } from '@/lib/utils'
 
@@ -59,6 +60,18 @@ export async function PATCH(
         return NextResponse.json({ success: false, error: 'Sem permissão' }, { status: 403 })
       }
 
+      // Restrição de 24h para cancelamento pelo paciente com estorno de 50%
+      const now = new Date()
+      const appointmentDate = new Date(appointment.date)
+      const hoursUntilAppointment = (appointmentDate.getTime() - now.getTime()) / (1000 * 60 * 60)
+
+      if (isPatient && hoursUntilAppointment < 24) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Cancelamentos só são permitidos com no mínimo 24 horas de antecedência.' 
+        }, { status: 400 })
+      }
+
       await prisma.$transaction(async (tx) => {
         // 1. Atualizar agendamento
         await tx.appointment.update({
@@ -74,6 +87,24 @@ export async function PATCH(
           await tx.patientPackage.update({
             where: { id: appointment.patientPackageId },
             data: { remainingSessions: { increment: 1 } }
+          })
+        }
+        
+        // 3. Lógica de Estorno Stripe (50%)
+        if (appointment.stripePaymentIntentId) {
+          // Calcula 50% do valor estornado
+          const refundAmount = Number(appointment.price) / 2
+          const amountInCents = Math.round(refundAmount * 100)
+          
+          await stripe.refunds.create({
+            payment_intent: appointment.stripePaymentIntentId,
+            amount: amountInCents,
+            // reverse_transfer manual se necessário ou absorvido pela plataforma
+          })
+
+          await tx.appointment.update({
+             where: { id: params.id },
+             data: { refundAmount: refundAmount },
           })
         }
       })

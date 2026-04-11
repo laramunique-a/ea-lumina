@@ -16,6 +16,7 @@ const createSchema = z.object({
   serviceId: z.string().optional(),
   buyPackageId: z.string().optional(),
   usePackageId: z.string().optional(),
+  paymentIntentId: z.string().optional(),
 })
 
 // GET — listar agendamentos (por role: terapeuta ou paciente)
@@ -138,7 +139,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { therapistProfileId, date, time, notes, serviceId, buyPackageId, usePackageId } = validated.data
+    const { therapistProfileId, date, time, notes, serviceId, buyPackageId, usePackageId, paymentIntentId } = validated.data
 
     const therapist = await prisma.therapistProfile.findFirst({
       where: { id: therapistProfileId, approved: true, user: { active: true } },
@@ -305,6 +306,7 @@ export async function POST(request: NextRequest) {
           therapistNet,
           platformRevenue,
           notes: notes || null,
+          stripePaymentIntentId: paymentIntentId || null,
         },
       })
     })

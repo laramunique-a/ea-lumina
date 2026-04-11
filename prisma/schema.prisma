@@ -107,47 +107,47 @@ model TherapyType {
 // ==========================================
 
 model TherapistProfile {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  bio                   String?  @db.Text
-  therapies             String[] // Array de especialidades
-  price                 Decimal  @db.Decimal(10, 2)
-  modality              Modality @default(AMBOS)
-  location              String?
-  city                  String?
-  state                 String?
-  country               String?  // País
-  nationality           String?  // Nacionalidade
-  professionalName      String?  // Nome como deseja aparecer publicamente
-  documentId            String?  // Número do documento de identidade / Passaporte
-  documentUrl           String?  // Storage path no bucket 'documents' (ex: documents/{userId}/file.pdf)
-  documentFileName      String?  // Nome original do arquivo enviado
-  rating                 Float    @default(0)
-  reviewCount            Int      @default(0)
-  approved               Boolean  @default(false)
-  featured               Boolean  @default(false)
-  yearsExp               Int?
-  certifications         String[]
-  languages              String[] @default(["Português"])
-  whatsapp               String? // WhatsApp com código do país: +5511999999999
-  professionalEmail     String? // Email profissional (pode ser diferente do login)
-  instagram             String?
-  facebook              String?
-  websiteUrl            String? // Site pessoal/profissional
-  greenApiInstanceId    String? // Green API instance ID
-  greenApiToken         String? // Green API token
-  sessionsPerMonthGoal  Int?    // objetivo: quantidade de sessões por mês
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  bio                  String?  @db.Text
+  therapies            String[] // Array de especialidades
+  price                Decimal  @db.Decimal(10, 2)
+  modality             Modality @default(AMBOS)
+  location             String?
+  city                 String?
+  state                String?
+  country              String? // País
+  nationality          String? // Nacionalidade
+  professionalName     String? // Nome como deseja aparecer publicamente
+  documentId           String? // Número do documento de identidade / Passaporte
+  documentUrl          String? // Storage path no bucket 'documents' (ex: documents/{userId}/file.pdf)
+  documentFileName     String? // Nome original do arquivo enviado
+  rating               Float    @default(0)
+  reviewCount          Int      @default(0)
+  approved             Boolean  @default(false)
+  featured             Boolean  @default(false)
+  yearsExp             Int?
+  certifications       String[]
+  languages            String[] @default(["Português"])
+  whatsapp             String? // WhatsApp com código do país: +5511999999999
+  professionalEmail    String? // Email profissional (pode ser diferente do login)
+  instagram            String?
+  facebook             String?
+  websiteUrl           String? // Site pessoal/profissional
+  greenApiInstanceId   String? // Green API instance ID
+  greenApiToken        String? // Green API token
+  sessionsPerMonthGoal Int? // objetivo: quantidade de sessões por mês
   // Legado (sem UI): faixa de preço e regras de promoção antigas; colunas mantidas no banco
-  minSessionPrice       Decimal? @db.Decimal(10, 2)
-  maxSessionPrice       Decimal? @db.Decimal(10, 2)
-  baseCurrency          String?  @default("BRL")
-  allowPromos           Boolean  @default(false)
-  minPromoPrice         Decimal? @db.Decimal(10, 2)
-  timezone               String?  @default("America/Sao_Paulo") // Fuso horário para disponibilidade/agendamento
-  wantCampaigns          Boolean  @default(false)  // Deseja aparecer em campanhas publicitárias
-  allowAutoScheduling    Boolean  @default(false)  // Autoriza que o sistema agende automaticamente
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  minSessionPrice      Decimal? @db.Decimal(10, 2)
+  maxSessionPrice      Decimal? @db.Decimal(10, 2)
+  baseCurrency         String?  @default("BRL")
+  allowPromos          Boolean  @default(false)
+  minPromoPrice        Decimal? @db.Decimal(10, 2)
+  timezone             String?  @default("America/Sao_Paulo") // Fuso horário para disponibilidade/agendamento
+  wantCampaigns        Boolean  @default(false) // Deseja aparecer em campanhas publicitárias
+  allowAutoScheduling  Boolean  @default(false) // Autoriza que o sistema agende automaticamente
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
   user               User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
   appointments       Appointment[]                @relation("TherapistAppointments")
@@ -173,10 +173,10 @@ model TherapistProfile {
 model Availability {
   id           String    @id @default(cuid())
   therapistId  String
-  dayOfWeek    Int?      // 0=Domingo, 1=Segunda, ... 6=Sábado. Opcional para datas específicas.
+  dayOfWeek    Int? // 0=Domingo, 1=Segunda, ... 6=Sábado. Opcional para datas específicas.
   date         DateTime? // Data específica (ex: 2024-04-15). Opcional para grade semanal.
-  startTime    String    // "09:00"
-  endTime      String    // "18:00"
+  startTime    String // "09:00"
+  endTime      String // "18:00"
   slotDuration Int       @default(60) // minutos por sessão
   active       Boolean   @default(true)
   createdAt    DateTime  @default(now())
@@ -193,27 +193,28 @@ model Availability {
 // ==========================================
 
 model PatientProfile {
-  id            String    @id @default(cuid())
-  userId        String    @unique
-  birthDate     DateTime?
-  gender        Gender?
-  socialName    String?
-  maritalStatus String?
-  profession    String?
-  zipCode       String?
-  street        String?
-  number        String?
-  complement    String?
-  neighborhood  String?
-  city          String?
-  state         String?
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  birthDate        DateTime?
+  gender           Gender?
+  socialName       String?
+  maritalStatus    String?
+  profession       String?
+  zipCode          String?
+  street           String?
+  number           String?
+  complement       String?
+  neighborhood     String?
+  city             String?
+  state            String?
   // Anamnese armazenada como JSON para flexibilidade futura
-  anamnese      Json?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  anamnese         Json?
+  stripeCustomerId String?   @unique // ID do Customer na Stripe
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  appointments Appointment[] @relation("PatientAppointments")
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments Appointment[]    @relation("PatientAppointments")
   packages     PatientPackage[]
 
   @@map("patient_profiles")
@@ -224,28 +225,31 @@ model PatientProfile {
 // ==========================================
 
 model Appointment {
-  id              String            @id @default(cuid())
-  therapistId     String
-  patientId       String
-  serviceId       String?
-  date            DateTime
-  durationMinutes Int               @default(60)
-  status          AppointmentStatus @default(PENDENTE)
-  price           Decimal           @db.Decimal(10, 2)
-  commissionRate  Decimal           @db.Decimal(5, 2)
-  commission      Decimal?          @db.Decimal(10, 2)
-  therapistNet    Decimal?          @db.Decimal(10, 2)
-  platformRevenue Decimal?          @db.Decimal(10, 2)
-  notes           String?           @db.Text
-  cancelReason    String?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id                    String            @id @default(cuid())
+  therapistId           String
+  patientId             String
+  serviceId             String?
+  date                  DateTime
+  durationMinutes       Int               @default(60)
+  status                AppointmentStatus @default(PENDENTE)
+  price                 Decimal           @db.Decimal(10, 2)
+  commissionRate        Decimal           @db.Decimal(5, 2)
+  commission            Decimal?          @db.Decimal(10, 2)
+  therapistNet          Decimal?          @db.Decimal(10, 2)
+  platformRevenue       Decimal?          @db.Decimal(10, 2)
+  notes                 String?           @db.Text
+  cancelReason          String?
+  stripePaymentIntentId String?           @unique // Rastreamento da cobrança na Stripe
+  stripeTransferId      String?           @unique // Rastreamento da transferência na Stripe Connect
+  refundAmount          Decimal?          @db.Decimal(10, 2) // Quanto foi estornado
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
 
-  therapist TherapistProfile   @relation("TherapistAppointments", fields: [therapistId], references: [id])
-  patient   PatientProfile     @relation("PatientAppointments", fields: [patientId], references: [id])
-  service   TherapistService?  @relation(fields: [serviceId], references: [id], onDelete: SetNull)
-  review    Review?
-  patientPackage   PatientPackage? @relation(fields: [patientPackageId], references: [id], onDelete: SetNull)
+  therapist        TherapistProfile  @relation("TherapistAppointments", fields: [therapistId], references: [id])
+  patient          PatientProfile    @relation("PatientAppointments", fields: [patientId], references: [id])
+  service          TherapistService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  review           Review?
+  patientPackage   PatientPackage?   @relation(fields: [patientPackageId], references: [id], onDelete: SetNull)
   patientPackageId String?
 
   @@map("appointments")
@@ -352,7 +356,7 @@ model TherapistService {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  therapist   TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  therapist    TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
   appointments Appointment[]
   packages     TherapyPackage[]
 
@@ -360,18 +364,18 @@ model TherapistService {
 }
 
 model TherapistConsent {
-  id                   String    @id @default(cuid())
-  therapistId          String    @unique
-  termsAccepted        Boolean   @default(false)
-  termsAcceptedAt      DateTime?
-  privacyAccepted      Boolean   @default(false)
-  privacyAcceptedAt    DateTime?
-  imageRightsAccepted  Boolean   @default(false)
-  imageRightsAt        DateTime?
-  automationConsent    Boolean   @default(false)
-  automationConsentAt  DateTime?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  id                  String    @id @default(cuid())
+  therapistId         String    @unique
+  termsAccepted       Boolean   @default(false)
+  termsAcceptedAt     DateTime?
+  privacyAccepted     Boolean   @default(false)
+  privacyAcceptedAt   DateTime?
+  imageRightsAccepted Boolean   @default(false)
+  imageRightsAt       DateTime?
+  automationConsent   Boolean   @default(false)
+  automationConsentAt DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
   therapist TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
 
@@ -379,20 +383,20 @@ model TherapistConsent {
 }
 
 model TherapistAdminData {
-  id                    String           @id @default(cuid())
-  therapistId            String          @unique
-  therapistCode          String?         @unique
-  level                  TherapistLevel  @default(BASIC)
-  status                 TherapistStatus @default(REVIEW)
-  completenessScore     Int             @default(0)
-  missingFields          String[]       @default([])
-  promoAuthorized        Boolean         @default(false)
-  automationAuthorized   Boolean         @default(false)
-  internalNotes          String?         @db.Text
-  country                String?         @default("BR")
-  timezone               String?         @default("America/Sao_Paulo")
-  createdAt              DateTime        @default(now())
-  updatedAt              DateTime        @updatedAt
+  id                   String          @id @default(cuid())
+  therapistId          String          @unique
+  therapistCode        String?         @unique
+  level                TherapistLevel  @default(BASIC)
+  status               TherapistStatus @default(REVIEW)
+  completenessScore    Int             @default(0)
+  missingFields        String[]        @default([])
+  promoAuthorized      Boolean         @default(false)
+  automationAuthorized Boolean         @default(false)
+  internalNotes        String?         @db.Text
+  country              String?         @default("BR")
+  timezone             String?         @default("America/Sao_Paulo")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 
   therapist TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
 
@@ -400,13 +404,13 @@ model TherapistAdminData {
 }
 
 model TherapistAIConfig {
-  id                   String   @id @default(cuid())
-  therapistId          String   @unique
-  shortPitch           String?  @db.Text
-  top3Benefits         String[] @default([])
-  mainProblemsTreated  String[] @default([])
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  therapistId         String   @unique
+  shortPitch          String?  @db.Text
+  top3Benefits        String[] @default([])
+  mainProblemsTreated String[] @default([])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   therapist TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
 
@@ -458,10 +462,11 @@ model TherapistPaymentMethod {
 model TherapistPaymentDetails {
   id                String   @id @default(cuid())
   therapistId       String   @unique
-  accountHolderName String?  // Nome do titular
-  bankName          String?  // Banco
-  accountNumber     String?  // Número da conta
-  pixKey            String?  // Chave Pix / Alias
+  accountHolderName String? // Nome do titular
+  bankName          String? // Banco
+  accountNumber     String? // Número da conta
+  pixKey            String? // Chave Pix / Alias
+  stripeAccountId   String?  @unique // ID da conta conectada (Express) no Stripe Connect
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -472,12 +477,12 @@ model TherapistPaymentDetails {
 
 // Certificados em arquivo (upload) — visíveis no perfil público
 model TherapistCertificate {
-  id           String   @id @default(cuid())
-  therapistId  String
-  name         String   // rótulo ex.: "Curso de Reiki"
-  fileUrl      String   // URL pública no storage
-  sortOrder    Int      @default(0)
-  createdAt    DateTime @default(now())
+  id          String   @id @default(cuid())
+  therapistId String
+  name        String // rótulo ex.: "Curso de Reiki"
+  fileUrl     String // URL pública no storage
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
 
   therapist TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
 
@@ -489,17 +494,17 @@ model TherapistCertificate {
 // ==========================================
 
 model TherapyPackage {
-  id              String   @id @default(cuid())
-  serviceId       String
-  name            String
-  description     String?  @db.Text
-  sessionCount    Int
-  price           Decimal  @db.Decimal(10, 2)
-  expirationDays  Int?     // Dias para expirar após a compra (configurável pelo terapeuta)
-  isMultiTherapy  Boolean  @default(false) // Se pode ser usado em qualquer terapia do terapeuta
-  active          Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String   @id @default(cuid())
+  serviceId      String
+  name           String
+  description    String?  @db.Text
+  sessionCount   Int
+  price          Decimal  @db.Decimal(10, 2)
+  expirationDays Int? // Dias para expirar após a compra (configurável pelo terapeuta)
+  isMultiTherapy Boolean  @default(false) // Se pode ser usado em qualquer terapia do terapeuta
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   service         TherapistService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   patientPackages PatientPackage[]
@@ -508,19 +513,19 @@ model TherapyPackage {
 }
 
 model PatientPackage {
-  id                String   @id @default(cuid())
+  id                String    @id @default(cuid())
   patientId         String
   packageId         String
   totalSessions     Int
   remainingSessions Int
   expiresAt         DateTime? // Data de expiração calculada
-  status            String   @default("ACTIVE") // ACTIVE, COMPLETED, EXPIRED
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  status            String    @default("ACTIVE") // ACTIVE, COMPLETED, EXPIRED
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
-  patient           PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  package           TherapyPackage @relation(fields: [packageId], references: [id])
-  appointments      Appointment[]
+  patient      PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  package      TherapyPackage @relation(fields: [packageId], references: [id])
+  appointments Appointment[]
 
   @@map("patient_packages")
 }
