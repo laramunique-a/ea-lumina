@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { Loader2, ExternalLink } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 

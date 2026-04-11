@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth-client' // ou server-side eq
 import StripeConnectButton from './stripe-connect-button'
@@ -60,7 +59,7 @@ export default async function FinanceiroPage() {
   const thisMonthEarnings = Number(thisMonthRevenueAggregation._sum.therapistNet || 0)
 
   return (
-    <DashboardLayout>
+    <div className="max-w-5xl mx-auto p-6 sm:p-8 space-y-8 pb-24">
       <div className="flex-1 space-y-8 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight text-ealumininature/90">Carteira & Financeiro</h2>
@@ -122,6 +121,6 @@ export default async function FinanceiroPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }

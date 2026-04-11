@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
 import * as jose from 'jose'
@@ -54,7 +53,7 @@ export default async function AdminFinanceiroPage() {
   const formatBRL = (val: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val)
 
   return (
-    <DashboardLayout>
+    <div className="max-w-6xl mx-auto p-6 sm:p-8 space-y-8 pb-24">
       <div className="flex-1 space-y-8 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900">Visão Financeira da Plataforma</h2>
@@ -135,6 +134,6 @@ export default async function AdminFinanceiroPage() {
            </div>
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
