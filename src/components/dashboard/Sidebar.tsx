@@ -27,12 +27,14 @@ const adminNav: NavItem[] = [
   { label: 'Terapias',   href: '/dashboard/admin/therapies',   icon: <Tags size={17} /> },
   { label: 'Relatórios', href: '/dashboard/admin/reports',     icon: <BarChart3 size={17} /> },
   { label: 'Comissão',   href: '/dashboard/admin/commission',  icon: <DollarSign size={17} /> },
+  { label: 'Financeiro', href: '/dashboard/admin/financeiro',  icon: <DollarSign size={17} /> },
 ]
 
 const therapistNav: NavItem[] = [
   { label: 'Dashboard',  href: '/dashboard/terapeuta',         icon: <LayoutDashboard size={17} /> },
   { label: 'Agenda',     href: '/dashboard/terapeuta/agenda',  icon: <Calendar size={17} /> },
   { label: 'Terapias',   href: '/dashboard/terapeuta/terapias', icon: <HeartHandshake size={17} /> },
+  { label: 'Financeiro', href: '/dashboard/terapeuta/financeiro', icon: <DollarSign size={17} /> },
   { label: 'Meu Perfil', href: '/dashboard/terapeuta/perfil',  icon: <Settings size={17} /> },
 ]
 
