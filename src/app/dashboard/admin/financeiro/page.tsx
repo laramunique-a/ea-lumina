@@ -6,7 +6,7 @@ import * as jose from 'jose'
 
 async function getAdminSession() {
   const cookieStore = cookies()
-  const token = cookieStore.get('accessToken')?.value
+  const token = cookieStore.get('access_token')?.value
   if (!token) return null
   try {
     const defaultSecret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
