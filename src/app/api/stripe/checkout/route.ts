@@ -49,9 +49,18 @@ export async function POST(request: NextRequest) {
     // Calcular valores
     const priceNumber = Number(appointment.price)
     
+    // Stripe exige mínimo de 50 centavos de Dólar (no Brasil, aprox R$ 2,00 a R$ 2,50 dependendo do dia limitam a 2 BRL)
+    if (priceNumber < 2) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'O valor da sessão deste terapeuta está zerado ou abaixo do limite de processamento. O terapeuta precisa configurar um valor em seu perfil.' 
+      }, { status: 400 })
+    }
+
     // Obter taxa da plataforma (fallback 10%)
     const config = await prisma.platformConfig.findFirst()
     const commissionRate = config ? Number(config.commissionRate) : 10.0
+
     
     // Calcula as taxas
     const platformCommission = (priceNumber * commissionRate) / 100
