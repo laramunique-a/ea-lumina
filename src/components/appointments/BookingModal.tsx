@@ -264,13 +264,20 @@ export function BookingModal({
     (p.isMultiTherapy || p.therapyId === selectedService.id)
   ) : null
 
+  const parsePrice = (p: any): number => {
+    if (!p) return 0
+    if (typeof p === 'number') return p
+    if (typeof p === 'string') return parseFloat(p)
+    return parseFloat(p.toString?.() || '0')
+  }
+
   const price = usePackageId 
     ? 0 
     : selectedPackage 
     ? selectedPackage.price 
     : selectedService
-    ? effectiveServiceCharge({ price: selectedService.price, promoPrice: selectedService.promoPrice })
-    : Number(therapist.price)
+    ? effectiveServiceCharge({ price: parsePrice(selectedService.price), promoPrice: parsePrice(selectedService.promoPrice) })
+    : parsePrice(therapist.price)
   const durationMinutes = selectedService ? selectedService.durationMinutes : 60
   const currency = selectedService ? selectedService.currency : 'BRL'
   const modality = selectedService ? selectedService.modality : 'AMBOS'
@@ -368,31 +375,49 @@ export function BookingModal({
         return
       }
 
-      // Pedir Client Secret antes de ir para o passo de pagamento
       setLoading(true)
       try {
-        const res = await fetch('/api/checkout/create-intent', {
+        // 1. Criamos a pré-reserva (PENDENTE) no banco primeiro para ter o ID real
+        const dateStr = format(selectedDate!, 'yyyy-MM-dd')
+        const createRes = await fetch('/api/appointments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            amount: price,
-            currency: currency.toLowerCase(),
-            metadata: {
-              therapistId: therapist.id,
-              serviceId: selectedService?.id,
-              packageId: selectedPackage?.id,
-            }
-          })
+            therapistProfileId: therapist.id,
+            date: dateStr,
+            time: selectedTime,
+            notes: notes || undefined,
+            serviceId: selectedService?.id || undefined,
+            buyPackageId: selectedPackage?.id || undefined,
+            usePackageId: usePackageId || undefined,
+          }),
+        })
+
+        const createData = await createRes.json()
+        if (!createData.success) {
+          toast.error(createData.error || 'Erro ao criar pré-reserva no sistema.')
+          setLoading(false)
+          return
+        }
+
+        const createdAppointmentId = createData.data.id
+
+        // 2. Acionamos o Checkout Server (Novo) referenciando este Appointment ID
+        const res = await fetch('/api/stripe/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ appointmentId: createdAppointmentId })
         })
         const data = await res.json()
         if (data.success) {
           setClientSecret(data.clientSecret)
+          setPaymentIntentId(data.paymentIntentId || null)
           setStep('payment')
         } else {
-          toast.error(data.error || 'Erro ao preparar pagamento')
+          toast.error(data.error || 'Erro interno preparando o cofre de pagamento')
         }
       } catch (err) {
-        toast.error('Erro de conexão com servidor de pagamento')
+        toast.error('Erro de conexão com nossos servidores')
       } finally {
         setLoading(false)
       }
@@ -732,7 +757,6 @@ export function BookingModal({
             </div>
           )}
 
-          {/* STEP: Pagamento */}
           {step === 'payment' && (isMockMode || clientSecret) && (
              <div className="animate-in fade-in slide-in-from-right-4 duration-300">
                 <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
@@ -747,7 +771,9 @@ export function BookingModal({
                     currency={currency} 
                     onPaymentSuccess={(id) => {
                       setPaymentIntentId(id)
-                      setStep('confirm')
+                      setStep('done') // Mock bypassa diretamente para pronto
+                      toast.success('Agendamento confirmado com sucesso!')
+                      onSuccess?.()
                     }} 
                   />
                 ) : (
@@ -758,15 +784,17 @@ export function BookingModal({
                         currency={currency} 
                         onPaymentSuccess={(id) => {
                           setPaymentIntentId(id)
-                          setStep('confirm')
+                          setStep('done') // Pagamento processado na Stripe
+                          toast.success('Pagamento efetuado com sucesso!')
+                          onSuccess?.()
                         }} 
                       />
                     </Elements>
                   )
                 )}
 
-                <Button variant="ghost" onClick={goBack} className="w-full mt-4 text-slate-400 font-bold hover:text-slate-600">
-                   Voltar e revisar horário
+                <Button variant="ghost" onClick={handleClose} className="w-full mt-4 text-slate-400 font-bold hover:text-slate-600">
+                   Cancelar Pré-Reserva
                 </Button>
              </div>
           )}
