@@ -35,12 +35,21 @@ async function getMetrics() {
     }),
   ])
 
+  const totalRevenueGross = Number(revenueResult._sum.platformRevenue || 0)
+  const totalGross = await prisma.appointment.aggregate({
+    _sum: { price: true },
+    where: { status: { in: ['CONFIRMADO', 'CONCLUIDO'] } }
+  })
+  
+  const stripeFee = (Number(totalGross._sum.price || 0) * 0.0399) + (totalAppointments * 0.39)
+  const totalRevenueNet = Math.max(0, totalRevenueGross - stripeFee)
+
   return {
     totalTherapists,
     totalPatients,
     totalAppointments,
     pendingApprovals,
-    totalRevenue: Number(revenueResult._sum.platformRevenue || 0),
+    totalRevenue: totalRevenueNet,
     recentAppointments,
   }
 }
@@ -101,11 +110,11 @@ export default async function AdminDashboardPage() {
           description="Todos os status"
         />
         <StatCard
-          title="Receita da plataforma"
+          title="Receita Líquida Real"
           value={formatCurrency(metrics.totalRevenue)}
           icon={<DollarSign size={20} />}
           color="gold"
-          description="Comissões recebidas"
+          description="Descontadas taxas de cartão"
         />
       </div>
 

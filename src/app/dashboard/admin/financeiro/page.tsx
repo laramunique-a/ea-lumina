@@ -35,6 +35,10 @@ export default async function AdminFinanceiroPage() {
       status: { in: ['CONFIRMADO', 'CONCLUIDO'] }
     }
   })
+  
+  const allTimeCount = await prisma.appointment.count({
+    where: { status: { in: ['CONFIRMADO', 'CONCLUIDO'] } }
+  })
 
   // Agregações do mês atual
   const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
@@ -49,8 +53,23 @@ export default async function AdminFinanceiroPage() {
       date: { gte: firstDayOfMonth }
     }
   })
+  
+  const thisMonthCount = await prisma.appointment.count({
+    where: { status: { in: ['CONFIRMADO', 'CONCLUIDO'] }, date: { gte: firstDayOfMonth } }
+  })
 
   const formatBRL = (val: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val)
+
+  // Estimativa de taxas Stripe (Padrão Brasil: 3.99% + R$ 0,39)
+  const allTimeGross = Number(allTimeStats._sum.price || 0)
+  const allTimePlatformRev = Number(allTimeStats._sum.platformRevenue || 0)
+  const estimatedStripeFeeAllTime = (allTimeGross * 0.0399) + (allTimeCount * 0.39)
+  const liquidAllTime = Math.max(0, allTimePlatformRev - estimatedStripeFeeAllTime)
+
+  const thisMonthGross = Number(thisMonthStats._sum.price || 0)
+  const thisMonthPlatformRev = Number(thisMonthStats._sum.platformRevenue || 0)
+  const estimatedStripeFeeThisMonth = (thisMonthGross * 0.0399) + (thisMonthCount * 0.39)
+  const liquidThisMonth = Math.max(0, thisMonthPlatformRev - estimatedStripeFeeThisMonth)
 
   return (
     <div className="max-w-6xl mx-auto p-6 sm:p-8 space-y-8 pb-24">
@@ -77,15 +96,15 @@ export default async function AdminFinanceiroPage() {
           <Card className="rounded-[2rem] border-none shadow-sm bg-indigo-50">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-indigo-700">
-                Líquido EA Lumina (All-time)
+                Líquido Real (All-time)
               </CardTitle>
               <span className="text-indigo-600 font-bold">💰</span>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-indigo-900">
-                {formatBRL(Number(allTimeStats._sum.platformRevenue || 0))}
+                {formatBRL(liquidAllTime)}
               </div>
-              <p className="text-xs text-indigo-600 mt-1">Este valor é usado para pagar a Stripe</p>
+              <p className="text-xs text-indigo-600 mt-1">Já abatido estimativa de taxa do cartão (~3.99% + 0,39)</p>
             </CardContent>
           </Card>
 
@@ -127,9 +146,9 @@ export default async function AdminFinanceiroPage() {
               </div>
            </div>
            <div className="bg-indigo-500 p-6 rounded-[2rem] shadow-sm flex items-center justify-between">
-              <div>
-                <p className="text-sm text-indigo-100 font-medium uppercase tracking-widest">Lucro EA Lumina (Mês Atual)</p>
-                <p className="text-3xl font-black text-white mt-1">{formatBRL(Number(thisMonthStats._sum.platformRevenue || 0))}</p>
+               <div>
+                <p className="text-sm text-indigo-100 font-medium uppercase tracking-widest">Lucro Líquido Real (Mês Atual)</p>
+                <p className="text-3xl font-black text-white mt-1">{formatBRL(liquidThisMonth)}</p>
               </div>
            </div>
         </div>
