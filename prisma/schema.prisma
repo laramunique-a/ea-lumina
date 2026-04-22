@@ -71,8 +71,6 @@ model TherapistProfile {
   certifications       String[]
   languages            String[]                     @default(["Português"])
   whatsapp             String?
-  greenApiInstanceId   String?
-  greenApiToken        String?
   createdAt            DateTime                     @default(now())
   updatedAt            DateTime                     @updatedAt
   allowAutoScheduling  Boolean                      @default(false)

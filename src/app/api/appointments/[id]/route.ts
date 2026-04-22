@@ -6,6 +6,7 @@ import { getSessionFromRequest } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { z } from 'zod'
 import { calculateCommission } from '@/lib/utils'
+import { sendMetaTemplateMessage } from '@/lib/whatsapp'
 
 const updateSchema = z.object({
   status: z.enum(['PENDENTE', 'CONFIRMADO', 'CONCLUIDO', 'CANCELADO']).optional(),
@@ -36,8 +37,21 @@ export async function PATCH(
     const appointment = await prisma.appointment.findUnique({
       where: { id: params.id },
       include: {
-        therapist: { select: { userId: true } },
-        patient: { select: { userId: true } },
+        therapist: { 
+          select: { 
+            userId: true, 
+            whatsapp: true, 
+            professionalName: true,
+            user: { select: { name: true } }
+          } 
+        },
+        patient: { 
+          select: { 
+            userId: true, 
+            socialName: true, 
+            user: { select: { name: true, phone: true } } 
+          } 
+        },
       },
     })
 
@@ -109,6 +123,25 @@ export async function PATCH(
         }
       })
 
+      // Notificações de Cancelamento
+      const patientPhone = appointment.patient.user?.phone
+      const therapistPhone = appointment.therapist.whatsapp
+      const formattedDate = appointment.date.toLocaleDateString('pt-BR')
+
+      if (isTherapist && patientPhone) {
+        void sendMetaTemplateMessage({
+          to: patientPhone,
+          templateName: 'agendamento_cancelado_terapeuta',
+          components: [{ type: 'body', parameters: [{ type: 'text', text: formattedDate }] }]
+        })
+      } else if (isPatient && therapistPhone) {
+        void sendMetaTemplateMessage({
+          to: therapistPhone,
+          templateName: 'agendamento_cancelado_paciente',
+          components: [{ type: 'body', parameters: [{ type: 'text', text: formattedDate }] }]
+        })
+      }
+
       return NextResponse.json({ success: true, message: 'Agendamento cancelado com sucesso.' })
     }
 
@@ -126,6 +159,25 @@ export async function PATCH(
           platformRevenue,
         },
       })
+
+      // Notificação de Confirmação para o Paciente
+      const patientPhone = appointment.patient.user?.phone
+      if (patientPhone) {
+        void sendMetaTemplateMessage({
+          to: patientPhone,
+          templateName: 'agendamento_confirmado',
+          components: [
+            {
+              type: 'body',
+              parameters: [
+                { type: 'text', text: appointment.therapist.professionalName || appointment.therapist.user?.name || 'Seu terapeuta' },
+                { type: 'text', text: appointment.date.toLocaleDateString('pt-BR') }
+              ]
+            }
+          ]
+        })
+      }
+
       return NextResponse.json({ success: true, message: 'Agendamento confirmado' })
     }
 

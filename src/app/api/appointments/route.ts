@@ -6,7 +6,7 @@ import { getSessionFromRequest } from '@/lib/auth'
 import { z } from 'zod'
 import { calculateCommission } from '@/lib/utils'
 import { effectiveServiceCharge } from '@/lib/therapist-pricing'
-import { sendWhatsAppMessage } from '@/services/whatsappService'
+import { sendMetaTemplateMessage } from '@/lib/whatsapp'
 
 const createSchema = z.object({
   therapistProfileId: z.string().min(1),
@@ -317,9 +317,23 @@ export async function POST(request: NextRequest) {
       dateStyle: 'short',
       timeStyle: 'short',
     })
-    void sendWhatsAppMessage(
-      `Novo agendamento:\nPaciente: ${patientName}\nData: ${datetime}`
-    )
+    
+    // Notificação para o Terapeuta
+    if (therapist.whatsapp) {
+      void sendMetaTemplateMessage({
+        to: therapist.whatsapp,
+        templateName: 'novo_agendamento',
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              { type: 'text', text: patientName },
+              { type: 'text', text: datetime },
+            ],
+          },
+        ],
+      })
+    }
 
     return NextResponse.json({
       success: true,
