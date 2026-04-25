@@ -51,9 +51,6 @@ export default function TerapeutaPerfilPage() {
   const [certifications, setCertifications] = useState<string[]>([])
   const [newCert, setNewCert] = useState('')
   const [publicTargetDescription, setPublicTargetDescription] = useState('')
-  const [sessionsPerMonthGoal, setSessionsPerMonthGoal] = useState('') // 10, 20, 40 ou 80
-  const [wantCampaigns, setWantCampaigns] = useState(false)
-  const [allowAutoScheduling, setAllowAutoScheduling] = useState(false)
   const [certificateFiles, setCertificateFiles] = useState<{ id: string; name: string; fileUrl: string }[]>([])
   const [newCertificateTitle, setNewCertificateTitle] = useState('')
   const [documentUploadLabel, setDocumentUploadLabel] = useState<string | null>(null)
@@ -86,12 +83,6 @@ export default function TerapeutaPerfilPage() {
     onError: (msg) => toast.error(msg),
   })
 
-  // Métodos de pagamento e dados para recebimento
-  const [paymentMethods, setPaymentMethods] = useState<string[]>([])
-  const [accountHolderName, setAccountHolderName] = useState('')
-  const [bankName, setBankName] = useState('')
-  const [accountNumber, setAccountNumber] = useState('')
-  const [pixKey, setPixKey] = useState('')
 
   /** Refetch user + therapist profile from API and sync form state (also used after save). */
   const loadProfile = useCallback(async (opts?: { silent?: boolean }) => {
@@ -208,9 +199,7 @@ export default function TerapeutaPerfilPage() {
         setYearsExp(tp.yearsExp != null ? String(tp.yearsExp) : '')
         setCertifications(tp.certifications || [])
         setPublicTargetDescription(tp.targetAudience?.specialNeeds ?? '')
-        setSessionsPerMonthGoal(tp.sessionsPerMonthGoal != null ? String(tp.sessionsPerMonthGoal) : '')
-        setWantCampaigns(tp.wantCampaigns ?? false)
-        setAllowAutoScheduling(tp.allowAutoScheduling ?? false)
+        setPublicTargetDescription(tp.targetAudience?.specialNeeds ?? '')
         setWhatsapp(tp.whatsapp || (row as { phone?: string | null }).phone || '')
         setProfessionalEmail(tp.professionalEmail || '')
         setInstagram(tp.instagram || '')
@@ -279,22 +268,6 @@ export default function TerapeutaPerfilPage() {
       .catch(() => setCertificateFiles([]))
   }, [profileId])
 
-  useEffect(() => {
-    if (!profileId) return
-    fetch(`/api/therapists/${profileId}/payment`, withAuth())
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.success && data.data) {
-          setPaymentMethods(data.data.paymentMethods || [])
-          const d = data.data.paymentDetails
-          setAccountHolderName(d?.accountHolderName ?? '')
-          setBankName(d?.bankName ?? '')
-          setAccountNumber(d?.accountNumber ?? '')
-          setPixKey(d?.pixKey ?? '')
-        }
-      })
-      .catch(() => {})
-  }, [profileId])
 
   const handleRemoveCertificate = async (certId: string) => {
     if (!profileId) return
@@ -312,23 +285,7 @@ export default function TerapeutaPerfilPage() {
     }
   }
 
-  const PAYMENT_METHOD_OPTIONS = [
-    { value: 'TRANSFERENCIA', label: 'Transferência bancária' },
-    { value: 'CREDITO', label: 'Cartão de crédito' },
-    { value: 'DEBITO', label: 'Cartão de débito' },
-    { value: 'PAYPAL', label: 'PayPal' },
-    { value: 'PIX', label: 'Pix' },
-    { value: 'MERCADOPAGO', label: 'MercadoPago' },
-    { value: 'PREX', label: 'Prex' },
-    { value: 'CRIPTOMOEDA', label: 'Criptomoeda' },
-    { value: 'DINHEIRO', label: 'Dinheiro' },
-  ]
 
-  const togglePaymentMethod = (method: string) => {
-    setPaymentMethods((prev) =>
-      prev.includes(method) ? prev.filter((m) => m !== method) : [...prev, method]
-    )
-  }
 
   const addCert = () => {
     if (newCert.trim()) {
@@ -351,8 +308,6 @@ export default function TerapeutaPerfilPage() {
     try {
       const priceNum = parseFloat(price)
       const yearsNum = yearsExp.trim() === '' ? null : parseInt(yearsExp, 10)
-      const sessionsGoal =
-        sessionsPerMonthGoal.trim() === '' ? null : parseInt(sessionsPerMonthGoal, 10)
       const profileBody: Record<string, unknown> = {
         bio,
         modality,
@@ -365,8 +320,6 @@ export default function TerapeutaPerfilPage() {
         documentId: documentId || null,
         languages: languages.length ? languages : ['Português'],
         certifications,
-        wantCampaigns,
-        allowAutoScheduling,
         publicTargetDescription: publicTargetDescription || null,
         whatsapp: whatsapp || null,
         professionalEmail: professionalEmail || null,
@@ -377,16 +330,11 @@ export default function TerapeutaPerfilPage() {
       if (Number.isFinite(priceNum) && priceNum >= 0) profileBody.price = priceNum
       if (yearsNum !== null && Number.isFinite(yearsNum) && yearsNum >= 0) profileBody.yearsExp = yearsNum
       else if (yearsExp.trim() === '') profileBody.yearsExp = null
-      if (sessionsGoal !== null && Number.isFinite(sessionsGoal) && sessionsGoal >= 0) {
-        profileBody.sessionsPerMonthGoal = sessionsGoal
-      } else if (sessionsPerMonthGoal.trim() === '') {
-        profileBody.sessionsPerMonthGoal = null
-      }
       if (process.env.NODE_ENV === 'development') {
         console.log('[TerapeutaPerfil] save', { profileId, profileKeys: Object.keys(profileBody) })
       }
 
-      const [userRes, profileRes, paymentRes] = await Promise.all([
+      const [userRes, profileRes] = await Promise.all([
         fetch(
           `/api/users/${user.id}`,
           withAuth({
@@ -407,29 +355,14 @@ export default function TerapeutaPerfilPage() {
             body: JSON.stringify(profileBody),
           })
         ),
-        fetch(
-          `/api/therapists/${profileId}/payment`,
-          withAuth({
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              paymentMethods,
-              accountHolderName: accountHolderName || null,
-              bankName: bankName || null,
-              accountNumber: accountNumber || null,
-              pixKey: pixKey || null,
-            }),
-          })
-        ),
       ])
 
-      const [userData, profileData, paymentData] = await Promise.all([
+      const [userData, profileData] = await Promise.all([
         userRes.json().catch(() => ({})),
         profileRes.json().catch(() => ({})),
-        paymentRes.json().catch(() => ({})),
       ])
 
-      if (userData.success && profileData.success && paymentData.success) {
+      if (userData.success && profileData.success) {
         toast.success('Perfil atualizado com sucesso!')
         setUser({
           ...user,
@@ -441,10 +374,9 @@ export default function TerapeutaPerfilPage() {
         const parts = [
           !userData.success && userData.error,
           !profileData.success && profileData.error,
-          !paymentData.success && paymentData.error,
         ].filter(Boolean)
         if (process.env.NODE_ENV === 'development') {
-          console.warn('[TerapeutaPerfil] save partial failure', { userData, profileData, paymentData })
+          console.warn('[TerapeutaPerfil] save partial failure', { userData, profileData })
         }
         toast.error(parts.join(' · ') || 'Erro ao salvar')
       }
@@ -701,58 +633,6 @@ export default function TerapeutaPerfilPage() {
           </div>
         </div>
 
-        {/* Métodos de pagamento aceitos e dados para recebimento */}
-        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
-          <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-            <CreditCard size={20} className="text-[#0090FF]" />
-            Métodos de pagamento aceitos
-          </h2></div>
-          <div className="flex flex-wrap gap-3">
-            {PAYMENT_METHOD_OPTIONS.map((opt) => (
-              <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={paymentMethods.includes(opt.value)}
-                  onChange={() => togglePaymentMethod(opt.value)}
-                  className="rounded border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                />
-                <span className="text-sm text-slate-700">{opt.label}</span>
-              </label>
-            ))}
-          </div>
-          <div className="pt-4 border-t border-slate-100/50">
-            <h3 className="font-medium text-slate-800 mb-3">Dados para recebimento</h3>
-            <p className="text-sm text-slate-500 mb-4">
-              Preencha os dados que forem aplicáveis aos métodos que você aceita (ex.: titular e banco para transferência, chave Pix para Pix).
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input
-                label="Nome do titular"
-                value={accountHolderName}
-                onChange={(e) => setAccountHolderName(e.target.value)}
-                placeholder="Nome como está no banco"
-              />
-              <Input
-                label="Banco"
-                value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
-                placeholder="Ex.: Banco do Brasil, Nubank"
-              />
-              <Input
-                label="Número da conta"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                placeholder="Agência e conta ou só conta"
-              />
-              <Input
-                label="Chave Pix / Alias"
-                value={pixKey}
-                onChange={(e) => setPixKey(e.target.value)}
-                placeholder="CPF, e-mail, telefone ou chave aleatória"
-              />
-            </div>
-          </div>
-        </div>
 
         {/* Perfil profissional */}
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
@@ -793,77 +673,6 @@ export default function TerapeutaPerfilPage() {
           </div>
         </div>
 
-        {/* Objetivos dentro da plataforma */}
-        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
-          <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Objetivos dentro da plataforma</h2></div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Quantidade de sessões desejadas por mês</label>
-            <div className="flex flex-wrap gap-3">
-              {[10, 20, 40, 80].map((n) => (
-                <label key={n} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="sessionsPerMonthGoal"
-                    checked={sessionsPerMonthGoal === String(n)}
-                    onChange={() => setSessionsPerMonthGoal(String(n))}
-                    className="rounded-full border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                  />
-                  <span className="text-sm text-slate-700">{n}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Deseja aparecer em campanhas publicitárias?</label>
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="wantCampaigns"
-                  checked={wantCampaigns === true}
-                  onChange={() => setWantCampaigns(true)}
-                  className="rounded-full border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                />
-                <span className="text-sm text-slate-700">Sim</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="wantCampaigns"
-                  checked={wantCampaigns === false}
-                  onChange={() => setWantCampaigns(false)}
-                  className="rounded-full border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                />
-                <span className="text-sm text-slate-700">Não</span>
-              </label>
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Autoriza que o sistema agende automaticamente?</label>
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="allowAutoScheduling"
-                  checked={allowAutoScheduling === true}
-                  onChange={() => setAllowAutoScheduling(true)}
-                  className="rounded-full border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                />
-                <span className="text-sm text-slate-700">Sim</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="allowAutoScheduling"
-                  checked={allowAutoScheduling === false}
-                  onChange={() => setAllowAutoScheduling(false)}
-                  className="rounded-full border-slate-200 text-[#0090FF] focus:ring-[#0090FF]/20"
-                />
-                <span className="text-sm text-slate-700">Não</span>
-              </label>
-            </div>
-          </div>
-        </div>
 
 
         {/* Certificações e Documentos — visíveis no perfil público */}

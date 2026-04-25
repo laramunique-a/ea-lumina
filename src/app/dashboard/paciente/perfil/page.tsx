@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { PhoneInput } from '@/components/ui/PhoneInput'
 import { useAuthStore } from '@/hooks/useAuth'
 import { withAuth } from '@/lib/auth-fetch'
 import { getAvatarUrl } from '@/lib/utils'
@@ -98,12 +99,6 @@ function dateMask(val: string) {
     .slice(0, 10)
 }
 
-function phoneMask(val: string) {
-  let v = val.replace(/\D/g, '')
-  if (v.length > 2) v = `(${v.substring(0, 2)}) ` + v.substring(2)
-  if (v.length > 10) v = v.substring(0, 10) + '-' + v.substring(10, 14)
-  return v
-}
 
 export default function PacientePerfilPage() {
   const { user, setUser } = useAuthStore()
@@ -141,7 +136,7 @@ export default function PacientePerfilPage() {
         name: d.name ?? '',
         socialName: d.socialName ?? '',
         email: d.email ?? '',
-        phone: d.phone ? phoneMask(d.phone) : '',
+        phone: d.phone ?? '',
         birthDate: formatDateFromIso(d.birthDate),
         gender: d.gender ?? '',
         maritalStatus: d.maritalStatus ?? '',
@@ -205,7 +200,7 @@ export default function PacientePerfilPage() {
       const body: Record<string, unknown> = {
         name: formData.name,
         socialName: formData.socialName,
-        phone: formData.phone.replace(/\D/g, ''),
+        phone: formData.phone.trim(),
         birthDate: parseDateToIso(formData.birthDate),
         gender: formData.gender || null,
         maritalStatus: formData.maritalStatus,
@@ -239,7 +234,7 @@ export default function PacientePerfilPage() {
           name: d.name ?? '',
           socialName: d.socialName ?? '',
           email: d.email ?? '',
-          phone: d.phone ? phoneMask(d.phone) : '',
+          phone: d.phone ?? '',
           birthDate: formatDateFromIso(d.birthDate),
           gender: d.gender ?? '',
           maritalStatus: d.maritalStatus ?? '',
@@ -434,13 +429,12 @@ export default function PacientePerfilPage() {
               <h3 className="text-sm font-semibold text-slate-500 mb-4 uppercase tracking-wider">Contato e Endereço</h3>
               <div className="grid sm:grid-cols-12 gap-4 sm:gap-6">
                 <div className="sm:col-span-6">
-                  <Input
+                  <PhoneInput
                     label="Telefone (WhatsApp) *"
                     value={formData.phone}
-                    onChange={(e) => setFormData((p) => ({ ...p, phone: phoneMask(e.target.value) }))}
+                    onChange={(val) => setFormData((p) => ({ ...p, phone: val }))}
                     className="bg-slate-50 border-slate-100/50 rounded-xl"
-                    placeholder="(00) 00000-0000"
-                    required
+                    hint="Formato internacional: DDI + DDD + número."
                   />
                 </div>
                 <div className="sm:col-span-6">

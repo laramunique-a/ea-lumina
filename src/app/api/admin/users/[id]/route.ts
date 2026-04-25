@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase'
 
 const updateUserSchema = z.object({
   active: z.boolean().optional(),
@@ -65,5 +66,76 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   } catch (error) {
     console.error('[ADMIN UPDATE USER]', error)
     return NextResponse.json({ success: false, error: 'Erro interno' }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getSessionFromRequest(request)
+    if (!session || session.role !== 'ADMIN') {
+      return NextResponse.json({ success: false, error: 'Acesso negado' }, { status: 403 })
+    }
+
+    const userId = params.id
+
+    // 1. Buscar o usuário com seus perfis para saber o que deletar
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        therapistProfile: true,
+        patientProfile: true,
+      },
+    })
+
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Usuário não encontrado' }, { status: 404 })
+    }
+
+    // 2. Executar limpeza em transação para garantir integridade
+    await prisma.$transaction(async (tx) => {
+      // Deletar notificações
+      await tx.notification.deleteMany({ where: { userId } })
+      
+      // Deletar tokens de refresh
+      await tx.refreshToken.deleteMany({ where: { userId } })
+
+      // Deletar avaliações onde o usuário é o autor
+      await tx.review.deleteMany({ where: { authorId: userId } })
+
+      // Se for paciente, limpar agendamentos vinculados ao perfil
+      if (user.patientProfile) {
+        // Deletar pacotes do paciente
+        await tx.patientPackage.deleteMany({ where: { patientId: user.patientProfile.id } })
+        // Deletar agendamentos
+        await tx.appointment.deleteMany({ where: { patientId: user.patientProfile.id } })
+      }
+
+      // Se for terapeuta, limpar agendamentos e dependências
+      if (user.therapistProfile) {
+        // Agendamentos onde ele é o terapeuta
+        await tx.appointment.deleteMany({ where: { therapistId: user.therapistProfile.id } })
+        
+        // Avaliações vinculadas ao perfil do terapeuta
+        await tx.review.deleteMany({ where: { therapistId: user.therapistProfile.id } })
+      }
+
+      // Finalmente deletar o usuário (isso dispara cascade para profiles conforme schema)
+      await tx.user.delete({ where: { id: userId } })
+    })
+
+    // 3. Deletar do Supabase Auth para liberar o e-mail
+    try {
+      const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId)
+      if (authError) {
+        console.warn('[ADMIN DELETE USER] User deleted from DB but failed in Supabase Auth:', authError)
+      }
+    } catch (authCatchError) {
+      console.warn('[ADMIN DELETE USER] Exception during Supabase Auth deletion:', authCatchError)
+    }
+
+    return NextResponse.json({ success: true, message: 'Usuário excluído permanentemente' })
+  } catch (error) {
+    console.error('[ADMIN DELETE USER]', error)
+    return NextResponse.json({ success: false, error: 'Erro ao excluir usuário permanentemente' }, { status: 500 })
   }
 }

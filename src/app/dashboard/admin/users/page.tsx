@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { getAvatarUrl, formatDate } from '@/lib/utils'
-import { Search, UserCheck, Users, ShieldAlert, ToggleLeft, ToggleRight } from 'lucide-react'
+import { Search, UserCheck, Users, ShieldAlert, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
@@ -76,6 +76,27 @@ export default function AdminUsersPage() {
       }
     } catch {
       toast.error('Erro ao atualizar usuário')
+    }
+  }
+
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    if (!window.confirm(`TEM CERTEZA? Isso excluirá permanentemente o usuário "${userName}", seus agendamentos, avaliações e conta de login. Esta ação não pode ser desfeita.`)) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Usuário excluído com sucesso')
+        setUsers((prev) => prev.filter((u) => u.id !== userId))
+      } else {
+        toast.error(data.error || 'Erro ao excluir usuário')
+      }
+    } catch {
+      toast.error('Erro ao excluir usuário')
     }
   }
 
@@ -234,18 +255,29 @@ export default function AdminUsersPage() {
                         {formatDate(user.createdAt)}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <Button
-                          size="sm"
-                          variant={user.active ? 'danger' : 'secondary'}
-                          onClick={() => handleToggleActive(user.id, !user.active)}
-                          className="gap-1.5"
-                        >
-                          {user.active ? (
-                            <><ToggleLeft size={14} /> Desativar</>
-                          ) : (
-                            <><ToggleRight size={14} /> Ativar</>
-                          )}
-                        </Button>
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant={user.active ? 'danger' : 'secondary'}
+                            onClick={() => handleToggleActive(user.id, !user.active)}
+                            className="gap-1.5"
+                          >
+                            {user.active ? (
+                              <><ToggleLeft size={14} /> Desativar</>
+                            ) : (
+                              <><ToggleRight size={14} /> Ativar</>
+                            )}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => handleDeleteUser(user.id, user.name)}
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50 border-red-100"
+                            title="Excluir permanentemente"
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))
