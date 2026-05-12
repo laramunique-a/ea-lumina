@@ -286,31 +286,37 @@ export function BookingModal({
     const isoDate = format(date, 'yyyy-MM-dd')
     const dayOfWeek = date.getDay()
 
+    let allSlots: string[] = []
+
     const specificAvail = therapist.availability.filter(a => a.date && format(new Date(a.date), 'yyyy-MM-dd') === isoDate)
     
     if (specificAvail.length > 0) {
-      const allSlots: string[] = []
       specificAvail.forEach(avail => {
         allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
       })
-      return Array.from(new Set(allSlots)).sort()
+    } else {
+      const weeklyAvail = therapist.availability.filter(a => a.dayOfWeek === dayOfWeek && !a.date)
+      weeklyAvail.forEach(avail => {
+        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
+      })
     }
 
-    const weeklyAvail = therapist.availability.filter(a => a.dayOfWeek === dayOfWeek && !a.date)
-    const allSlots: string[] = []
-    weeklyAvail.forEach(avail => {
-      allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
-    })
-    return Array.from(new Set(allSlots)).sort()
+    let uniqueSlots = Array.from(new Set(allSlots)).sort()
+
+    // Não mostrar horários que já passaram se for hoje
+    const isToday = date.toDateString() === new Date().toDateString()
+    if (isToday) {
+      const now = new Date()
+      const currentHourStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0')
+      uniqueSlots = uniqueSlots.filter(slot => slot > currentHourStr)
+    }
+
+    return uniqueSlots
   }
 
   const isDateAvailable = (date: Date): boolean => {
     if (date < startOfDay(new Date())) return false
-    const isoDate = format(date, 'yyyy-MM-dd')
-    const dayOfWeek = date.getDay()
-    const hasSpecific = therapist.availability.some(a => a.date && format(new Date(a.date), 'yyyy-MM-dd') === isoDate)
-    if (hasSpecific) return getAvailableSlotsForDate(date).length > 0
-    return therapist.availability.some(a => a.dayOfWeek === dayOfWeek && !a.date)
+    return getAvailableSlotsForDate(date).length > 0
   }
 
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)

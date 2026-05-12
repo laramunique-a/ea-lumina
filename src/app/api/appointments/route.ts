@@ -248,6 +248,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Bloquear agendamento no passado (validação backend)
+    const now = new Date()
+    const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0')
+    const timeNowStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0')
+    
+    if (date < todayStr) {
+      return NextResponse.json({ success: false, error: 'Não é possível agendar em datas passadas' }, { status: 400 })
+    }
+    if (date === todayStr && time <= timeNowStr) {
+      return NextResponse.json({ success: false, error: 'Este horário já passou' }, { status: 400 })
+    }
+
     const dateObj = new Date(`${date}T${time}:00`)
     const dayOfWeek = dateObj.getDay()
     const timeStr = time
