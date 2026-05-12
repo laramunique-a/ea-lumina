@@ -8,6 +8,12 @@ import { calculateCommission } from '@/lib/utils'
 import { effectiveServiceCharge } from '@/lib/therapist-pricing'
 import { sendMetaTemplateMessage } from '@/lib/whatsapp'
 
+/** Converte "HH:MM" para minutos totais desde meia-noite */
+const timeToMinutes = (t: string): number => {
+  const [h, m] = t.split(':').map(Number)
+  return h * 60 + m
+}
+
 const createSchema = z.object({
   therapistProfileId: z.string().min(1),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -246,11 +252,6 @@ export async function POST(request: NextRequest) {
     const dayOfWeek = dateObj.getDay()
     const timeStr = time
 
-    /** Converte "HH:MM" para minutos totais desde meia-noite */
-    function timeToMinutes(t: string): number {
-      const [h, m] = t.split(':').map(Number)
-      return h * 60 + m
-    }
 
     // Verificar disponibilidade: o início da sessão deve estar dentro do bloco E
     // a sessão deve terminar antes ou no limite do endTime configurado.
