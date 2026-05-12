@@ -1,11 +1,16 @@
 import Stripe from 'stripe'
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  // Use a temporary key or a warning during development if key not found
-  console.warn('STRIPE_SECRET_KEY is not defined in .env')
+const stripeKey = process.env.STRIPE_SECRET_KEY
+
+if (!stripeKey) {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('[Stripe] STRIPE_SECRET_KEY não configurado. Impossível iniciar em produção sem a chave.')
+  } else {
+    console.warn('[Stripe] STRIPE_SECRET_KEY não configurado. Pagamentos não funcionarão em desenvolvimento.')
+  }
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
-  apiVersion: '2023-10-16', // or latest
+export const stripe = new Stripe(stripeKey ?? 'sk_test_placeholder_dev_only', {
+  apiVersion: '2024-06-20',
   typescript: true,
 })

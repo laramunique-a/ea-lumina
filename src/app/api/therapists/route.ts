@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
 
-    const page = Number(searchParams.get('page') || '1')
-    const perPage = Number(searchParams.get('perPage') || '12')
+    const page = Math.max(1, Number(searchParams.get('page') || '1'))
+    const perPage = Math.min(Math.max(1, Number(searchParams.get('perPage') || '12')), 50)
     const search = searchParams.get('search') || ''
     const therapy = searchParams.get('therapy') || ''
     const modality = searchParams.get('modality') as Modality | null

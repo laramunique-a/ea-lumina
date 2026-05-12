@@ -51,6 +51,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Selecione um arquivo' }, { status: 400 })
     }
 
+    const MAX_FILE_SIZE_MB = 10
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      return NextResponse.json(
+        { success: false, error: `O arquivo deve ter no máximo ${MAX_FILE_SIZE_MB}MB.` },
+        { status: 413 }
+      )
+    }
+
     if (process.env.NODE_ENV === 'development') {
       console.log('[POST /api/upload] Tipo:', type, 'Arquivo:', file.name)
     }

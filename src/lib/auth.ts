@@ -5,6 +5,10 @@ import { NextRequest } from 'next/server'
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 const JWT_REFRESH_SECRET = new TextEncoder().encode(process.env.JWT_REFRESH_SECRET!)
+// Secret dedicado para tokens de reset de senha (separado do secret de sessão por segurança)
+const JWT_RESET_SECRET = new TextEncoder().encode(
+  process.env.JWT_RESET_SECRET || process.env.JWT_SECRET!
+)
 
 export interface JWTPayload {
   sub: string      // userId
@@ -33,6 +37,29 @@ export async function generateRefreshToken(payload: Omit<JWTPayload, 'iat' | 'ex
     .setIssuedAt()
     .setExpirationTime(process.env.JWT_REFRESH_EXPIRES_IN || '7d')
     .sign(JWT_REFRESH_SECRET)
+}
+
+/** Gera token de reset de senha com validade curta (30min) e secret dedicado. */
+export async function generateResetToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): Promise<string> {
+  return new SignJWT({ ...payload, role: 'RESET' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('30m')
+    .sign(JWT_RESET_SECRET)
+}
+
+/** Verifica token de reset usando o secret dedicado. Retorna null se inválido ou expirado. */
+export async function verifyResetToken(token: string): Promise<JWTPayload | null> {
+  const t = token.trim()
+  if (!t || !looksLikeCompactJwt(t)) return null
+  try {
+    const { payload } = await jwtVerify(t, JWT_RESET_SECRET)
+    const parsed = payload as unknown as JWTPayload
+    if (parsed.role !== 'RESET') return null
+    return parsed
+  } catch {
+    return null
+  }
 }
 
 // ==========================================

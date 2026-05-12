@@ -3,8 +3,9 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { generateAccessToken } from '@/lib/auth'
+import { generateResetToken, verifyResetToken } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 
 const forgotSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -21,6 +22,16 @@ const resetSchema = z.object({
 
 // Solicitar link de recuperação
 export async function POST(request: NextRequest) {
+  // Rate limiting: máx. 3 solicitações de reset por IP em 1 hora
+  const ip = getClientIp(request)
+  const rl = checkRateLimit(`forgot-password:${ip}`, { limit: 3, windowSeconds: 60 * 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { success: true, message: 'Se este e-mail estiver cadastrado, você receberá as instruções em breve.' },
+      { status: 429 } // Resposta neutra para não revelar o bloqueio
+    )
+  }
+
   try {
     const body = await request.json()
     const validated = forgotSchema.safeParse(body)
@@ -40,24 +51,26 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Gerar token de reset (válido por 1h)
-    const resetToken = await generateAccessToken({
+    // Gerar token de reset (válido por 30min, secret dedicado)
+    const resetToken = await generateResetToken({
       sub: user.id,
       email: user.email,
       role: 'RESET',
       name: user.name,
     })
 
-    // Em produção: enviar por email via Resend/Nodemailer
-    // Por ora, retornamos o token para facilitar testes
+    // TODO: enviar por email via Resend/Nodemailer
+    // Em produção, o link de reset deve ser enviado ao email do usuário — NUNCA logado.
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${resetToken}`
-    console.log('[RESET PASSWORD URL]', resetUrl)
+
+    if (process.env.NODE_ENV === 'development') {
+      // Apenas em desenvolvimento local — nunca em produção
+      console.log('[RESET PASSWORD URL — DEV ONLY]', resetUrl)
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Se este e-mail estiver cadastrado, você receberá as instruções em breve.',
-      // Remover em produção:
-      ...(process.env.NODE_ENV === 'development' && { resetUrl }),
     })
   } catch (error) {
     console.error('[FORGOT PASSWORD]', error)
@@ -77,11 +90,10 @@ export async function PUT(request: NextRequest) {
 
     const { token, password } = validated.data
 
-    // Verificar token (usamos verifyAccessToken com role RESET)
-    const { verifyAccessToken } = await import('@/lib/auth')
-    const payload = await verifyAccessToken(token)
+    // Verificar token usando o verificador dedicado de reset
+    const payload = await verifyResetToken(token)
 
-    if (!payload || payload.role !== 'RESET') {
+    if (!payload) {
       return NextResponse.json({ success: false, error: 'Token inválido ou expirado' }, { status: 400 })
     }
 

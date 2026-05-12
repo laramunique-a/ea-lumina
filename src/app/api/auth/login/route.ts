@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { generateAccessToken, generateRefreshToken, saveRefreshToken, getAuthCookieOptions } from '@/lib/auth'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -13,6 +14,25 @@ const loginSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: máx. 10 tentativas de login por IP em 15 minutos
+  const ip = getClientIp(request)
+  const rl = checkRateLimit(`login:${ip}`, { limit: 10, windowSeconds: 15 * 60 })
+  if (!rl.allowed) {
+    const retryAfterSeconds = Math.ceil((rl.resetAt - Date.now()) / 1000)
+    return NextResponse.json(
+      { success: false, error: 'Muitas tentativas de login. Tente novamente em alguns minutos.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(retryAfterSeconds),
+          'X-RateLimit-Limit': '10',
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': String(Math.ceil(rl.resetAt / 1000)),
+        },
+      }
+    )
+  }
+
   if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
     console.error('[LOGIN] Missing JWT_SECRET or JWT_REFRESH_SECRET')
     return NextResponse.json(

@@ -404,6 +404,7 @@ enum AppointmentStatus {
   CONFIRMADO
   CONCLUIDO
   CANCELADO
+  ATRAZADO
 }
 
 enum Modality {

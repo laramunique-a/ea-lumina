@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { generateAccessToken, generateRefreshToken, saveRefreshToken, getAuthCookieOptions } from '@/lib/auth'
 import { Role } from '@prisma/client'
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Nome deve ter ao menos 2 caracteres').max(100),
@@ -43,6 +44,16 @@ const registerSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  // Rate limiting: máx. 5 registros por IP em 1 hora
+  const ip = getClientIp(request)
+  const rl = checkRateLimit(`register:${ip}`, { limit: 5, windowSeconds: 60 * 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { success: false, error: 'Muitos cadastros realizados. Tente novamente em 1 hora.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } }
+    )
+  }
+
   if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
     console.error('[REGISTER] Missing JWT_SECRET or JWT_REFRESH_SECRET')
     return NextResponse.json(
@@ -151,7 +162,7 @@ export async function POST(request: NextRequest) {
     )
 
     const cookieOptions = getAuthCookieOptions()
-    response.cookies.set('access_token', accessToken, { ...cookieOptions, maxAge: 15 * 60 })
+    response.cookies.set('access_token', accessToken, { ...cookieOptions, maxAge: 8 * 60 * 60 })
     response.cookies.set('refresh_token', refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 })
 
     return response

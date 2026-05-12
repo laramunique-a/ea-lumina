@@ -246,10 +246,23 @@ export async function POST(request: NextRequest) {
     const dayOfWeek = dateObj.getDay()
     const timeStr = time
 
-    // Alinhar com generateTimeSlots: endTime é inclusivo para o *início* do slot (ex.: 09:00–17:00 permite 17:00).
-    const hasAvailability = therapist.availability.some(
-      (a) => a.dayOfWeek === dayOfWeek && timeStr >= a.startTime && timeStr <= a.endTime
-    )
+    /** Converte "HH:MM" para minutos totais desde meia-noite */
+    function timeToMinutes(t: string): number {
+      const [h, m] = t.split(':').map(Number)
+      return h * 60 + m
+    }
+
+    // Verificar disponibilidade: o início da sessão deve estar dentro do bloco E
+    // a sessão deve terminar antes ou no limite do endTime configurado.
+    const sessionStartMin = timeToMinutes(timeStr)
+    const sessionEndMin = sessionStartMin + durationMinutes
+
+    const hasAvailability = therapist.availability.some((a) => {
+      if (a.dayOfWeek !== dayOfWeek) return false
+      const blockStart = timeToMinutes(a.startTime)
+      const blockEnd = timeToMinutes(a.endTime)
+      return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
+    })
     if (!hasAvailability) {
       return NextResponse.json({ success: false, error: 'Horário não disponível' }, { status: 400 })
     }
@@ -284,12 +297,15 @@ export async function POST(request: NextRequest) {
         patientPkgId = patientPkg.id
       }
 
-      // Se está usando, desconta saldo
+      // Se está usando, desconta saldo dentro da tx (atômico — evita race condition)
       if (usedPackageId) {
-        await tx.patientPackage.update({
-          where: { id: usedPackageId },
-          data: { remainingSessions: { decrement: 1 } }
+        const updated = await tx.patientPackage.updateMany({
+          where: { id: usedPackageId, remainingSessions: { gt: 0 } },
+          data: { remainingSessions: { decrement: 1 } },
         })
+        if (updated.count === 0) {
+          throw new Error('Pacote sem saldo disponível ou expirado.')
+        }
       }
 
       return await tx.appointment.create({

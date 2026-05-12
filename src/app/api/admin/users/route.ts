@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const role = searchParams.get('role') as Role | null
-    const page = Number(searchParams.get('page') || '1')
-    const perPage = Number(searchParams.get('perPage') || '20')
+    const page = Math.max(1, Number(searchParams.get('page') || '1'))
+    const perPage = Math.min(Math.max(1, Number(searchParams.get('perPage') || '20')), 100)
     const skip = (page - 1) * perPage
 
     const where: any = {}
@@ -24,7 +24,18 @@ export async function GET(request: NextRequest) {
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
-        include: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          active: true,
+          avatarUrl: true,
+          phone: true,
+          createdAt: true,
+          updatedAt: true,
+          birthDate: true,
+          // password excluído intencionalmente
           therapistProfile: {
             select: {
               id: true, therapies: true, price: true, modality: true,

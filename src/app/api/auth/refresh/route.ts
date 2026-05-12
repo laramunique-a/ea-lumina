@@ -23,9 +23,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const refreshToken =
-      request.cookies.get('refresh_token')?.value ||
-      (await request.json().catch(() => ({}))).refreshToken
+    // Aceitar refresh token APENAS via cookie HttpOnly — nunca via body JSON (CSRF prevention)
+    const refreshToken = request.cookies.get('refresh_token')?.value
 
     if (!refreshToken) {
       return NextResponse.json({ success: false, error: 'Refresh token não fornecido' }, { status: 401 })

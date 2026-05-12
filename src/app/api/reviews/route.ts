@@ -84,19 +84,21 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Recalcular rating médio do terapeuta
-    const reviews = await prisma.review.findMany({
+    // Recalcular rating médio do terapeuta usando aggregate (eficiente, sem carregar todos os registros)
+    const agg = await prisma.review.aggregate({
       where: { therapistId: appointment.therapistId },
-      select: { rating: true },
+      _avg: { rating: true },
+      _count: { rating: true },
     })
 
-    const avgRating = reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+    const avgRating = agg._avg.rating ?? 0
+    const totalReviews = agg._count.rating
 
     await prisma.therapistProfile.update({
       where: { id: appointment.therapistId },
       data: {
         rating: Math.round(avgRating * 10) / 10,
-        reviewCount: reviews.length,
+        reviewCount: totalReviews,
       },
     })
 
