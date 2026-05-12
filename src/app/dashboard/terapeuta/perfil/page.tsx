@@ -27,6 +27,7 @@ export default function TerapeutaPerfilPage() {
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [profileLoadError, setProfileLoadError] = useState<string | null>(null)
   const [profileId, setProfileId] = useState<string | null>(null)
+  const [openingCertId, setOpeningCertId] = useState<string | null>(null)
 
   const [name, setName] = useState('')
   const [birthDate, setBirthDate] = useState('')
@@ -282,6 +283,28 @@ export default function TerapeutaPerfilPage() {
       }
     } catch {
       toast.error('Erro ao remover certificado')
+    }
+  }
+
+  /** Gera URL assinada e abre o certificado numa nova aba. */
+  const openCertificate = async (certId: string, certName: string) => {
+    if (!profileId) return
+    setOpeningCertId(certId)
+    try {
+      const res = await fetch(
+        `/api/therapists/${profileId}/certificates/${certId}/signed-url`,
+        withAuth()
+      )
+      const data = await res.json()
+      if (!data.success || !data.data?.signedUrl) {
+        toast.error(data.error || 'Não foi possível abrir o certificado')
+        return
+      }
+      window.open(data.data.signedUrl, '_blank', 'noopener,noreferrer')
+    } catch {
+      toast.error('Erro ao acessar o certificado')
+    } finally {
+      setOpeningCertId(null)
     }
   }
 
@@ -732,14 +755,15 @@ export default function TerapeutaPerfilPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-slate-800 truncate" title={cert.name}>{cert.name}</p>
-                      <a
-                        href={cert.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#0090FF] hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1 mt-0.5"
+                      <button
+                        type="button"
+                        onClick={() => openCertificate(cert.id, cert.name)}
+                        disabled={openingCertId === cert.id}
+                        className="text-[#0090FF] hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1 mt-0.5 disabled:opacity-50"
                       >
-                        Visualizar <ExternalLink size={10} />
-                      </a>
+                        {openingCertId === cert.id ? 'Abrindo...' : 'Visualizar'}
+                        {openingCertId !== cert.id && <ExternalLink size={10} />}
+                      </button>
                     </div>
                   </div>
                   <button
