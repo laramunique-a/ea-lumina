@@ -748,7 +748,7 @@ export default function TerapeutaPerfilPage() {
                   <div className="flex items-center gap-4 min-w-0">
                     <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                       {isImage ? (
-                        <img src={cert.fileUrl} alt={cert.name} className="w-full h-full object-cover" />
+                        <img src={`/api/therapists/${profileId}/certificates/${cert.id}/view`} alt={cert.name} className="w-full h-full object-cover" />
                       ) : (
                         <FileText size={20} className="text-slate-400" />
                       )}
