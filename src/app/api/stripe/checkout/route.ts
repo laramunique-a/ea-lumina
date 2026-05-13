@@ -86,6 +86,15 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Verifica se a conta do terapeuta está totalmente configurada e ativa na Stripe
+    const account = await stripe.accounts.retrieve(stripeAccountId)
+    if (account.capabilities?.transfers !== 'active') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Este terapeuta ainda não concluiu a configuração bancária para receber pagamentos. Por favor, tente novamente mais tarde ou entre em contato com o suporte.' 
+      }, { status: 400 })
+    }
+
     // Gera o PaymentIntent com split usando transfer_data
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amountInCents,
