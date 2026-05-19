@@ -102,7 +102,7 @@ export default function LandingPage() {
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
+            <button className="bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 backdrop-blur-md">
               Criar conta
             </button>
           </Link>
@@ -112,7 +112,7 @@ export default function LandingPage() {
           
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-1/2 md:h-full md:-mt-8">
-            <div className="relative w-[260px] h-[260px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-4 md:mb-8">
+            <div className="relative w-[260px] h-[260px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
               <img 
                 src="/logo-dark.jpg" 
                 alt="EA Lumina" 
@@ -129,7 +129,7 @@ export default function LandingPage() {
             </div>
             
             <div className="text-center max-w-[480px] px-2 md:px-0">
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)] leading-tight bg-gradient-to-r from-[#D4AF37] to-[#0066CC] bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)] leading-tight bg-gradient-to-r from-[#d59444] to-[#052753] bg-clip-text text-transparent">
                 Conectando você ao <br className="hidden md:block" />Equilíbrio e Luz.
               </h1>
               <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
