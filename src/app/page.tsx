@@ -111,8 +111,8 @@ export default function LandingPage() {
         <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 relative z-10 h-full mt-10 md:mt-0">
           
           {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-start justify-center h-1/2 md:h-full md:-mt-8">
-            <div className="relative w-[200px] h-[200px] md:w-[45vh] md:h-[45vh] max-w-[480px] max-h-[480px] mb-4 md:mb-8 md:-ml-4">
+          <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-1/2 md:h-full md:-mt-8">
+            <div className="relative w-[200px] h-[200px] md:w-[45vh] md:h-[45vh] max-w-[480px] max-h-[480px] mb-4 md:mb-8">
               <img 
                 src="/logo-dark.jpg" 
                 alt="EA Lumina" 
@@ -128,11 +128,11 @@ export default function LandingPage() {
               />
             </div>
             
-            <div className="text-center md:text-left max-w-[480px] px-2 md:px-0">
+            <div className="text-center max-w-[480px] px-2 md:px-0">
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)] leading-tight">
-                Conectando você ao <br className="hidden md:block" /><span className="text-[#0090FF]">Equilíbrio e Luz.</span>
+                Conectando você ao <br className="hidden md:block" /><span className="text-[#0066CC]">Equilíbrio e Luz.</span>
               </h1>
-              <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px]">
+              <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
                 O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
               </p>
             </div>
@@ -141,15 +141,15 @@ export default function LandingPage() {
           {/* LADO DIREITO: BOXES */}
           <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center h-1/2 md:h-full">
             <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
-              <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[9px] md:text-[11px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
+              <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
               </h3>
               
               {[
-                { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-                { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-                { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-                { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> }
+                { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
+                { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
+                { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
+                { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> }
               ].map((box) => (
                 <button
                   key={box.id}
@@ -164,7 +164,7 @@ export default function LandingPage() {
                       {box.label}
                     </span>
                   </div>
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-slate-500 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-slate-500 group-hover:text-[#0066CC] transition-colors group-hover:translate-x-1" />
                 </button>
               ))}
             </div>
