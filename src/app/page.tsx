@@ -94,7 +94,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 1: HOME (LOGO + BOXES)
       ────────────────────────────────────────────────────────── */}
-      <section id="home" className="min-w-full h-full snap-center flex flex-col md:flex-row relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
+      <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
@@ -108,64 +108,68 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        {/* LADO ESQUERDO: LOGO E TEXTO */}
-        <div className="w-full md:w-1/2 h-[50%] md:h-full flex flex-col items-center justify-end md:justify-center p-6 md:p-12 lg:p-20 relative md:-mt-12 z-0">
-          <div className="relative w-[180px] h-[180px] md:w-[35vh] md:h-[35vh] max-w-[360px] max-h-[360px] mb-3 md:mb-6">
-            <img 
-              src="/logo-dark.jpg" 
-              alt="EA Lumina" 
-              className="w-full h-full object-contain"
-              style={{ 
-                WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
-                maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
-              }}
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
-              }}
-            />
-          </div>
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 relative z-10 h-full mt-10 md:mt-0">
           
-          <div className="text-center max-w-[380px] px-2">
-            <h1 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-white mb-2 md:mb-3 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)]">
-              Conectando você ao <span className="text-[#0090FF]">Equilíbrio e Luz.</span>
-            </h1>
-            <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
-              O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
-            </p>
-          </div>
-        </div>
-
-        {/* LADO DIREITO: BOXES */}
-        <div className="w-full md:w-1/2 h-[50%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 relative z-10 md:-mt-4">
-          <div className="flex flex-col gap-2 md:gap-3 w-full max-w-[300px] animate-in slide-in-from-right-8 duration-1000">
-            <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[9px] md:text-[10px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
-              Qual é o seu objetivo hoje?
-            </h3>
+          {/* LADO ESQUERDO: LOGO E TEXTO */}
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-start justify-center h-1/2 md:h-full md:-mt-8">
+            <div className="relative w-[200px] h-[200px] md:w-[45vh] md:h-[45vh] max-w-[480px] max-h-[480px] mb-4 md:mb-8 md:-ml-4">
+              <img 
+                src="/logo-dark.jpg" 
+                alt="EA Lumina" 
+                className="w-full h-full object-contain"
+                style={{ 
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+                }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
+                }}
+              />
+            </div>
             
-            {[
-              { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-              { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-              { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
-              { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> }
-            ].map((box) => (
-              <button
-                key={box.id}
-                onClick={() => scrollToSection(box.id)}
-                className="group flex items-center justify-between px-5 py-3 md:py-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                    {box.icon}
-                  </div>
-                  <span className="text-[9px] md:text-[11px] lg:text-xs font-black uppercase tracking-[0.2em] text-white transition-colors">
-                    {box.label}
-                  </span>
-                </div>
-                <ArrowRight className="w-3 h-3 md:w-4 md:h-4 text-slate-500 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
-              </button>
-            ))}
+            <div className="text-center md:text-left max-w-[480px] px-2 md:px-0">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)] leading-tight">
+                Conectando você ao <br className="hidden md:block" /><span className="text-[#0090FF]">Equilíbrio e Luz.</span>
+              </h1>
+              <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px]">
+                O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
+              </p>
+            </div>
           </div>
+
+          {/* LADO DIREITO: BOXES */}
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center h-1/2 md:h-full">
+            <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
+              <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[9px] md:text-[11px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
+                Qual é o seu objetivo hoje?
+              </h3>
+              
+              {[
+                { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+                { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+                { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+                { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> }
+              ].map((box) => (
+                <button
+                  key={box.id}
+                  onClick={() => scrollToSection(box.id)}
+                  className="group flex items-center justify-between px-6 py-4 md:py-6 rounded-2xl md:rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-1 backdrop-blur-md"
+                >
+                  <div className="flex items-center gap-4 md:gap-5">
+                    <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                      {box.icon}
+                    </div>
+                    <span className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] text-white transition-colors">
+                      {box.label}
+                    </span>
+                  </div>
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-slate-500 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
+                </button>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
