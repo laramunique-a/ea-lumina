@@ -127,35 +127,41 @@ export default function LandingPage() {
           </div>
           
           <div className="text-center max-w-md px-2">
-            <h1 className="text-xl md:text-3xl lg:text-4xl font-black tracking-tight text-white mb-2 md:mb-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-white mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)]">
               Conectando você ao <span className="text-[#0090FF]">Equilíbrio e Luz.</span>
             </h1>
-            <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
+            <p className="text-xs md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium">
               O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
             </p>
           </div>
         </div>
 
         {/* LADO DIREITO: BOXES */}
-        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-50 relative z-10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] md:shadow-[-30px_0_60px_rgba(0,0,0,0.6)]">
-          <div className="grid grid-cols-2 gap-3 md:gap-5 w-full max-w-[400px] animate-in slide-in-from-right-8 duration-1000">
+        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-50 relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.6)] md:shadow-[-80px_0_120px_rgba(0,0,0,0.7)]">
+          {/* Degrade extra suave para disfarçar a linha de divisão dura */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/10 to-transparent pointer-events-none hidden md:block" />
+
+          <div className="flex flex-col gap-3 md:gap-4 w-full max-w-[340px] animate-in slide-in-from-right-8 duration-1000">
             {[
-              { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
-              { id: 'terapeutas', label: 'Terapeutas', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
-              { id: 'empresas', label: 'Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
-              { id: 'cursos', label: 'Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> }
+              { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'terapeutas', label: 'Terapeutas', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'empresas', label: 'Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'cursos', label: 'Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> }
             ].map((box) => (
               <button
                 key={box.id}
                 onClick={() => scrollToSection(box.id)}
-                className="group flex flex-col items-center justify-center aspect-[4/3] md:aspect-square md:max-h-48 rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:border-slate-600 transition-all shadow-xl hover:shadow-2xl"
+                className="group flex items-center justify-between px-6 py-4 md:py-5 rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:border-slate-600 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
               >
-                <div className="group-hover:-translate-y-1 transition-transform duration-300">
-                  {box.icon}
+                <div className="flex items-center gap-4">
+                  <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                    {box.icon}
+                  </div>
+                  <span className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] text-white transition-colors">
+                    {box.label}
+                  </span>
                 </div>
-                <span className="text-[9px] md:text-[11px] lg:text-xs font-black uppercase tracking-[0.2em] text-white transition-colors mt-1 md:mt-2">
-                  {box.label}
-                </span>
+                <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
               </button>
             ))}
           </div>
