@@ -100,7 +100,7 @@ const config: Config = {
         'scale-in':   'scaleIn 0.25s ease-out',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite',
         'float':      'float 6s ease-in-out infinite',
-        'marquee':    'marquee 40s linear infinite',
+        'marquee':    'marquee 80s linear infinite',
       },
       keyframes: {
         fadeIn: {

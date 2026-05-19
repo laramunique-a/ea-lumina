@@ -195,7 +195,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 2: PACIENTES
       ────────────────────────────────────────────────────────── */}
-      <section id="pacientes" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center overflow-hidden">
+      <section id="pacientes" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center overflow-hidden">
         <HeaderLogo />
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col justify-center h-full pt-16 md:pt-8 pb-4 relative">
           
@@ -244,7 +244,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 3: TERAPEUTAS
       ────────────────────────────────────────────────────────── */}
-      <section id="terapeutas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="terapeutas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
@@ -312,7 +312,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 4: EMPRESAS
       ────────────────────────────────────────────────────────── */}
-      <section id="empresas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="empresas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
@@ -342,7 +342,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 5: CURSOS
       ────────────────────────────────────────────────────────── */}
-      <section id="cursos" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="cursos" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
