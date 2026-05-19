@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram } from 'lucide-react'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
 const TERAPIAS = [
@@ -50,6 +50,25 @@ const TERAPIAS = [
 
 export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [carouselIndex, setCarouselIndex] = useState(0)
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false)
+
+  useEffect(() => {
+    if (isCarouselPaused) return
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev >= TERAPIAS.length - 1 ? 0 : prev + 1))
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [isCarouselPaused])
+
+  const nextSlide = () => setCarouselIndex((prev) => (prev >= TERAPIAS.length - 1 ? 0 : prev + 1))
+  const prevSlide = () => setCarouselIndex((prev) => (prev <= 0 ? TERAPIAS.length - 1 : prev - 1))
+
+  const HeaderLogo = () => (
+    <div className="absolute top-4 right-4 md:top-8 md:right-8 w-[40px] h-[40px] md:w-[60px] md:h-[60px] z-30 opacity-80 pointer-events-none">
+      <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
+    </div>
+  )
 
   // Função para scroll suave horizontal
   const scrollToSection = (id: string) => {
@@ -190,39 +209,75 @@ export default function LandingPage() {
           TELA 2: PACIENTES
       ────────────────────────────────────────────────────────── */}
       <section id="pacientes" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 w-full flex flex-col justify-center h-full pt-8 pb-4">
+        <HeaderLogo />
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col justify-center h-full pt-16 md:pt-8 pb-4 relative">
           
-          <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
+          <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
           
-          <div className="mb-4 md:mb-8 flex-shrink-0">
-            <h5 className="text-[9px] md:text-[10px] font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Pacientes</h5>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tighter text-white">Sua jornada de <br className="hidden md:block"/><span className="text-[#C5A03F]">Luz e Equilíbrio.</span></h2>
-            <p className="mt-2 md:mt-3 text-slate-400 max-w-2xl text-[10px] md:text-xs leading-relaxed hidden md:block">
-              Descubra as terapias integrativas disponíveis no EA Lumina. Abordagens profundas que conectam corpo, mente e alma para a sua cura.
-            </p>
+          <div className="mb-6 md:mb-10 text-center shrink-0">
+            <h5 className="text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Pacientes</h5>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white">Sua jornada de <br className="hidden md:block"/><span className="text-[#C5A03F]">Luz e Equilíbrio.</span></h2>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 flex-1 max-h-[60vh] md:max-h-none overflow-y-auto hide-scrollbar">
-            {TERAPIAS.map((terapia, i) => (
-              <div key={i} className="bg-black/50 border border-slate-800 rounded-2xl md:rounded-3xl p-3 md:p-5 hover:border-slate-600 transition-colors flex flex-col justify-start">
-                <div className="mb-2 md:mb-3 bg-slate-900 w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center shrink-0 [&>svg]:w-4 [&>svg]:h-4 md:[&>svg]:w-5 md:[&>svg]:h-5">
-                  {terapia.icon}
+          <div className="relative w-full overflow-hidden group">
+            {/* CAROUSEL TRACK */}
+            <div 
+              className="flex transition-transform duration-700 ease-in-out [--slide-width:100%] md:[--slide-width:33.333333%]"
+              style={{ transform: `translateX(calc(-${carouselIndex} * var(--slide-width)))` }}
+            >
+              {[...TERAPIAS, ...TERAPIAS].map((terapia, i) => (
+                <div key={i} className="w-full md:w-[33.333333%] flex-shrink-0 px-2 md:px-4">
+                  <div className="bg-black/40 backdrop-blur-sm border border-slate-800 rounded-3xl p-6 md:p-8 hover:border-slate-600 transition-colors flex flex-col items-center text-center h-full min-h-[220px] md:min-h-[280px] justify-center">
+                    <div className="mb-4 bg-slate-900 w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-6 [&>svg]:h-6 md:[&>svg]:w-8 md:[&>svg]:h-8 shadow-lg">
+                      {terapia.icon}
+                    </div>
+                    <h3 className="text-sm md:text-lg lg:text-xl font-black text-white uppercase tracking-widest mb-3 line-clamp-2">{terapia.nome}</h3>
+                    <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium line-clamp-4">{terapia.desc}</p>
+                  </div>
                 </div>
-                <h3 className="text-[9px] md:text-[11px] font-bold text-white uppercase tracking-widest mb-1.5 line-clamp-1">{terapia.nome}</h3>
-                <p className="text-[9px] md:text-[10px] text-slate-400 leading-relaxed font-medium line-clamp-2 md:line-clamp-3">{terapia.desc}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* ARROWS */}
+            <button 
+              onClick={prevSlide}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/60 border border-slate-700 rounded-full flex items-center justify-center text-white hover:bg-[#0090FF] hover:border-[#0090FF] transition-all z-20 md:-ml-4 shadow-xl backdrop-blur-md opacity-0 group-hover:opacity-100"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <button 
+              onClick={nextSlide}
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-black/60 border border-slate-700 rounded-full flex items-center justify-center text-white hover:bg-[#0090FF] hover:border-[#0090FF] transition-all z-20 md:-mr-4 shadow-xl backdrop-blur-md opacity-0 group-hover:opacity-100"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
           </div>
 
-          <div className="mt-4 md:mt-8 text-center md:text-left flex-shrink-0">
+          <div className="mt-6 md:mt-10 flex flex-col md:flex-row items-center justify-between px-4 gap-6 shrink-0">
+            <div className="flex items-center gap-4">
+              <button onClick={() => setIsCarouselPaused(!isCarouselPaused)} className="text-slate-400 hover:text-white transition-colors p-2 bg-white/5 rounded-full">
+                {isCarouselPaused ? <Play size={16} /> : <Pause size={16} />}
+              </button>
+              <div className="flex gap-2">
+                {TERAPIAS.map((_, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => setCarouselIndex(i)}
+                    className={`h-1.5 rounded-full transition-all ${i === carouselIndex ? 'w-6 md:w-8 bg-[#0090FF]' : 'w-1.5 md:w-2 bg-slate-700 hover:bg-slate-500'}`} 
+                  />
+                ))}
+              </div>
+            </div>
+
             <Link href="/register?role=PACIENTE">
-              <button className="bg-white text-black px-6 py-2.5 md:px-8 md:py-3.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-colors">
+              <button className="bg-[#C5A03F] text-black px-8 py-3 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_15px_rgba(197,160,63,0.3)]">
                 Começar agora
               </button>
             </Link>
           </div>
+
         </div>
       </section>
 
@@ -230,7 +285,8 @@ export default function LandingPage() {
           TELA 3: TERAPEUTAS
       ────────────────────────────────────────────────────────── */}
       <section id="terapeutas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
+        <HeaderLogo />
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
@@ -252,7 +308,8 @@ export default function LandingPage() {
           TELA 4: EMPRESAS
       ────────────────────────────────────────────────────────── */}
       <section id="empresas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
+        <HeaderLogo />
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
@@ -281,7 +338,8 @@ export default function LandingPage() {
           TELA 5: CURSOS
       ────────────────────────────────────────────────────────── */}
       <section id="cursos" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
+        <HeaderLogo />
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
