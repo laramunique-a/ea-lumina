@@ -97,19 +97,19 @@ export default function LandingPage() {
       <section id="home" className="min-w-full h-full snap-center flex flex-col md:flex-row relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
         
         {/* HEADER DE AUTENTICAÇÃO */}
-        <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-20">
-          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
+        <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
+          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">
+            <button className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">
               Criar conta
             </button>
           </Link>
         </div>
 
         {/* LADO ESQUERDO: LOGO E TEXTO */}
-        <div className="w-full md:w-1/2 h-[55%] md:h-full flex flex-col items-center justify-center p-6 md:p-12 lg:p-20 relative pt-16 md:pt-0">
+        <div className="w-full md:w-1/2 h-[55%] md:h-full flex flex-col items-center justify-center p-6 md:p-12 lg:p-20 relative pt-16 md:pt-0 z-0">
           <div className="relative w-[220px] h-[220px] md:w-[45vh] md:h-[45vh] max-w-[420px] max-h-[420px] mb-4 md:mb-8">
             <img 
               src="/logo-dark.jpg" 
@@ -137,7 +137,7 @@ export default function LandingPage() {
         </div>
 
         {/* LADO DIREITO: BOXES */}
-        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-gradient-to-t md:bg-gradient-to-l from-slate-900/80 to-transparent border-t md:border-t-0 md:border-l border-white/5 relative z-10">
+        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-50 relative z-10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] md:shadow-[-30px_0_60px_rgba(0,0,0,0.6)]">
           <div className="grid grid-cols-2 gap-3 md:gap-5 w-full max-w-[400px] animate-in slide-in-from-right-8 duration-1000">
             {[
               { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
@@ -148,7 +148,7 @@ export default function LandingPage() {
               <button
                 key={box.id}
                 onClick={() => scrollToSection(box.id)}
-                className="group flex flex-col items-center justify-center aspect-[4/3] md:aspect-square md:max-h-48 rounded-2xl md:rounded-3xl bg-slate-800/60 border border-slate-700 hover:bg-slate-700/80 hover:border-slate-500 backdrop-blur-xl transition-all shadow-xl"
+                className="group flex flex-col items-center justify-center aspect-[4/3] md:aspect-square md:max-h-48 rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:border-slate-600 transition-all shadow-xl hover:shadow-2xl"
               >
                 <div className="group-hover:-translate-y-1 transition-transform duration-300">
                   {box.icon}
