@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun } from 'lucide-react'
+import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram } from 'lucide-react'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
 const TERAPIAS = [
@@ -96,6 +96,16 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
         
+        {/* REDES SOCIAIS (ESQUERDA) */}
+        <div className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-4 z-30">
+          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+            <Youtube className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+          </a>
+          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+            <Instagram className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+          </a>
+        </div>
+
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
           <Link href="/login" className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
