@@ -98,11 +98,11 @@ export default function LandingPage() {
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
-          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors px-2">
+          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg">
+            <button className="bg-slate-700/50 hover:bg-slate-600/60 border border-slate-600/50 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
               Criar conta
             </button>
           </Link>
@@ -137,21 +137,25 @@ export default function LandingPage() {
         </div>
 
         {/* LADO DIREITO: BOXES */}
-        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-50 relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.6)] md:shadow-[-80px_0_120px_rgba(0,0,0,0.7)]">
+        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-800/80 backdrop-blur-3xl relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.4)] md:shadow-[-80px_0_120px_rgba(0,0,0,0.5)]">
           {/* Degrade extra suave para disfarçar a linha de divisão dura */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/10 to-transparent pointer-events-none hidden md:block" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#010409]/30 to-transparent pointer-events-none hidden md:block" />
 
           <div className="flex flex-col gap-3 md:gap-4 w-full max-w-[340px] animate-in slide-in-from-right-8 duration-1000">
+            <h3 className="text-slate-300 font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
+              Qual é o seu objetivo hoje?
+            </h3>
+            
             {[
-              { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'terapeutas', label: 'Terapeutas', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'empresas', label: 'Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'cursos', label: 'Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> }
+              { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
+              { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> }
             ].map((box) => (
               <button
                 key={box.id}
                 onClick={() => scrollToSection(box.id)}
-                className="group flex items-center justify-between px-6 py-4 md:py-5 rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:border-slate-600 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
+                className="group flex items-center justify-between px-6 py-4 md:py-5 rounded-2xl md:rounded-3xl bg-slate-700/50 border border-slate-600/50 hover:bg-slate-600/60 hover:border-slate-500/80 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
               >
                 <div className="flex items-center gap-4">
                   <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
@@ -161,7 +165,7 @@ export default function LandingPage() {
                     {box.label}
                   </span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
               </button>
             ))}
           </div>
