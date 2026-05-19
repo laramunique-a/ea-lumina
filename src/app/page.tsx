@@ -94,7 +94,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 1: HOME (LOGO + BOXES)
       ────────────────────────────────────────────────────────── */}
-      <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center p-4 md:p-6 relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)]">
+      <section id="home" className="min-w-full h-full snap-center flex flex-col md:flex-row relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-20">
@@ -102,19 +102,23 @@ export default function LandingPage() {
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-white/5 hover:bg-white/15 backdrop-blur-md border border-white/10 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">
+            <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all">
               Criar conta
             </button>
           </Link>
         </div>
 
-        {/* LOGO AREA E TEXTOS */}
-        <div className="animate-in fade-in zoom-in duration-1000 flex flex-col items-center mt-8 md:mt-0">
-          <div className="relative w-[200px] h-[200px] md:w-[35vh] md:h-[35vh] max-w-[360px] max-h-[360px] mb-2">
+        {/* LADO ESQUERDO: LOGO E TEXTO */}
+        <div className="w-full md:w-1/2 h-[55%] md:h-full flex flex-col items-center justify-center p-6 md:p-12 lg:p-20 relative pt-16 md:pt-0">
+          <div className="relative w-[220px] h-[220px] md:w-[45vh] md:h-[45vh] max-w-[420px] max-h-[420px] mb-4 md:mb-8">
             <img 
               src="/logo-dark.jpg" 
               alt="EA Lumina" 
-              className="w-full h-full object-contain mix-blend-screen"
+              className="w-full h-full object-contain"
+              style={{ 
+                WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+              }}
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
@@ -122,37 +126,39 @@ export default function LandingPage() {
             />
           </div>
           
-          <div className="text-center max-w-2xl px-4 mt-0 mb-6 md:mb-8 lg:mb-12">
+          <div className="text-center max-w-md px-2">
             <h1 className="text-xl md:text-3xl lg:text-4xl font-black tracking-tight text-white mb-2 md:mb-4">
-              Conectando você ao Equilíbrio e Luz.
+              Conectando você ao <span className="text-[#0090FF]">Equilíbrio e Luz.</span>
             </h1>
-            <p className="text-[10px] md:text-[12px] lg:text-sm text-slate-400 leading-relaxed font-medium">
+            <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
               O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
             </p>
           </div>
         </div>
 
-        {/* 4 BOXES CLICÁVEIS (MODERNOS E CLEAN) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 lg:gap-5 max-w-4xl w-full animate-in slide-in-from-bottom-8 duration-1000 z-10">
-          {[
-            { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 mb-2 md:mb-3 text-white" /> },
-            { id: 'terapeutas', label: 'Terapeutas', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 mb-2 md:mb-3 text-white" /> },
-            { id: 'empresas', label: 'Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 mb-2 md:mb-3 text-white" /> },
-            { id: 'cursos', label: 'Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 mb-2 md:mb-3 text-white" /> }
-          ].map((box) => (
-            <button
-              key={box.id}
-              onClick={() => scrollToSection(box.id)}
-              className="group flex flex-col items-center justify-center h-20 md:h-[12vh] lg:h-28 min-h-[72px] rounded-2xl md:rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/20 backdrop-blur-xl transition-all"
-            >
-              <div className="opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                {box.icon}
-              </div>
-              <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white transition-colors mt-0.5">
-                {box.label}
-              </span>
-            </button>
-          ))}
+        {/* LADO DIREITO: BOXES */}
+        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-gradient-to-t md:bg-gradient-to-l from-slate-900/80 to-transparent border-t md:border-t-0 md:border-l border-white/5 relative z-10">
+          <div className="grid grid-cols-2 gap-3 md:gap-5 w-full max-w-[400px] animate-in slide-in-from-right-8 duration-1000">
+            {[
+              { id: 'pacientes', label: 'Pacientes', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
+              { id: 'terapeutas', label: 'Terapeutas', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
+              { id: 'empresas', label: 'Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> },
+              { id: 'cursos', label: 'Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 mb-2 md:mb-3 text-[#0090FF]" /> }
+            ].map((box) => (
+              <button
+                key={box.id}
+                onClick={() => scrollToSection(box.id)}
+                className="group flex flex-col items-center justify-center aspect-[4/3] md:aspect-square md:max-h-48 rounded-2xl md:rounded-3xl bg-slate-800/60 border border-slate-700 hover:bg-slate-700/80 hover:border-slate-500 backdrop-blur-xl transition-all shadow-xl"
+              >
+                <div className="group-hover:-translate-y-1 transition-transform duration-300">
+                  {box.icon}
+                </div>
+                <span className="text-[9px] md:text-[11px] lg:text-xs font-black uppercase tracking-[0.2em] text-white transition-colors mt-1 md:mt-2">
+                  {box.label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
