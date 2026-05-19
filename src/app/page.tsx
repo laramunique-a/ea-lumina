@@ -98,11 +98,11 @@ export default function LandingPage() {
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
-          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
+          <Link href="/login" className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
+            <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
               Criar conta
             </button>
           </Link>
