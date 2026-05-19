@@ -129,7 +129,7 @@ export default function LandingPage() {
             </div>
             
             <div className="text-center max-w-[480px] px-2 md:px-0">
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)] leading-tight bg-gradient-to-r from-[#d59444] to-[#052753] bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-3 md:mb-5 drop-shadow-[0_0_25px_rgba(213,148,68,0.5)] leading-tight bg-gradient-to-r from-[#d59444] to-[#052753] bg-clip-text text-transparent">
                 Conectando você ao <br className="hidden md:block" />Equilíbrio e Luz.
               </h1>
               <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
