@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
 const TERAPIAS = [
@@ -245,14 +245,59 @@ export default function LandingPage() {
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-3xl text-center">
+        <div className="max-w-4xl text-center w-full mt-10 md:mt-0">
           <h5 className="text-[9px] md:text-[10px] font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-3 md:mb-4">Para Terapeutas</h5>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 md:mb-6">Expanda sua Luz.</h2>
-          <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed mb-8 md:mb-10 px-2 md:px-4">
-            Junte-se ao marketplace premium de terapias integrativas. Tenha acesso a ferramentas exclusivas de gestão de agenda, prontuários digitais e um perfil profissional desenhado para conectar você a pacientes que buscam transformação profunda.
-          </p>
+          <h2 
+            className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-8 md:mb-12 leading-tight bg-clip-text text-transparent"
+            style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
+          >
+            Expanda sua Luz.
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left">
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="bg-[#C5A03F]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                  <UserCircle className="w-5 h-5 md:w-6 md:h-6 text-[#C5A03F]" />
+                </div>
+                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Vitrine Premium</h3>
+              </div>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
+            </div>
+
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="bg-[#0090FF]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                  <Calendar className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" />
+                </div>
+                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Gestão Inteligente</h3>
+              </div>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
+            </div>
+
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="bg-white/10 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                  <FileText className="w-5 h-5 md:w-6 md:h-6 text-slate-300" />
+                </div>
+                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Prontuários e Segurança</h3>
+              </div>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
+            </div>
+
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="bg-[#8A2BE2]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
+                  <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#8A2BE2]" />
+                </div>
+                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Lumina IA</h3>
+              </div>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
+            </div>
+          </div>
+
           <Link href="/register?role=TERAPEUTA">
-            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto">
+            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
