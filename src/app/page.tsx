@@ -98,19 +98,19 @@ export default function LandingPage() {
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
-          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white transition-colors px-2">
+          <Link href="/login" className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-slate-700/50 hover:bg-slate-600/60 border border-slate-600/50 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
+            <button className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">
               Criar conta
             </button>
           </Link>
         </div>
 
         {/* LADO ESQUERDO: LOGO E TEXTO */}
-        <div className="w-full md:w-1/2 h-[55%] md:h-full flex flex-col items-center justify-center p-6 md:p-12 lg:p-20 relative pt-16 md:pt-0 z-0">
-          <div className="relative w-[220px] h-[220px] md:w-[45vh] md:h-[45vh] max-w-[420px] max-h-[420px] mb-4 md:mb-8">
+        <div className="w-full md:w-1/2 h-[50%] md:h-full flex flex-col items-center justify-end md:justify-center p-6 md:p-12 lg:p-20 relative md:-mt-12 z-0">
+          <div className="relative w-[180px] h-[180px] md:w-[35vh] md:h-[35vh] max-w-[360px] max-h-[360px] mb-3 md:mb-6">
             <img 
               src="/logo-dark.jpg" 
               alt="EA Lumina" 
@@ -126,46 +126,43 @@ export default function LandingPage() {
             />
           </div>
           
-          <div className="text-center max-w-md px-2">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-white mb-3 md:mb-5 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)]">
+          <div className="text-center max-w-[380px] px-2">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-white mb-2 md:mb-3 drop-shadow-[0_8px_12px_rgba(0,0,0,0.9)]">
               Conectando você ao <span className="text-[#0090FF]">Equilíbrio e Luz.</span>
             </h1>
-            <p className="text-xs md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium">
+            <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium">
               O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
             </p>
           </div>
         </div>
 
         {/* LADO DIREITO: BOXES */}
-        <div className="w-full md:w-1/2 h-[45%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 bg-slate-800/80 backdrop-blur-3xl relative z-10 shadow-[0_-30px_60px_rgba(0,0,0,0.4)] md:shadow-[-80px_0_120px_rgba(0,0,0,0.5)]">
-          {/* Degrade extra suave para disfarçar a linha de divisão dura */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#010409]/30 to-transparent pointer-events-none hidden md:block" />
-
-          <div className="flex flex-col gap-3 md:gap-4 w-full max-w-[340px] animate-in slide-in-from-right-8 duration-1000">
-            <h3 className="text-slate-300 font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
+        <div className="w-full md:w-1/2 h-[50%] md:h-full flex items-center justify-center p-6 md:p-12 lg:p-20 relative z-10 md:-mt-4">
+          <div className="flex flex-col gap-2 md:gap-3 w-full max-w-[300px] animate-in slide-in-from-right-8 duration-1000">
+            <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[9px] md:text-[10px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
               Qual é o seu objetivo hoje?
             </h3>
             
             {[
-              { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> },
-              { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" /> }
+              { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+              { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+              { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> },
+              { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" /> }
             ].map((box) => (
               <button
                 key={box.id}
                 onClick={() => scrollToSection(box.id)}
-                className="group flex items-center justify-between px-6 py-4 md:py-5 rounded-2xl md:rounded-3xl bg-slate-700/50 border border-slate-600/50 hover:bg-slate-600/60 hover:border-slate-500/80 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                className="group flex items-center justify-between px-5 py-3 md:py-4 rounded-xl md:rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm"
               >
                 <div className="flex items-center gap-4">
                   <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
                     {box.icon}
                   </div>
-                  <span className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] text-white transition-colors">
+                  <span className="text-[9px] md:text-[11px] lg:text-xs font-black uppercase tracking-[0.2em] text-white transition-colors">
                     {box.label}
                   </span>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
+                <ArrowRight className="w-3 h-3 md:w-4 md:h-4 text-slate-500 group-hover:text-[#0090FF] transition-colors group-hover:translate-x-1" />
               </button>
             ))}
           </div>
