@@ -4,11 +4,11 @@ import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: {
-    default: 'EA Lumina — Marketplace de Terapias Holísticas',
+    default: 'EA Lumina — Marketplace de Terapias Integrativas',
     template: '%s | EA Lumina',
   },
-  description: 'Encontre os melhores terapeutas holísticos e agende sua sessão online ou presencial.',
-  keywords: ['terapia holística', 'reiki', 'yoga', 'meditação', 'bem-estar', 'terapeutas', 'EA Lumina'],
+  description: 'Encontre os melhores terapeutas integrativos e agende sua sessão online ou presencial.',
+  keywords: ['terapia integrativa', 'reiki', 'yoga', 'meditação', 'bem-estar', 'terapeutas', 'EA Lumina'],
   authors: [{ name: 'EA Lumina Team' }],
   creator: 'EA Lumina Team',
   publisher: 'EA Lumina',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'EA Lumina',
-    description: 'Sua plataforma de saúde holística',
+    description: 'Sua plataforma de saúde integrativa',
     type: 'website',
   },
 }
