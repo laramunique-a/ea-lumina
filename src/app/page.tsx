@@ -205,7 +205,12 @@ export default function LandingPage() {
           
           <div className="mb-6 md:mb-10 text-center shrink-0">
             <h5 className="text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Pacientes</h5>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white">Sua jornada de <br className="hidden md:block"/><span className="text-[#C5A03F]">Luz e Equilíbrio.</span></h2>
+            <h2 
+              className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
+              style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
+            >
+              Sua jornada de <br className="hidden md:block"/>Luz e Equilíbrio.
+            </h2>
           </div>
 
           <div className="relative w-full overflow-hidden group">
@@ -260,9 +265,9 @@ export default function LandingPage() {
                 <div className="bg-[#C5A03F]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
                   <UserCircle className="w-5 h-5 md:w-6 md:h-6 text-[#C5A03F]" />
                 </div>
-                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Vitrine Premium</h3>
+                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Vitrine Premium</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
+              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
             </div>
 
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
@@ -270,9 +275,9 @@ export default function LandingPage() {
                 <div className="bg-[#0090FF]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
                   <Calendar className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" />
                 </div>
-                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Gestão Inteligente</h3>
+                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Gestão Inteligente</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
+              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
             </div>
 
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
@@ -280,9 +285,9 @@ export default function LandingPage() {
                 <div className="bg-white/10 p-3 rounded-xl group-hover:scale-110 transition-transform">
                   <FileText className="w-5 h-5 md:w-6 md:h-6 text-slate-300" />
                 </div>
-                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Prontuários e Segurança</h3>
+                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Prontuários e Segurança</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
+              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
             </div>
 
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
@@ -290,9 +295,9 @@ export default function LandingPage() {
                 <div className="bg-[#8A2BE2]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
                   <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#8A2BE2]" />
                 </div>
-                <h3 className="text-white font-bold text-sm md:text-base tracking-wide uppercase">Lumina IA</h3>
+                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Lumina IA</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
+              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
             </div>
           </div>
 
