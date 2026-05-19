@@ -52,7 +52,7 @@ export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const HeaderLogo = () => (
-    <div className="absolute top-4 right-4 md:top-8 md:right-8 w-[60px] h-[60px] md:w-[90px] md:h-[90px] z-30 opacity-80 pointer-events-none">
+    <div className="absolute top-4 right-4 md:top-8 md:right-8 w-[120px] h-[120px] md:w-[180px] md:h-[180px] z-30 opacity-80 pointer-events-none">
       <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
     </div>
   )
