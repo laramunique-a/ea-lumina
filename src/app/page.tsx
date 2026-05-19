@@ -87,16 +87,14 @@ export default function LandingPage() {
     // Container Principal: Scroll Horizontal e Snap
     <div 
       ref={scrollContainerRef}
-      className="flex w-full h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory bg-black text-slate-100 font-sans hide-scrollbar"
+      className="flex w-full h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory bg-[#010409] text-slate-100 font-sans hide-scrollbar"
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
       
       {/* ──────────────────────────────────────────────────────────
           TELA 1: HOME (LOGO + BOXES)
       ────────────────────────────────────────────────────────── */}
-      <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center p-6 relative">
-        {/* Fundo com degradê radial para fundir suavemente com as bordas da imagem */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#0a101f_0%,_#000000_60%)] -z-10" />
+      <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center p-6 relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)]">
         
         {/* HEADER DE AUTENTICAÇÃO */}
         <div className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-4 z-20">
@@ -161,7 +159,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 2: PACIENTES
       ────────────────────────────────────────────────────────── */}
-      <section id="pacientes" className="min-w-full h-full snap-center bg-[#0a0f1a] relative overflow-y-auto">
+      <section id="pacientes" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative overflow-y-auto">
         <div className="max-w-7xl mx-auto px-6 py-16 md:py-24 min-h-full flex flex-col justify-center">
           
           <button onClick={() => scrollToSection('home')} className="absolute top-8 left-6 md:left-10 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
@@ -201,7 +199,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 3: TERAPEUTAS
       ────────────────────────────────────────────────────────── */}
-      <section id="terapeutas" className="min-w-full h-full snap-center bg-black relative flex items-center justify-center p-6">
+      <section id="terapeutas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-6">
         <button onClick={() => scrollToSection('home')} className="absolute top-8 left-6 md:left-10 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
           <ChevronLeft size={16} /> Início
         </button>
@@ -223,7 +221,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 4: EMPRESAS
       ────────────────────────────────────────────────────────── */}
-      <section id="empresas" className="min-w-full h-full snap-center bg-[#050a14] relative flex items-center justify-center p-6">
+      <section id="empresas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-6">
         <button onClick={() => scrollToSection('home')} className="absolute top-8 left-6 md:left-10 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
           <ChevronLeft size={16} /> Início
         </button>
@@ -252,7 +250,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 5: CURSOS
       ────────────────────────────────────────────────────────── */}
-      <section id="cursos" className="min-w-full h-full snap-center bg-slate-950 relative flex items-center justify-center p-6">
+      <section id="cursos" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] relative flex items-center justify-center p-6">
         <button onClick={() => scrollToSection('home')} className="absolute top-8 left-6 md:left-10 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-10">
           <ChevronLeft size={16} /> Início
         </button>
