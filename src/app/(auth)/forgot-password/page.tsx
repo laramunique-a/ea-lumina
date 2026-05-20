@@ -29,9 +29,12 @@ export default function ForgotPasswordPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      const result = await res.json()
-      if (result.success) setSent(true)
-      else toast.error(result.error)
+      if (res.ok) {
+        setSent(true)
+      } else {
+        const result = await res.json()
+        toast.error(result.error || 'Ocorreu um erro')
+      }
     } catch {
       toast.error('Erro de conexão')
     }

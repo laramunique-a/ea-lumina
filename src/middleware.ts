@@ -14,7 +14,7 @@ const PROTECTED_ROUTES: Record<string, string[]> = {
   '/api/availability':    ['TERAPEUTA', 'ADMIN'],
 }
 
-const AUTH_ROUTES = ['/login', '/register', '/forgot-password']
+const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password']
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
