@@ -2,19 +2,25 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const session = await getServerSession();
     if (!session || session.role !== 'TERAPEUTA') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const therapistProfile = await prisma.therapistProfile.findUnique({
+    let therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
     });
 
     if (!therapistProfile) {
-      return NextResponse.json({ error: 'Therapist profile not found' }, { status: 404 });
+      // Fallback seguro: se a role é TERAPEUTA mas o perfil físico ainda não foi criado no banco
+      therapistProfile = await prisma.therapistProfile.create({
+        data: {
+          userId: session.sub,
+          price: 0,
+        }
+      });
     }
 
     // Busca o histórico ordenado pelo mais recente

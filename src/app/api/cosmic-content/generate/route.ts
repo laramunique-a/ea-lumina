@@ -17,12 +17,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const therapistProfile = await prisma.therapistProfile.findUnique({
+    let therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
     });
 
     if (!therapistProfile) {
-      return NextResponse.json({ error: 'Therapist profile not found' }, { status: 404 });
+      // Fallback seguro para evitar erro 404 em contas de teste sem perfil completo
+      therapistProfile = await prisma.therapistProfile.create({
+        data: {
+          userId: session.sub,
+          price: 0,
+        }
+      });
     }
 
     const body = await req.json();
