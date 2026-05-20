@@ -9,18 +9,15 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let therapistProfile = await prisma.therapistProfile.findUnique({
+    const therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
     });
 
     if (!therapistProfile) {
-      // Fallback seguro: se a role é TERAPEUTA mas o perfil físico ainda não foi criado no banco
-      therapistProfile = await prisma.therapistProfile.create({
-        data: {
-          userId: session.sub,
-          price: 0,
-        }
-      });
+      return NextResponse.json(
+        { error: 'Para usar o Observador Cósmico, você precisa ter um Perfil de Terapeuta ativo.' }, 
+        { status: 400 }
+      );
     }
 
     // Busca o histórico ordenado pelo mais recente

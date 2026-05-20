@@ -40,13 +40,16 @@ export function CosmicContentGenerator({ onGenerate, bestTopics }: Props) {
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error('Falha ao gerar conteúdo');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Falha ao gerar conteúdo');
+      }
 
       const json = await res.json();
       toast.success('Conteúdo gerado com sucesso!');
       onGenerate(json.data);
-    } catch (error) {
-      toast.error('Erro ao gerar conteúdo. Tente novamente.');
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao gerar conteúdo. Tente novamente.');
     } finally {
       setIsLoading(false);
     }

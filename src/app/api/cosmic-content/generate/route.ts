@@ -17,18 +17,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let therapistProfile = await prisma.therapistProfile.findUnique({
+    const therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
     });
 
     if (!therapistProfile) {
-      // Fallback seguro para evitar erro 404 em contas de teste sem perfil completo
-      therapistProfile = await prisma.therapistProfile.create({
-        data: {
-          userId: session.sub,
-          price: 0,
-        }
-      });
+      return NextResponse.json(
+        { error: 'Para usar o Observador Cósmico, você precisa ter um Perfil de Terapeuta ativo. Acesse o menu Perfil e preencha seus dados.' }, 
+        { status: 400 }
+      );
     }
 
     const body = await req.json();
