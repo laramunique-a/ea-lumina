@@ -105,6 +105,7 @@ model TherapistProfile {
   user                 User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
   services             TherapistService[]
   targetAudience       TherapistTargetAudience?
+  cosmicContents       CosmicContentGeneration[]
 
   @@map("therapist_profiles")
 }
@@ -445,4 +446,21 @@ enum PaymentMethod {
   PREX
   CRIPTOMOEDA
   DINHEIRO
+}
+
+model CosmicContentGeneration {
+  id              String           @id @default(cuid())
+  therapistId     String
+  contentType     String           @map("content_type")
+  theme           String
+  copy            String
+  hashtags        String[]
+  cta             String
+  imagePrompt     String           @map("image_prompt")
+  cosmicContext   String?          @map("cosmic_context")
+  createdAt       DateTime         @default(now())
+  
+  therapist       TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("cosmic_content_generations")
 }
