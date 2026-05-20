@@ -464,3 +464,16 @@ model CosmicContentGeneration {
 
   @@map("cosmic_content_generations")
 }
+
+model CosmicWeek {
+  id               String   @id @default(cuid())
+  weekStart        String   @map("week_start")
+  weekEnd          String   @map("week_end")
+  weekTheme        String   @map("week_theme")
+  collectiveEnergy String   @map("collective_energy")
+  bestTopics       String[] @map("best_topics")
+  recommendedCta   String   @map("recommended_cta")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("cosmic_weeks")
+}

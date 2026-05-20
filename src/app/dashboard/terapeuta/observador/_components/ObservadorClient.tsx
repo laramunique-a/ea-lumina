@@ -47,15 +47,17 @@ export function ObservadorClient({ initialContext }: ObservadorClientProps) {
           <Sparkles className="h-8 w-8 text-purple-600" />
           Observador Cósmico
         </h1>
-        <p className="text-slate-500 mt-2 text-lg">
+        <p className="text-slate-500 mt-2 text-lg mb-8">
           Gere conteúdos alinhados à energia coletiva da semana.
         </p>
       </div>
 
+      {/* Bloco da Energia da Semana no TOPO */}
+      <CosmicWeeklyCard context={initialContext} />
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Coluna Esquerda: Gerador */}
         <div className="lg:col-span-5 space-y-8">
-          <CosmicWeeklyCard context={initialContext} />
           <CosmicContentGenerator
             bestTopics={initialContext.bestTopics}
             onGenerate={handleGenerate}
