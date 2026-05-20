@@ -2,8 +2,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function check() {
-  const allUsers = await prisma.user.findMany();
-  console.log(JSON.stringify(allUsers, null, 2));
-  await prisma.$disconnect();
+  const user = await prisma.user.findUnique({
+    where: { id: "cmpdd1n8u0000enr8g1fidlxf" },
+    include: { therapistProfile: true }
+  });
+  console.log(JSON.stringify(user, null, 2));
 }
-check();
+
+check().catch(console.error).finally(() => prisma.$disconnect());

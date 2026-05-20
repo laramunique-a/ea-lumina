@@ -20,7 +20,12 @@ async function getMetrics() {
     prisma.user.count({ where: { role: 'TERAPEUTA' } }),
     prisma.user.count({ where: { role: 'PACIENTE' } }),
     prisma.appointment.count(),
-    prisma.therapistProfile.count({ where: { approved: false } }),
+    prisma.therapistProfile.count({ 
+      where: { 
+        approved: false,
+        user: { role: 'TERAPEUTA' }
+      } 
+    }),
     prisma.appointment.aggregate({
       _sum: { platformRevenue: true },
       where: { status: { in: ['CONFIRMADO', 'CONCLUIDO'] } },
