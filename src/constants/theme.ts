@@ -7,7 +7,7 @@ export const LANDING_THEME = {
   // Configurações de layout das seções da Landing Page
   section: {
     // Wrapper principal de cada seção (fundo gradiente escuro com snap)
-    wrapper: "min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden",
+    wrapper: "min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-start md:items-center justify-center p-4 md:p-6 overflow-y-auto md:overflow-hidden",
     
     // Contêiner centralizado de coluna (usado em Cursos, Terapeutas)
     containerCenter: "max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col justify-center items-center text-center relative",

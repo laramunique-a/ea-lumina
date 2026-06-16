@@ -101,7 +101,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 1: HOME (LOGO + BOXES)
       ────────────────────────────────────────────────────────── */}
-      <section id="home" className="min-w-full h-full snap-center flex flex-col items-center justify-center relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-hidden">
+      <section id="home" className="min-w-full h-full snap-center flex flex-col items-start md:items-center justify-center relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto md:overflow-hidden p-4 md:p-6">
         
         {/* REDES SOCIAIS (ESQUERDA) */}
         <div className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-4 z-30">
@@ -125,7 +125,7 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 relative z-10 h-full mt-10 md:mt-0">
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 relative z-10 min-h-full h-auto mt-10 md:mt-0 py-12 md:py-0">
           
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-1/2 md:h-full md:-mt-8">
@@ -198,7 +198,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section id="pacientes" className={LANDING_THEME.section.wrapper}>
         <HeaderLogo />
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col justify-center h-full pt-16 md:pt-8 pb-4 relative">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col justify-center min-h-full h-auto pt-20 pb-8 md:py-0 relative">
           
           <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
             <ChevronLeft size={14} /> Voltar
