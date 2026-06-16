@@ -25,7 +25,7 @@ export const LANDING_THEME = {
   // Tipografia padrão
   typography: {
     // Título principal com o gradiente dourado/azul padrão do projeto
-    titleGradient: "text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent",
+    titleGradient: "text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent",
     
     // O estilo CSS inline necessário para o gradiente de texto
     titleGradientStyle: {
