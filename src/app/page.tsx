@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
+import { LANDING_THEME } from '@/constants/theme'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
 const TERAPIAS = [
@@ -118,7 +119,7 @@ export default function LandingPage() {
             Entrar
           </Link>
           <Link href="/register">
-            <button className="bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 backdrop-blur-md">
+            <button className={LANDING_THEME.button.ghost}>
               Criar conta
             </button>
           </Link>
@@ -195,7 +196,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 2: PACIENTES
       ────────────────────────────────────────────────────────── */}
-      <section id="pacientes" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center overflow-hidden">
+      <section id="pacientes" className={LANDING_THEME.section.wrapper}>
         <HeaderLogo />
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col justify-center h-full pt-16 md:pt-8 pb-4 relative">
           
@@ -204,11 +205,8 @@ export default function LandingPage() {
           </button>
           
           <div className="mb-6 md:mb-10 text-center shrink-0">
-            <h5 className="text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Pacientes</h5>
-            <h2 
-              className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
-              style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
-            >
+            <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
+            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
               Sua jornada de <br className="hidden md:block"/>Luz e Equilíbrio.
             </h2>
           </div>
@@ -232,7 +230,7 @@ export default function LandingPage() {
 
           <div className="mt-6 md:mt-10 flex flex-col md:flex-row items-center justify-center px-4 gap-6 shrink-0">
             <Link href="/register?role=PACIENTE">
-              <button className="bg-[#C5A03F] text-black px-8 py-3 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_15px_rgba(197,160,63,0.3)]">
+              <button className={LANDING_THEME.button.gold}>
                 Começar agora
               </button>
             </Link>
@@ -244,18 +242,15 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 3: TERAPEUTAS
       ────────────────────────────────────────────────────────── */}
-      <section id="terapeutas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="terapeutas" className={LANDING_THEME.section.wrapper}>
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col justify-center items-center text-center relative">
-          <h5 className="text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Terapeutas</h5>
-          <h2 
-            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 md:mb-8 leading-tight bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
-          >
+        <div className={LANDING_THEME.section.containerCenter}>
+          <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
+          <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
             Expanda sua Luz.
           </h2>
           
@@ -302,7 +297,7 @@ export default function LandingPage() {
           </div>
 
           <Link href="/register?role=TERAPEUTA">
-            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+            <button className={LANDING_THEME.button.gold}>
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
@@ -312,25 +307,22 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 4: EMPRESAS
       ────────────────────────────────────────────────────────── */}
-      <section id="empresas" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="empresas" className={LANDING_THEME.section.wrapper}>
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-center justify-center relative">
+        <div className={LANDING_THEME.section.containerGrid}>
           <div className="text-center md:text-left mt-8 md:mt-0 px-2 md:px-0">
-            <h5 className="text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Soluções Corporativas</h5>
-            <h2 
-              className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
-              style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
-            >
+            <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
+            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
               Bem-estar elevado.
             </h2>
-            <p className="text-slate-300 text-xs md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8 max-w-[500px]">
+            <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[500px]"}>
               Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
             </p>
-            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+            <button className={LANDING_THEME.button.gold}>
               Falar com Consultor
             </button>
           </div>
@@ -347,24 +339,21 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 5: CURSOS
       ────────────────────────────────────────────────────────── */}
-      <section id="cursos" className="min-w-full h-full snap-center bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] relative flex items-center justify-center p-4 md:p-6 overflow-hidden">
+      <section id="cursos" className={LANDING_THEME.section.wrapper}>
         <HeaderLogo />
         <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col justify-center items-center text-center relative">
-          <h5 className="text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3">Educação e Evolução</h5>
-          <h2 
-            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
-          >
+        <div className={LANDING_THEME.section.containerCenter}>
+          <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
+          <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
             Jornada de <br className="hidden md:block"/>Aprendizado.
           </h2>
-          <p className="text-slate-300 text-xs md:text-base lg:text-lg leading-relaxed mb-8 md:mb-10 max-w-[800px] px-2 md:px-4">
+          <p className={LANDING_THEME.typography.paragraph + " mb-8 md:mb-10 max-w-[800px] px-2 md:px-4"}>
             Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
           </p>
-          <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+          <button className={LANDING_THEME.button.gold + " flex items-center gap-3 mx-auto"}>
             Explorar Catálogo <ArrowRight size={14} />
           </button>
         </div>
