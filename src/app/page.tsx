@@ -53,7 +53,7 @@ export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const HeaderLogo = () => (
-    <div className="absolute top-4 right-4 md:top-8 md:right-8 w-[120px] h-[120px] md:w-[180px] md:h-[180px] z-30 opacity-80 pointer-events-none">
+    <div className="hidden md:block absolute top-4 right-4 md:top-8 md:right-8 w-[120px] h-[120px] md:w-[180px] md:h-[180px] z-30 opacity-80 pointer-events-none">
       <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
     </div>
   )
@@ -125,11 +125,11 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-6 md:p-12 lg:p-20 relative z-10 min-h-full h-auto mt-10 md:mt-0 py-12 md:py-0">
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 relative z-10 min-h-full h-auto mt-6 md:mt-0 py-8 md:py-0">
           
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-1/2 md:h-full md:-mt-8">
-            <div className="relative w-[260px] h-[260px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
+            <div className="relative w-[150px] h-[150px] sm:w-[220px] sm:h-[220px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
               <img 
                 src="/logo-dark.jpg" 
                 alt="EA Lumina" 
