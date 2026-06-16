@@ -342,7 +342,7 @@ export default function LandingPage() {
           </div>
 
           <Link href="/register?role=TERAPEUTA" className="shrink-0">
-            <button className={`${LANDING_THEME.Gold || LANDING_THEME.button.gold} inline-flex items-center gap-2 whitespace-nowrap justify-center`}>
+            <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-2 whitespace-nowrap justify-center`}>
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
