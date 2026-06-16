@@ -100,11 +100,7 @@ export default function LandingPage() {
     */
     <div
       ref={scrollContainerRef}
-      className="
-        flex flex-col
-        md:flex-row md:h-screen md:overflow-x-auto md:overflow-y-hidden md:snap-x md:snap-mandatory
-        w-full bg-[#010409] text-slate-100 font-sans
-      "
+      className="flex flex-col md:flex-row md:h-screen md:overflow-x-auto md:overflow-y-hidden md:snap-x md:snap-mandatory w-full bg-[#010409] text-slate-100 font-sans overflow-x-hidden"
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
 
@@ -170,7 +166,7 @@ export default function LandingPage() {
                 className={LANDING_THEME.typography.titleGradient}
                 style={LANDING_THEME.typography.titleGradientStyle}
               >
-                Conectando você ao <br className="hidden md:block" />Equilíbrio e Luz.
+                Conectando você ao<br className="hidden md:block" /> Equilíbrio e Luz.
               </h1>
               <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
                 O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
@@ -218,28 +214,23 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="
-          w-full min-h-screen
-          md:min-w-full md:h-full md:snap-center
-          flex flex-col items-center justify-start
-          relative
-          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
-          md:overflow-hidden
-        "
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
       >
         <HeaderLogo />
 
-        {/* pt-14 = espaço para o botão de voltar absoluto */}
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pt-14 pb-8 md:justify-center md:h-full relative">
-
-          <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+        {/* Botão Voltar: estático no mobile (no topo do fluxo), absoluto no desktop */}
+        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
+        </div>
 
-          <div className="mb-6 md:mb-10 text-center shrink-0">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pb-8 md:justify-center md:h-full">
+
+          <div className="mb-6 md:mb-10 text-center shrink-0 mt-4 md:mt-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Sua jornada de <br className="hidden md:block"/>Luz e Equilíbrio.
+              Sua jornada de<br />Luz e Equilíbrio.
             </h2>
           </div>
 
@@ -247,7 +238,7 @@ export default function LandingPage() {
             {/* CAROUSEL TRACK (MARQUEE) */}
             <div className="flex w-max animate-marquee hover:[animation-play-state:paused] py-4">
               {[...TERAPIAS, ...TERAPIAS].map((terapia, i) => (
-                <div key={i} className="w-[280px] md:w-[350px] lg:w-[380px] flex-shrink-0 px-2 md:px-4">
+                <div key={i} className="w-[75vw] max-w-[300px] md:w-[350px] lg:w-[380px] flex-shrink-0 px-2 md:px-4">
                   <div className="bg-black/40 backdrop-blur-sm border border-slate-800 rounded-3xl p-6 md:p-8 hover:border-slate-600 transition-colors flex flex-col items-center text-center h-full min-h-[220px] md:min-h-[280px] justify-center">
                     <div className="mb-4 bg-slate-900 w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-6 [&>svg]:h-6 md:[&>svg]:w-8 md:[&>svg]:h-8 shadow-lg">
                       {terapia.icon}
@@ -276,22 +267,18 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="terapeutas"
-        className="
-          w-full min-h-screen
-          md:min-w-full md:h-full md:snap-center
-          flex flex-col items-center justify-start
-          relative
-          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
-          md:overflow-hidden
-        "
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
       >
         <HeaderLogo />
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-          <ChevronLeft size={14} /> Início
-        </button>
 
-        {/* pt-14 = espaço para o botão de voltar no mobile */}
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pt-14 pb-8 md:justify-center md:h-full">
+        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
+        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+            <ChevronLeft size={14} /> Início
+          </button>
+        </div>
+
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:justify-center md:h-full mt-4 md:mt-0">
 
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
@@ -355,22 +342,18 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="empresas"
-        className="
-          w-full min-h-screen
-          md:min-w-full md:h-full md:snap-center
-          flex flex-col items-center justify-start
-          relative
-          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
-          md:overflow-hidden
-        "
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
       >
         <HeaderLogo />
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-          <ChevronLeft size={14} /> Início
-        </button>
 
-        {/* pt-14 = espaço para o botão de voltar no mobile */}
-        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pt-14 pb-8 md:h-full">
+        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
+        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+            <ChevronLeft size={14} /> Início
+          </button>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pb-8 md:h-full mt-4 md:mt-0">
           <div className="text-center md:text-left">
             <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
@@ -398,22 +381,18 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="
-          w-full min-h-screen
-          md:min-w-full md:h-full md:snap-center
-          flex flex-col items-center justify-start
-          relative
-          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
-          md:overflow-hidden
-        "
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
       >
         <HeaderLogo />
-        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-          <ChevronLeft size={14} /> Início
-        </button>
 
-        {/* pt-14 = espaço para o botão de voltar no mobile */}
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pt-14 pb-8 md:justify-center md:h-full">
+        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
+        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+            <ChevronLeft size={14} /> Início
+          </button>
+        </div>
+
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:justify-center md:h-full mt-4 md:mt-0">
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
