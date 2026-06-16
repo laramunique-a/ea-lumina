@@ -59,15 +59,14 @@ export default function LandingPage() {
     </div>
   )
 
-  // Scroll suave: vertical no mobile, horizontal no desktop
+  // Scroll suave: sempre horizontal para todas as seções
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     const container = scrollContainerRef.current
     if (element && container) {
-      const isMobile = window.innerWidth < 768
       container.scrollTo({
-        left: isMobile ? 0 : element.offsetLeft,
-        top: isMobile ? element.offsetTop : 0,
+        left: element.offsetLeft,
+        top: 0,
         behavior: 'smooth'
       })
     }
@@ -100,7 +99,7 @@ export default function LandingPage() {
     */
     <div
       ref={scrollContainerRef}
-      className="flex flex-col md:flex-row md:h-screen md:overflow-x-auto md:overflow-y-hidden md:snap-x md:snap-mandatory w-full bg-[#010409] text-slate-100 font-sans overflow-x-hidden"
+      className="flex flex-row h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full bg-[#010409] text-slate-100 font-sans [&::-webkit-scrollbar]:hidden"
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
 
@@ -109,7 +108,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] md:overflow-hidden shrink-0"
+        className="w-full min-w-full h-full snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto shrink-0"
       >
 
         {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
@@ -227,7 +226,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
+        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -280,7 +279,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="terapeutas"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
+        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -355,7 +354,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="empresas"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
+        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -394,7 +393,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
+        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
