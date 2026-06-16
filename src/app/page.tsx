@@ -109,7 +109,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] md:overflow-hidden"
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] md:overflow-hidden shrink-0"
       >
 
         {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
@@ -153,10 +153,10 @@ export default function LandingPage() {
         </div>
 
         {/* CONTEÚDO PRINCIPAL */}
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-4 pb-8 md:p-12 lg:p-20 gap-6 md:gap-0 relative z-10 md:h-full">
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-6 pb-12 md:p-12 lg:p-20 gap-8 md:gap-0 relative z-10 md:h-full shrink-0">
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:h-full md:-mt-8">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:h-full md:-mt-8 shrink-0">
             <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px]">
               <img
                 src="/logo-dark.jpg"
@@ -187,7 +187,7 @@ export default function LandingPage() {
           </div>
 
           {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full md:justify-center">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
@@ -227,7 +227,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
       >
         <HeaderLogo />
 
@@ -238,7 +238,7 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pb-8 md:justify-center md:h-full">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pb-12 md:justify-center md:h-full shrink-0">
 
           <div className="mb-6 md:mb-10 text-center shrink-0 mt-4 md:mt-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
@@ -280,7 +280,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="terapeutas"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
       >
         <HeaderLogo />
 
@@ -291,7 +291,7 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:justify-center md:h-full mt-4 md:mt-0">
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-12 md:justify-center md:h-full mt-4 md:mt-0 shrink-0">
 
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
@@ -355,7 +355,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="empresas"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
       >
         <HeaderLogo />
 
@@ -366,7 +366,7 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pb-8 md:h-full mt-4 md:mt-0">
+        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pb-12 md:h-full mt-4 md:mt-0 shrink-0">
           <div className="text-center md:text-left">
             <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
@@ -394,7 +394,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden"
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-x-hidden md:overflow-hidden shrink-0"
       >
         <HeaderLogo />
 
@@ -405,7 +405,7 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:justify-center md:h-full mt-4 md:mt-0">
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-12 md:justify-center md:h-full mt-4 md:mt-0 shrink-0">
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
