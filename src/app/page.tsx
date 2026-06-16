@@ -109,43 +109,55 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="
-          w-full min-h-screen
-          md:min-w-full md:h-full md:snap-center
-          flex flex-col items-center justify-start
-          relative
-          bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)]
-          md:overflow-hidden
-        "
+        className="w-full min-h-screen md:min-w-full md:h-full md:snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] md:overflow-hidden"
       >
-        {/* REDES SOCIAIS (ESQUERDA) */}
-        <div className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-4 z-30">
-          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
-            <Youtube className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
-          </a>
-          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
-            <Instagram className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
-          </a>
+
+        {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
+        <div className="flex md:hidden w-full items-center justify-between px-4 pt-4 pb-2 z-30 shrink-0">
+          {/* Redes sociais */}
+          <div className="flex items-center gap-4">
+            <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
+              <Youtube className="w-5 h-5" />
+            </a>
+            <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
+              <Instagram className="w-5 h-5" />
+            </a>
+          </div>
+          {/* Auth */}
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
+              Entrar
+            </Link>
+            <Link href="/register">
+              <button className={LANDING_THEME.button.ghost}>Criar conta</button>
+            </Link>
+          </div>
         </div>
 
-        {/* HEADER DE AUTENTICAÇÃO */}
-        <div className="absolute top-4 right-4 md:top-8 md:right-8 flex items-center gap-3 md:gap-4 z-30">
-          <Link href="/login" className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
+        {/* ── HEADER DESKTOP: absoluto, apenas visível em telas grandes ── */}
+        <div className="hidden md:flex absolute top-8 left-8 items-center gap-4 z-30">
+          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+            <Youtube className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          </a>
+          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+            <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          </a>
+        </div>
+        <div className="hidden md:flex absolute top-8 right-8 items-center gap-4 z-30">
+          <Link href="/login" className="text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className={LANDING_THEME.button.ghost}>
-              Criar conta
-            </button>
+            <button className={LANDING_THEME.button.ghost}>Criar conta</button>
           </Link>
         </div>
 
-        {/* CONTEÚDO PRINCIPAL — pt-16 para não colidir com botões absolutos */}
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 pt-16 pb-10 md:p-12 lg:p-20 relative z-10 md:h-full">
+        {/* CONTEÚDO PRINCIPAL */}
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-4 pb-8 md:p-12 lg:p-20 gap-6 md:gap-0 relative z-10 md:h-full">
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center justify-center md:h-full md:-mt-8">
-            <div className="relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:h-full md:-mt-8">
+            <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px]">
               <img
                 src="/logo-dark.jpg"
                 alt="EA Lumina"
@@ -161,7 +173,7 @@ export default function LandingPage() {
               />
             </div>
 
-            <div className="text-center max-w-[480px] px-2 md:px-0 mt-2">
+            <div className="text-center max-w-[480px] px-2 md:px-0 mt-1">
               <h1
                 className={LANDING_THEME.typography.titleGradient}
                 style={LANDING_THEME.typography.titleGradientStyle}
@@ -175,7 +187,7 @@ export default function LandingPage() {
           </div>
 
           {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center mt-6 md:mt-0 md:h-full">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full md:justify-center">
             <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
@@ -208,6 +220,7 @@ export default function LandingPage() {
 
         </div>
       </section>
+
 
       {/* ──────────────────────────────────────────────────────────
           TELA 2: PACIENTES
