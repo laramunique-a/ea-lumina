@@ -18,8 +18,8 @@ export const LANDING_THEME = {
 
   // Tags/Badges de categoria no topo de cada seção (ex: "Para Pacientes", "Para Empresas")
   tag: {
-    blue: "text-base md:text-lg lg:text-xl font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3",
-    gold: "text-base md:text-lg lg:text-xl font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3",
+    blue: "text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3",
+    gold: "text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3",
   },
 
   // Tipografia padrão
