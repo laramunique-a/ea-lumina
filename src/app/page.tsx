@@ -321,11 +321,16 @@ export default function LandingPage() {
         <div className="max-w-5xl grid md:grid-cols-2 gap-6 md:gap-12 items-center">
           <div className="text-center md:text-left mt-8 md:mt-0 px-2 md:px-0">
             <h5 className="text-[9px] md:text-[10px] font-black text-[#0090FF] uppercase tracking-[0.3em] mb-3 md:mb-4">Soluções Corporativas</h5>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-white mb-4 md:mb-6">Bem-estar elevado.</h2>
+            <h2 
+              className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
+              style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
+            >
+              Bem-estar elevado.
+            </h2>
             <p className="text-slate-400 text-[11px] md:text-xs leading-relaxed mb-6 md:mb-8">
               Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
             </p>
-            <button className="border border-slate-700 text-white px-6 py-3.5 md:px-8 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-colors">
+            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)]">
               Falar com Consultor
             </button>
           </div>
@@ -349,12 +354,17 @@ export default function LandingPage() {
         </button>
 
         <div className="max-w-3xl text-center">
-          <h5 className="text-[9px] md:text-[10px] font-black text-white/50 uppercase tracking-[0.3em] mb-3 md:mb-4">Educação e Evolução</h5>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 md:mb-6">Jornada de <br className="hidden md:block"/>Aprendizado.</h2>
+          <h5 className="text-[9px] md:text-[10px] font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-3 md:mb-4">Educação e Evolução</h5>
+          <h2 
+            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
+            style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
+          >
+            Jornada de <br className="hidden md:block"/>Aprendizado.
+          </h2>
           <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed mb-8 md:mb-10 px-2 md:px-4">
             Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
           </p>
-          <button className="bg-white text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-transform hover:scale-105 flex items-center gap-3 mx-auto">
+          <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
             Explorar Catálogo <ArrowRight size={14} />
           </button>
         </div>
