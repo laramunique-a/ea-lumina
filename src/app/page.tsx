@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, ChevronRight, Play, Pause, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
+import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
 import { LANDING_THEME } from '@/constants/theme'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
@@ -52,31 +52,34 @@ const TERAPIAS = [
 export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+  // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
     <div className="hidden md:block absolute top-8 right-8 w-[180px] h-[180px] z-30 opacity-80 pointer-events-none">
       <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
     </div>
   )
 
-  // Função para scroll suave horizontal
+  // Scroll suave: vertical no mobile, horizontal no desktop
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     const container = scrollContainerRef.current
     if (element && container) {
+      const isMobile = window.innerWidth < 768
       container.scrollTo({
-        left: element.offsetLeft,
+        left: isMobile ? 0 : element.offsetLeft,
+        top: isMobile ? element.offsetTop : 0,
         behavior: 'smooth'
       })
     }
   }
 
-  // Prevenir scroll vertical e transformar em horizontal usando wheel event
+  // Wheel → scroll horizontal (desktop apenas)
   useEffect(() => {
     const container = scrollContainerRef.current
     if (!container) return
 
     const handleWheel = (e: WheelEvent) => {
-      // Se não houver scroll horizontal rolando nativamente (ex: touchpad horizontal), converte o vertical para horizontal
+      if (window.innerWidth < 768) return // ignora no mobile
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
         container.scrollBy({
@@ -91,18 +94,34 @@ export default function LandingPage() {
   }, [])
 
   return (
-    // Container Principal: Scroll Horizontal e Snap
-    <div 
+    /*
+      MOBILE:  flex-col, scroll vertical normal, sem snap
+      DESKTOP: flex-row, snap horizontal, h-screen fixo
+    */
+    <div
       ref={scrollContainerRef}
-      className="flex w-full h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory bg-[#010409] text-slate-100 font-sans hide-scrollbar"
+      className="
+        flex flex-col
+        md:flex-row md:h-screen md:overflow-x-auto md:overflow-y-hidden md:snap-x md:snap-mandatory
+        w-full bg-[#010409] text-slate-100 font-sans
+      "
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
-      
+
       {/* ──────────────────────────────────────────────────────────
           TELA 1: HOME (LOGO + BOXES)
       ────────────────────────────────────────────────────────── */}
-      <section id="home" className="min-w-full h-full snap-center flex flex-col items-start md:items-center justify-center relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto md:overflow-hidden p-4 md:p-6">
-        
+      <section
+        id="home"
+        className="
+          w-full min-h-screen
+          md:min-w-full md:h-full md:snap-center
+          flex flex-col items-center justify-start
+          relative
+          bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)]
+          md:overflow-hidden
+        "
+      >
         {/* REDES SOCIAIS (ESQUERDA) */}
         <div className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-4 z-30">
           <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
@@ -125,16 +144,17 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-16 md:p-12 lg:p-20 relative z-10">
-          
+        {/* CONTEÚDO PRINCIPAL — pt-16 para não colidir com botões absolutos */}
+        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 pt-16 pb-10 md:p-12 lg:p-20 relative z-10 md:h-full">
+
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center md:h-full md:-mt-8">
             <div className="relative w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
-              <img 
-                src="/logo-dark.jpg" 
-                alt="EA Lumina" 
+              <img
+                src="/logo-dark.jpg"
+                alt="EA Lumina"
                 className="w-full h-full object-contain"
-                style={{ 
+                style={{
                   WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
                   maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
                 }}
@@ -144,9 +164,9 @@ export default function LandingPage() {
                 }}
               />
             </div>
-            
-            <div className="text-center max-w-[480px] px-2 md:px-0">
-              <h1 
+
+            <div className="text-center max-w-[480px] px-2 md:px-0 mt-2">
+              <h1
                 className={LANDING_THEME.typography.titleGradient}
                 style={LANDING_THEME.typography.titleGradientStyle}
               >
@@ -159,12 +179,12 @@ export default function LandingPage() {
           </div>
 
           {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center h-auto md:h-full">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center mt-6 md:mt-0 md:h-full">
             <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
               </h3>
-              
+
               {[
                 { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
                 { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
@@ -196,15 +216,26 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────
           TELA 2: PACIENTES
       ────────────────────────────────────────────────────────── */}
-      <section id="pacientes" className={LANDING_THEME.section.wrapper}>
+      <section
+        id="pacientes"
+        className="
+          w-full min-h-screen
+          md:min-w-full md:h-full md:snap-center
+          flex flex-col items-center justify-start
+          relative
+          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
+          md:overflow-hidden
+        "
+      >
         <HeaderLogo />
-        <div className="w-full h-full flex flex-col overflow-y-auto md:overflow-visible">
-          <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pt-14 pb-8 md:py-8 relative flex-shrink-0">
-          
-          <button onClick={() => scrollToSection('home')} className="absolute top-3 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+
+        {/* pt-14 = espaço para o botão de voltar absoluto */}
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pt-14 pb-8 md:justify-center md:h-full relative">
+
+          <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
-          
+
           <div className="mb-6 md:mb-10 text-center shrink-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
@@ -237,28 +268,38 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          </div>
         </div>
       </section>
 
       {/* ──────────────────────────────────────────────────────────
           TELA 3: TERAPEUTAS
       ────────────────────────────────────────────────────────── */}
-      <section id="terapeutas" className={LANDING_THEME.section.wrapper}>
+      <section
+        id="terapeutas"
+        className="
+          w-full min-h-screen
+          md:min-w-full md:h-full md:snap-center
+          flex flex-col items-center justify-start
+          relative
+          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
+          md:overflow-hidden
+        "
+      >
         <HeaderLogo />
-        <div className="w-full h-full flex flex-col overflow-y-auto md:overflow-visible">
-          <button onClick={() => scrollToSection('home')} className="sticky top-3 self-start ml-4 md:absolute md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40 shrink-0">
-            <ChevronLeft size={14} /> Início
-          </button>
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+          <ChevronLeft size={14} /> Início
+        </button>
 
-          <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:py-8">
+        {/* pt-14 = espaço para o botão de voltar no mobile */}
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pt-14 pb-8 md:justify-center md:h-full">
+
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
               Expanda sua Luz.
             </h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left w-full">
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
               <div className="flex items-center gap-4 mb-3">
@@ -306,28 +347,35 @@ export default function LandingPage() {
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
-          </div>
         </div>
       </section>
 
       {/* ──────────────────────────────────────────────────────────
           TELA 4: EMPRESAS
       ────────────────────────────────────────────────────────── */}
-      <section id="empresas" className={LANDING_THEME.section.wrapper}>
+      <section
+        id="empresas"
+        className="
+          w-full min-h-screen
+          md:min-w-full md:h-full md:snap-center
+          flex flex-col items-center justify-start
+          relative
+          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
+          md:overflow-hidden
+        "
+      >
         <HeaderLogo />
-        <div className="w-full h-full flex flex-col overflow-y-auto md:overflow-visible">
-          <button onClick={() => scrollToSection('home')} className="sticky top-3 self-start ml-4 md:absolute md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40 shrink-0">
-            <ChevronLeft size={14} /> Início
-          </button>
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+          <ChevronLeft size={14} /> Início
+        </button>
 
-          <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-center pb-8 md:py-8">
+        {/* pt-14 = espaço para o botão de voltar no mobile */}
+        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pt-14 pb-8 md:h-full">
           <div className="text-center md:text-left">
-            <div className="w-full mb-6 md:mb-8 text-center md:text-left">
-              <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
-              <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-                Bem-estar elevado.
-              </h2>
-            </div>
+            <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
+            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+              Bem-estar elevado.
+            </h2>
             <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[500px]"}>
               Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
             </p>
@@ -342,21 +390,30 @@ export default function LandingPage() {
                 <h4 className="text-lg lg:text-2xl font-black text-white uppercase tracking-widest">Corporativo</h4>
              </div>
           </div>
-          </div>
         </div>
       </section>
 
       {/* ──────────────────────────────────────────────────────────
           TELA 5: CURSOS
       ────────────────────────────────────────────────────────── */}
-      <section id="cursos" className={LANDING_THEME.section.wrapper}>
+      <section
+        id="cursos"
+        className="
+          w-full min-h-screen
+          md:min-w-full md:h-full md:snap-center
+          flex flex-col items-center justify-start
+          relative
+          bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)]
+          md:overflow-hidden
+        "
+      >
         <HeaderLogo />
-        <div className="w-full h-full flex flex-col overflow-y-auto md:overflow-visible">
-          <button onClick={() => scrollToSection('home')} className="sticky top-3 self-start ml-4 md:absolute md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40 shrink-0">
-            <ChevronLeft size={14} /> Início
-          </button>
+        <button onClick={() => scrollToSection('home')} className="absolute top-4 left-4 md:top-8 md:left-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
+          <ChevronLeft size={14} /> Início
+        </button>
 
-          <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-8 md:py-8">
+        {/* pt-14 = espaço para o botão de voltar no mobile */}
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pt-14 pb-8 md:justify-center md:h-full">
           <div className="w-full mb-6 md:mb-10 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
@@ -369,7 +426,6 @@ export default function LandingPage() {
           <button className={LANDING_THEME.button.gold + " flex items-center gap-3 mx-auto"}>
             Explorar Catálogo <ArrowRight size={14} />
           </button>
-          </div>
         </div>
       </section>
 
