@@ -250,16 +250,16 @@ export default function LandingPage() {
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-4xl text-center w-full mt-10 md:mt-0">
-          <h5 className="text-[9px] md:text-[10px] font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-3 md:mb-4">Para Terapeutas</h5>
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col justify-center items-center text-center relative">
+          <h5 className="text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3">Para Terapeutas</h5>
           <h2 
-            className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-8 md:mb-12 leading-tight bg-clip-text text-transparent"
+            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 md:mb-8 leading-tight bg-clip-text text-transparent"
             style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
           >
             Expanda sua Luz.
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left w-full">
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
               <div className="flex items-center gap-4 mb-3">
                 <div className="bg-[#C5A03F]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
@@ -302,7 +302,7 @@ export default function LandingPage() {
           </div>
 
           <Link href="/register?role=TERAPEUTA">
-            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
@@ -318,27 +318,27 @@ export default function LandingPage() {
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-5xl grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-center justify-center relative">
           <div className="text-center md:text-left mt-8 md:mt-0 px-2 md:px-0">
-            <h5 className="text-[9px] md:text-[10px] font-black text-[#0090FF] uppercase tracking-[0.3em] mb-3 md:mb-4">Soluções Corporativas</h5>
+            <h5 className="text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3">Soluções Corporativas</h5>
             <h2 
-              className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
+              className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
               style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
             >
               Bem-estar elevado.
             </h2>
-            <p className="text-slate-400 text-[11px] md:text-xs leading-relaxed mb-6 md:mb-8">
+            <p className="text-slate-300 text-xs md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8 max-w-[500px]">
               Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
             </p>
-            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+            <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)]">
               Falar com Consultor
             </button>
           </div>
-          <div className="hidden md:flex h-48 lg:h-64 rounded-3xl border border-slate-800 bg-black/50 items-center justify-center p-8 relative overflow-hidden">
+          <div className="hidden md:flex h-60 lg:h-80 rounded-3xl border border-slate-800 bg-black/50 items-center justify-center p-8 relative overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-tr from-[#0090FF]/10 to-transparent" />
              <div className="text-center relative z-10">
-                <Wind className="w-10 h-10 lg:w-12 lg:h-12 text-[#0090FF] mx-auto mb-4 opacity-80" />
-                <h4 className="text-lg lg:text-xl font-black text-white uppercase tracking-widest">Corporativo</h4>
+                <Wind className="w-14 h-14 lg:w-20 lg:h-20 text-[#0090FF] mx-auto mb-4 opacity-80" />
+                <h4 className="text-lg lg:text-2xl font-black text-white uppercase tracking-widest">Corporativo</h4>
              </div>
           </div>
         </div>
@@ -353,18 +353,18 @@ export default function LandingPage() {
           <ChevronLeft size={14} /> Início
         </button>
 
-        <div className="max-w-3xl text-center">
-          <h5 className="text-[9px] md:text-[10px] font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-3 md:mb-4">Educação e Evolução</h5>
+        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col justify-center items-center text-center relative">
+          <h5 className="text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3">Educação e Evolução</h5>
           <h2 
             className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent"
             style={{ backgroundImage: 'linear-gradient(90deg, rgba(196, 135, 35, 1) 11%, rgba(37, 102, 148, 1) 74%, rgba(29, 13, 255, 1) 100%, rgba(47, 18, 179, 1) 100%, rgba(34, 83, 135, 1) 100%)' }}
           >
             Jornada de <br className="hidden md:block"/>Aprendizado.
           </h2>
-          <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed mb-8 md:mb-10 px-2 md:px-4">
+          <p className="text-slate-300 text-xs md:text-base lg:text-lg leading-relaxed mb-8 md:mb-10 max-w-[800px] px-2 md:px-4">
             Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
           </p>
-          <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+          <button className="bg-[#C5A03F] text-black px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-transform hover:scale-105 flex items-center gap-3 mx-auto shadow-[0_0_20px_rgba(197,160,63,0.3)]">
             Explorar Catálogo <ArrowRight size={14} />
           </button>
         </div>
