@@ -99,7 +99,7 @@ export default function LandingPage() {
     */
     <div
       ref={scrollContainerRef}
-      className="flex flex-row h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full bg-[#010409] text-slate-100 font-sans [&::-webkit-scrollbar]:hidden"
+      className="flex flex-row h-screen overflow-x-auto overflow-y-auto snap-x snap-mandatory w-full bg-[#010409] text-slate-100 font-sans [&::-webkit-scrollbar]:hidden"
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
 
@@ -341,8 +341,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <Link href="/register?role=TERAPEUTA">
-            <button className={LANDING_THEME.button.gold}>
+          <Link href="/register?role=TERAPEUTA" className="shrink-0">
+            <button className={`${LANDING_THEME.Gold || LANDING_THEME.button.gold} inline-flex items-center gap-2 whitespace-nowrap justify-center`}>
               Quero Atender <ArrowRight size={14} />
             </button>
           </Link>
@@ -414,7 +414,7 @@ export default function LandingPage() {
           <p className={LANDING_THEME.typography.paragraph + " mb-8 md:mb-10 max-w-[800px] px-2 md:px-4"}>
             Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
           </p>
-          <button className={LANDING_THEME.button.gold + " flex items-center gap-3 mx-auto"}>
+          <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-3 justify-center whitespace-nowrap mx-auto`}>
             Explorar Catálogo <ArrowRight size={14} />
           </button>
         </div>
