@@ -81,28 +81,38 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-white px-6 py-12 selection:bg-[#C5A03F]/20 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] px-6 py-12 selection:bg-[#C5A03F]/20 overflow-hidden">
       
       {/* Container Principal */}
       <div className="relative z-10 w-full max-w-[440px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
-        {/* Logo Centralizado (Aumentado para presença forte) */}
-        <div className="mb-12 flex justify-center">
-          <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500">
-            <Logo size="xl" iconOnly />
+        {/* Logo Centralizado (Aumentado para presença forte com máscara circular) */}
+        <div className="mb-8 flex justify-center">
+          <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500 block">
+            <div className="relative w-32 h-32 md:w-36 md:h-36">
+              <img
+                src="/logo-dark.jpg"
+                alt="EA Lumina"
+                className="w-full h-full object-contain"
+                style={{
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+                }}
+              />
+            </div>
           </Link>
         </div>
 
         {/* Cabeçalho */}
-        <div className="text-center mb-10">
-          <h1 className="text-2xl font-black tracking-tight text-slate-900 mb-2">Criar sua conta</h1>
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-black tracking-tight text-white mb-2">Criar sua conta</h1>
           <p className="text-sm text-slate-400 font-medium tracking-tight">Sua jornada de luz começa agora</p>
         </div>
 
-        {/* Formulário Card */}
-        <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-slate-100">
+        {/* Formulário Card com Efeito de Vidro */}
+        <div className="bg-black/40 border border-white/5 backdrop-blur-xl shadow-2xl p-8 md:p-10 rounded-[2.5rem]">
           
-          {/* Role Selection (Sleek) */}
+          {/* Role Selection (Sleek Dark Theme) */}
           <div className="grid grid-cols-2 gap-4 mb-8">
             <button
               type="button"
@@ -110,11 +120,11 @@ export default function RegisterForm() {
               className={cn(
                 'flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 text-sm font-bold',
                 selectedRole === 'PACIENTE'
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-xl shadow-slate-200'
-                  : 'bg-slate-50 border-transparent text-slate-400 hover:bg-slate-100'
+                  ? 'bg-white/10 text-white border-white/20 shadow-lg'
+                  : 'bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:text-white'
               )}
             >
-              <Heart size={14} />
+              <Heart size={14} className={selectedRole === 'PACIENTE' ? 'text-white' : 'text-slate-400'} />
               Paciente
             </button>
             <button
@@ -123,11 +133,11 @@ export default function RegisterForm() {
               className={cn(
                 'flex items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 text-sm font-bold',
                 selectedRole === 'TERAPEUTA'
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-xl shadow-slate-200'
-                  : 'bg-slate-50 border-transparent text-slate-400 hover:bg-slate-100'
+                  ? 'bg-white/10 text-white border-white/20 shadow-lg'
+                  : 'bg-white/5 border-transparent text-slate-400 hover:bg-white/10 hover:text-white'
               )}
             >
-              <Stethoscope size={14} />
+              <Stethoscope size={14} className={selectedRole === 'TERAPEUTA' ? 'text-white' : 'text-slate-400'} />
               Terapeuta
             </button>
           </div>
@@ -138,20 +148,22 @@ export default function RegisterForm() {
             <Input
               label="Nome completo"
               placeholder="Seu nome"
-              leftIcon={<User size={15} className="text-slate-300" />}
+              leftIcon={<User size={15} className="text-slate-400" />}
               error={errors.name?.message}
               {...register('name')}
-              className="bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-200 h-11 rounded-xl transition-all"
+              labelClassName="text-slate-300 font-medium tracking-wide"
+              className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-11 rounded-xl transition-all duration-300"
             />
             
             <Input
               label="E-mail"
               type="email"
               placeholder="seu@email.com"
-              leftIcon={<Mail size={15} className="text-slate-300" />}
+              leftIcon={<Mail size={15} className="text-slate-400" />}
               error={errors.email?.message}
               {...register('email')}
-              className="bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-200 h-11 rounded-xl transition-all"
+              labelClassName="text-slate-300 font-medium tracking-wide"
+              className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-11 rounded-xl transition-all duration-300"
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -159,10 +171,11 @@ export default function RegisterForm() {
                 label="Senha"
                 type="password"
                 placeholder="••••••••"
-                leftIcon={<Lock size={15} className="text-slate-300" />}
+                leftIcon={<Lock size={15} className="text-slate-400" />}
                 error={errors.password?.message}
                 {...register('password')}
-                className="bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-200 h-11 rounded-xl transition-all text-xs"
+                labelClassName="text-slate-300 font-medium tracking-wide"
+                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-xs h-11 rounded-xl transition-all duration-300"
               />
               <Input
                 label="Confirmar"
@@ -170,12 +183,13 @@ export default function RegisterForm() {
                 placeholder="••••••••"
                 error={errors.confirmPassword?.message}
                 {...register('confirmPassword')}
-                className="bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-200 h-11 rounded-xl transition-all text-xs"
+                labelClassName="text-slate-300 font-medium tracking-wide"
+                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-xs h-11 rounded-xl transition-all duration-300"
               />
             </div>
 
             {selectedRole === 'TERAPEUTA' && (
-              <div className="p-4 bg-[#0090FF]/5 rounded-xl text-xs text-[#0090FF] leading-relaxed font-semibold border border-[#0090FF]/10 text-center">
+              <div className="p-4 bg-[#0090FF]/10 rounded-xl text-xs text-[#0090FF] leading-relaxed font-semibold border border-[#0090FF]/20 text-center">
                 Análise de perfil necessária após cadastro
               </div>
             )}
@@ -185,7 +199,7 @@ export default function RegisterForm() {
               fullWidth 
               size="lg" 
               loading={isSubmitting} 
-              className="h-14 rounded-2xl bg-slate-900 text-white font-bold text-sm shadow-xl shadow-slate-200 hover:bg-slate-800 transition-all group mt-2"
+              className="h-14 rounded-2xl bg-[#C5A03F] text-black font-semibold text-xs uppercase tracking-widest shadow-xl shadow-[#C5A03F]/10 hover:bg-[#d6af4b] transition-all group mt-2"
             >
               Criar Conta
               {!isSubmitting && <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />}
@@ -193,15 +207,15 @@ export default function RegisterForm() {
           </form>
 
           <div className="mt-8 text-center px-4">
-            <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mb-6 leading-relaxed">
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-6 leading-relaxed">
               Ao continuar, você aceita nossos{' '}
-              <Link href="/termos" className="text-slate-400 hover:text-slate-900 underline underline-offset-4">termos de uso</Link>
+              <Link href="/termos" className="text-[#C5A03F] hover:text-[#d6af4b] underline underline-offset-4">termos de uso</Link>
             </p>
             
-            <div className="pt-6 border-t border-slate-100">
+            <div className="pt-6 border-t border-white/5">
                <p className="text-sm text-slate-400 font-medium">
                   Já tem conta?{' '}
-                  <Link href="/login" className="text-slate-900 font-black uppercase tracking-wider hover:underline underline-offset-4">
+                  <Link href="/login" className="text-white font-black uppercase tracking-wider hover:underline underline-offset-4">
                     Fazer Login
                   </Link>
                </p>
@@ -211,7 +225,7 @@ export default function RegisterForm() {
 
         {/* Footer Minimalista */}
         <div className="mt-12 text-center">
-            <p className="text-xs text-slate-300 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
         </div>
       </div>
     </div>

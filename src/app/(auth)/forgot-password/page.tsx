@@ -41,59 +41,85 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAFAF9]">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 mb-5 group">
-            <Logo size="lg" iconOnly className="mb-4" />
-            <span className="font-semibold text-slate-900 text-xl sr-only">EA Lumina</span>
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] px-6 py-12 selection:bg-[#C5A03F]/20 overflow-hidden">
+      
+      <div className="relative z-10 w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        
+        {/* Logo Centralizado (Máscara Circular) */}
+        <div className="mb-8 flex justify-center">
+          <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500 block">
+            <div className="relative w-32 h-32 md:w-36 md:h-36">
+              <img
+                src="/logo-dark.jpg"
+                alt="EA Lumina"
+                className="w-full h-full object-contain"
+                style={{
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+                }}
+              />
+            </div>
           </Link>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-7">
+        {/* Card com Glassmorphism */}
+        <div className="bg-black/40 border border-white/5 backdrop-blur-xl shadow-2xl p-8 md:p-10 rounded-3xl">
           {sent ? (
             <div className="text-center py-4">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-blue-100 shadow-inner">
+              <div className="w-16 h-16 bg-[#0090FF]/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#0090FF]/20 shadow-inner">
                 <CheckCircle2 size={28} className="text-[#0090FF]" />
               </div>
-              <h2 className="text-xl font-semibold text-slate-900 mb-2">E-mail enviado!</h2>
-              <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+              <h2 className="text-xl font-black text-white tracking-tight mb-2">E-mail enviado!</h2>
+              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                 Se este e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha em breve.
               </p>
               <Link href="/login">
-                <Button fullWidth variant="outline">
-                  <ArrowLeft size={15} />
+                <Button fullWidth className="h-12 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                  <ArrowLeft size={15} className="mr-2" />
                   Voltar ao login
                 </Button>
               </Link>
             </div>
           ) : (
             <>
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold text-slate-900 mb-1">Esqueceu a senha?</h2>
-                <p className="text-slate-500 text-sm leading-relaxed">Digite seu e-mail para receber as instruções.</p>
+              <div className="mb-6 text-center">
+                <h2 className="text-xl font-black text-white tracking-tight mb-2">Esqueceu a senha?</h2>
+                <p className="text-slate-400 text-sm leading-relaxed">Digite seu e-mail para receber as instruções de redefinição.</p>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <Input
                   label="E-mail cadastrado"
                   type="email"
                   placeholder="seu@email.com"
-                  leftIcon={<Mail size={15} />}
+                  leftIcon={<Mail size={15} className="text-slate-400" />}
                   error={errors.email?.message as string}
                   {...register('email')}
+                  labelClassName="text-slate-300 font-medium tracking-wide"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
                 />
-                <Button type="submit" fullWidth size="lg" loading={isSubmitting}>
+                <Button 
+                  type="submit" 
+                  fullWidth 
+                  size="lg" 
+                  loading={isSubmitting}
+                  className="h-14 rounded-2xl bg-[#C5A03F] text-black font-semibold text-xs uppercase tracking-widest shadow-xl shadow-[#C5A03F]/10 hover:bg-[#d6af4b] transition-all group"
+                >
                   Enviar instruções
                 </Button>
               </form>
-              <div className="mt-5 text-center">
-                <Link href="/login" className="text-sm text-slate-400 hover:text-slate-700 flex items-center justify-center gap-1.5 transition-colors">
+              <div className="mt-6 text-center">
+                <Link href="/login" className="text-sm text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-colors">
                   <ArrowLeft size={13} />
                   Voltar ao login
                 </Link>
               </div>
             </>
           )}
+        </div>
+
+        {/* Footer Minimalista */}
+        <div className="mt-12 text-center">
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
         </div>
       </div>
     </div>

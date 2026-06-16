@@ -11,10 +11,11 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   size?: 'sm' | 'md' | 'lg'
+  labelClassName?: string
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, ...props }, ref) => {
+  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, labelClassName, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-')
     const isPassword = type === 'password'
@@ -23,7 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-semibold text-slate-700">
+          <label htmlFor={inputId} className={cn("block text-xs font-semibold text-slate-700", labelClassName)}>
             {label}
           </label>
         )}

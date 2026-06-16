@@ -60,11 +60,13 @@ function ResetPasswordForm() {
 
   if (!token && !success) {
     return (
-      <div className="text-center py-8">
-        <h2 className="text-xl font-semibold text-slate-900 mb-2">Link inválido</h2>
-        <p className="text-slate-500 mb-6">O link de redefinição de senha está ausente ou é inválido.</p>
+      <div className="text-center py-4">
+        <h2 className="text-xl font-black text-white tracking-tight mb-2">Link inválido</h2>
+        <p className="text-slate-400 text-sm mb-6 leading-relaxed">O link de redefinição de senha está ausente ou é inválido.</p>
         <Link href="/forgot-password">
-          <Button>Solicitar novo link</Button>
+          <Button fullWidth className="h-12 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+            Solicitar novo link
+          </Button>
         </Link>
       </div>
     )
@@ -73,15 +75,15 @@ function ResetPasswordForm() {
   if (success) {
     return (
       <div className="text-center py-4">
-        <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-green-100 shadow-inner">
+        <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/20 shadow-inner">
           <CheckCircle2 size={28} className="text-green-500" />
         </div>
-        <h2 className="text-xl font-semibold text-slate-900 mb-2">Senha alterada!</h2>
-        <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+        <h2 className="text-xl font-black text-white tracking-tight mb-2">Senha alterada!</h2>
+        <p className="text-slate-400 text-sm mb-6 leading-relaxed">
           Sua senha foi redefinida com sucesso. Você será redirecionado para o login.
         </p>
         <Link href="/login">
-          <Button fullWidth variant="outline">
+          <Button fullWidth className="h-12 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
             Ir para o login
           </Button>
         </Link>
@@ -91,33 +93,43 @@ function ResetPasswordForm() {
 
   return (
     <>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-slate-900 mb-1">Nova Senha</h2>
-        <p className="text-slate-500 text-sm leading-relaxed">Crie uma nova senha segura para sua conta.</p>
+      <div className="mb-6 text-center">
+        <h2 className="text-xl font-black text-white tracking-tight mb-2">Nova Senha</h2>
+        <p className="text-slate-400 text-sm leading-relaxed">Crie uma nova senha segura para sua conta.</p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
           label="Nova senha"
           type="password"
           placeholder="******"
-          leftIcon={<Lock size={15} />}
+          leftIcon={<Lock size={15} className="text-slate-400" />}
           error={errors.password?.message as string}
           {...register('password')}
+          labelClassName="text-slate-300 font-medium tracking-wide"
+          className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
         />
         <Input
           label="Confirmar nova senha"
           type="password"
           placeholder="******"
-          leftIcon={<Lock size={15} />}
+          leftIcon={<Lock size={15} className="text-slate-400" />}
           error={errors.confirmPassword?.message as string}
           {...register('confirmPassword')}
+          labelClassName="text-slate-300 font-medium tracking-wide"
+          className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
         />
-        <Button type="submit" fullWidth size="lg" loading={isSubmitting}>
+        <Button 
+          type="submit" 
+          fullWidth 
+          size="lg" 
+          loading={isSubmitting}
+          className="h-14 rounded-2xl bg-[#C5A03F] text-black font-semibold text-xs uppercase tracking-widest shadow-xl shadow-[#C5A03F]/10 hover:bg-[#d6af4b] transition-all group"
+        >
           Redefinir Senha
         </Button>
       </form>
-      <div className="mt-5 text-center">
-        <Link href="/login" className="text-sm text-slate-400 hover:text-slate-700 flex items-center justify-center gap-1.5 transition-colors">
+      <div className="mt-6 text-center">
+        <Link href="/login" className="text-sm text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition-colors">
           <ArrowLeft size={13} />
           Voltar ao login
         </Link>
@@ -128,19 +140,35 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAFAF9]">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 mb-5 group">
-            <Logo size="lg" iconOnly className="mb-4" />
-            <span className="font-semibold text-slate-900 text-xl sr-only">EA Lumina</span>
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] px-6 py-12 selection:bg-[#C5A03F]/20 overflow-hidden">
+      <div className="relative z-10 w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        
+        {/* Logo Centralizado (Máscara Circular) */}
+        <div className="mb-8 flex justify-center">
+          <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500 block">
+            <div className="relative w-32 h-32 md:w-36 md:h-36">
+              <img
+                src="/logo-dark.jpg"
+                alt="EA Lumina"
+                className="w-full h-full object-contain"
+                style={{
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+                }}
+              />
+            </div>
           </Link>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-7">
-          <Suspense fallback={<div className="text-center text-sm text-slate-500 py-8">Carregando...</div>}>
+        <div className="bg-black/40 border border-white/5 backdrop-blur-xl shadow-2xl p-8 md:p-10 rounded-3xl">
+          <Suspense fallback={<div className="text-center text-sm text-slate-400 py-8">Carregando...</div>}>
             <ResetPasswordForm />
           </Suspense>
+        </div>
+
+        {/* Footer Minimalista */}
+        <div className="mt-12 text-center">
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
         </div>
       </div>
     </div>
