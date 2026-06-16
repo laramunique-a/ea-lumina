@@ -18,14 +18,14 @@ export const LANDING_THEME = {
 
   // Tags/Badges de categoria no topo de cada seção (ex: "Para Pacientes", "Para Empresas")
   tag: {
-    blue: "text-[10px] md:text-xs font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3",
-    gold: "text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3",
+    blue: "text-xs md:text-sm lg:text-base font-black text-[#0090FF] uppercase tracking-[0.3em] mb-2 md:mb-3",
+    gold: "text-xs md:text-sm lg:text-base font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-2 md:mb-3",
   },
 
   // Tipografia padrão
   typography: {
     // Título principal com o gradiente dourado/azul padrão do projeto
-    titleGradient: "text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent",
+    titleGradient: "text-4xl md:text-6xl lg:text-7xl font-black tracking-tight mb-4 md:mb-6 leading-tight bg-clip-text text-transparent",
     
     // O estilo CSS inline necessário para o gradiente de texto
     titleGradientStyle: {
