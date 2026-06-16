@@ -99,7 +99,7 @@ export default function LandingPage() {
     */
     <div
       ref={scrollContainerRef}
-      className="flex flex-row h-screen overflow-x-auto overflow-y-auto snap-x snap-mandatory w-full bg-[#010409] text-slate-100 font-sans [&::-webkit-scrollbar]:hidden"
+      className="flex flex-row h-[100dvh] overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full bg-[#010409] text-slate-100 font-sans [&::-webkit-scrollbar]:hidden"
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
 
@@ -108,7 +108,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="w-full min-w-full h-full snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto shrink-0"
       >
 
         {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
@@ -226,7 +226,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -279,7 +279,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="terapeutas"
-        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -354,7 +354,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="empresas"
-        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
@@ -393,7 +393,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="w-full min-w-full h-full snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
       >
         <HeaderLogo />
 
