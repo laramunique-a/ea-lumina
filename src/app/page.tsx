@@ -53,7 +53,7 @@ export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const HeaderLogo = () => (
-    <div className="hidden md:block absolute top-4 right-4 md:top-8 md:right-8 w-[120px] h-[120px] md:w-[180px] md:h-[180px] z-30 opacity-80 pointer-events-none">
+    <div className="absolute top-4 right-4 md:top-8 md:right-8 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] md:w-[180px] md:h-[180px] z-30 opacity-80 pointer-events-none">
       <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
     </div>
   )
@@ -128,8 +128,8 @@ export default function LandingPage() {
         <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between p-4 md:p-12 lg:p-20 relative z-10 min-h-full h-auto mt-6 md:mt-0 py-8 md:py-0">
           
           {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-1/2 md:h-full md:-mt-8">
-            <div className="relative w-[150px] h-[150px] sm:w-[220px] sm:h-[220px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
+          <div className="w-full md:w-1/2 flex flex-col items-center justify-center h-auto md:h-full md:-mt-8">
+            <div className="relative w-[260px] h-[260px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px] mb-0 md:mb-1">
               <img 
                 src="/logo-dark.jpg" 
                 alt="EA Lumina" 
@@ -159,7 +159,7 @@ export default function LandingPage() {
           </div>
 
           {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center h-1/2 md:h-full">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end justify-center h-auto md:h-full">
             <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
@@ -204,7 +204,7 @@ export default function LandingPage() {
             <ChevronLeft size={14} /> Voltar
           </button>
           
-          <div className="mb-6 md:mb-10 text-center shrink-0">
+          <div className="mb-6 md:mb-10 text-center shrink-0 pr-[90px] pl-[60px] md:px-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
               Sua jornada de <br className="hidden md:block"/>Luz e Equilíbrio.
@@ -249,10 +249,12 @@ export default function LandingPage() {
         </button>
 
         <div className={LANDING_THEME.section.containerCenter}>
-          <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
-          <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-            Expanda sua Luz.
-          </h2>
+          <div className="pr-[90px] pl-[60px] md:px-0 w-full mb-6 md:mb-10 text-center">
+            <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
+            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+              Expanda sua Luz.
+            </h2>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left w-full">
             <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
@@ -315,10 +317,12 @@ export default function LandingPage() {
 
         <div className={LANDING_THEME.section.containerGrid}>
           <div className="text-center md:text-left mt-8 md:mt-0 px-2 md:px-0">
-            <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Bem-estar elevado.
-            </h2>
+            <div className="pr-[90px] pl-[60px] md:px-0 w-full mb-6 md:mb-8 text-center md:text-left">
+              <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
+              <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+                Bem-estar elevado.
+              </h2>
+            </div>
             <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[500px]"}>
               Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
             </p>
@@ -346,10 +350,12 @@ export default function LandingPage() {
         </button>
 
         <div className={LANDING_THEME.section.containerCenter}>
-          <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
-          <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-            Jornada de <br className="hidden md:block"/>Aprendizado.
-          </h2>
+          <div className="pr-[90px] pl-[60px] md:px-0 w-full mb-6 md:mb-10 text-center">
+            <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
+            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+              Jornada de <br className="hidden md:block"/>Aprendizado.
+            </h2>
+          </div>
           <p className={LANDING_THEME.typography.paragraph + " mb-8 md:mb-10 max-w-[800px] px-2 md:px-4"}>
             Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
           </p>
