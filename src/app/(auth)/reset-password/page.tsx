@@ -13,7 +13,10 @@ import { Logo } from '@/components/ui/Logo'
 import toast from 'react-hot-toast'
 
 const schema = z.object({
-  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
+  password: z
+    .string()
+    .min(6, 'A senha deve ter pelo menos 6 caracteres')
+    .regex(/[0-9]/, 'A senha deve conter pelo menos um número'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'As senhas não coincidem',
@@ -105,6 +108,7 @@ function ResetPasswordForm() {
           leftIcon={<Lock size={15} className="text-slate-400" />}
           error={errors.password?.message as string}
           {...register('password')}
+          hint="Mínimo de 6 caracteres e 1 número"
           labelClassName="text-slate-300 font-medium tracking-wide"
           className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
         />

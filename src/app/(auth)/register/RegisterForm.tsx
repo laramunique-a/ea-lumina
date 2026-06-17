@@ -18,8 +18,7 @@ const registerSchema = z.object({
   email: z.string().email('E-mail inválido'),
   password: z
     .string()
-    .min(8, 'Mínimo 8 caracteres')
-    .regex(/[A-Z]/, 'Inclua ao menos uma maiúscula')
+    .min(6, 'Mínimo 6 caracteres')
     .regex(/[0-9]/, 'Inclua ao menos um número'),
   confirmPassword: z.string(),
   role: z.enum(['TERAPEUTA', 'PACIENTE']),
@@ -174,6 +173,7 @@ export default function RegisterForm() {
                 leftIcon={<Lock size={15} className="text-slate-400" />}
                 error={errors.password?.message}
                 {...register('password')}
+                hint="Mínimo de 6 caracteres e 1 número"
                 labelClassName="text-slate-300 font-medium tracking-wide"
                 className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-xs h-11 rounded-xl transition-all duration-300"
               />

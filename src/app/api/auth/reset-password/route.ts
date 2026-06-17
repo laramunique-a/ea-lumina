@@ -14,6 +14,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'A senha deve ter pelo menos 6 caracteres' }, { status: 400 });
     }
 
+    if (!/[0-9]/.test(password)) {
+      return NextResponse.json({ error: 'A senha deve conter pelo menos um número' }, { status: 400 });
+    }
+
     // Buscar o token no banco
     const resetToken = await prisma.passwordResetToken.findUnique({
       where: { token },
