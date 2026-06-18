@@ -238,10 +238,10 @@ function TerapeutaAgendaContent() {
     <div className="pb-20">
 
       {/* Tabs principais */}
-      <div className="flex gap-1 px-6 pt-4 border-b border-slate-100">
+      <div className="flex gap-1 px-6 pt-4 border-b border-slate-100 overflow-x-auto whitespace-nowrap scrollbar-none">
         <button
           onClick={() => setTab('appointments')}
-          className={`flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-3 transition-all duration-300 ${
+          className={`flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-3 transition-all duration-300 shrink-0 ${
             tab === 'appointments'
               ? 'border-[#0090FF] text-[#0090FF]'
               : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-t-xl'
@@ -252,7 +252,7 @@ function TerapeutaAgendaContent() {
         </button>
         <button
           onClick={() => setTab('availability')}
-          className={`flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-3 transition-all duration-300 ${
+          className={`flex items-center gap-2 px-5 py-3 text-sm font-bold border-b-3 transition-all duration-300 shrink-0 ${
             tab === 'availability'
               ? 'border-[#C5A03F] text-[#C5A03F]'
               : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-t-xl'
@@ -266,12 +266,12 @@ function TerapeutaAgendaContent() {
       {/* ===== TAB: AGENDAMENTOS ===== */}
       {tab === 'appointments' && (
         <div className="p-6 space-y-6">
-          <div className="flex gap-2 flex-wrap bg-slate-50 p-1.5 rounded-2xl border border-slate-100 inline-flex">
+          <div className="flex gap-2 overflow-x-auto whitespace-nowrap bg-slate-50 p-1.5 rounded-2xl border border-slate-100 w-full scrollbar-none">
             {statusTabs.map((t) => (
               <button
                 key={t.value}
                 onClick={() => setStatusFilter(t.value)}
-                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 shrink-0 ${
                   statusFilter === t.value
                     ? 'bg-white text-[#0090FF] shadow-sm ring-1 ring-slate-200'
                     : 'text-slate-500 hover:text-slate-800'

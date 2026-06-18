@@ -16,34 +16,35 @@ import { Logo } from '@/components/ui/Logo'
 
 interface NavItem {
   label: string
+  shortLabel?: string
   href: string
   icon: React.ReactNode
 }
 
 const adminNav: NavItem[] = [
-  { label: 'Dashboard',  href: '/dashboard/admin',             icon: <LayoutDashboard size={17} /> },
-  { label: 'Usuários',   href: '/dashboard/admin/users',       icon: <Users size={17} /> },
-  { label: 'Terapeutas', href: '/dashboard/admin/therapists',  icon: <UserCheck size={17} /> },
-  { label: 'Terapias',   href: '/dashboard/admin/therapies',   icon: <Tags size={17} /> },
-  { label: 'Relatórios', href: '/dashboard/admin/reports',     icon: <BarChart3 size={17} /> },
-  { label: 'Comissão',   href: '/dashboard/admin/commission',  icon: <DollarSign size={17} /> },
-  { label: 'Financeiro', href: '/dashboard/admin/financeiro',  icon: <DollarSign size={17} /> },
+  { label: 'Dashboard',  shortLabel: 'Painel', href: '/dashboard/admin',             icon: <LayoutDashboard size={17} /> },
+  { label: 'Usuários',   shortLabel: 'Usuários', href: '/dashboard/admin/users',       icon: <Users size={17} /> },
+  { label: 'Terapeutas', shortLabel: 'Terapeutas', href: '/dashboard/admin/therapists',  icon: <UserCheck size={17} /> },
+  { label: 'Terapias',   shortLabel: 'Terapias', href: '/dashboard/admin/therapies',   icon: <Tags size={17} /> },
+  { label: 'Relatórios', shortLabel: 'Relatórios', href: '/dashboard/admin/reports',     icon: <BarChart3 size={17} /> },
+  { label: 'Comissão',   shortLabel: 'Comissão', href: '/dashboard/admin/commission',  icon: <DollarSign size={17} /> },
+  { label: 'Financeiro', shortLabel: 'Financeiro', href: '/dashboard/admin/financeiro',  icon: <DollarSign size={17} /> },
 ]
 
 const therapistNav: NavItem[] = [
-  { label: 'Dashboard',  href: '/dashboard/terapeuta',         icon: <LayoutDashboard size={17} /> },
-  { label: 'Agenda e Horários', href: '/dashboard/terapeuta/agenda',  icon: <Calendar size={17} /> },
-  { label: 'Terapias e Pacotes', href: '/dashboard/terapeuta/terapias', icon: <HeartHandshake size={17} /> },
-  { label: 'Obs. Cósmico', href: '/dashboard/terapeuta/observador', icon: <Sparkles size={17} /> },
+  { label: 'Dashboard',  shortLabel: 'Painel', href: '/dashboard/terapeuta',         icon: <LayoutDashboard size={17} /> },
+  { label: 'Agenda e Horários', shortLabel: 'Agenda', href: '/dashboard/terapeuta/agenda',  icon: <Calendar size={17} /> },
+  { label: 'Terapias e Pacotes', shortLabel: 'Terapias', href: '/dashboard/terapeuta/terapias', icon: <HeartHandshake size={17} /> },
+  { label: 'Obs. Cósmico', shortLabel: 'Cósmico', href: '/dashboard/terapeuta/observador', icon: <Sparkles size={17} /> },
   // { label: 'Financeiro', href: '/dashboard/terapeuta/financeiro', icon: <DollarSign size={17} /> },
-  { label: 'Meu Perfil', href: '/dashboard/terapeuta/perfil',  icon: <Settings size={17} /> },
+  { label: 'Meu Perfil', shortLabel: 'Perfil', href: '/dashboard/terapeuta/perfil',  icon: <Settings size={17} /> },
 ]
 
 const patientNav: NavItem[] = [
-  { label: 'Dashboard',         href: '/dashboard/paciente',              icon: <LayoutDashboard size={17} /> },
-  { label: 'Buscar Terapeuta',  href: '/dashboard/paciente/buscar',       icon: <Search size={17} /> },
-  { label: 'Agendamentos',      href: '/dashboard/paciente/agendamentos', icon: <Clock size={17} /> },
-  { label: 'Meu Perfil',        href: '/dashboard/paciente/perfil',       icon: <Settings size={17} /> },
+  { label: 'Dashboard',         shortLabel: 'Painel', href: '/dashboard/paciente',              icon: <LayoutDashboard size={17} /> },
+  { label: 'Buscar Terapeuta',  shortLabel: 'Buscar', href: '/dashboard/paciente/buscar',       icon: <Search size={17} /> },
+  { label: 'Agendamentos',      shortLabel: 'Agendas', href: '/dashboard/paciente/agendamentos', icon: <Clock size={17} /> },
+  { label: 'Meu Perfil',        shortLabel: 'Perfil', href: '/dashboard/paciente/perfil',       icon: <Settings size={17} /> },
 ]
 
 const navByRole: Record<string, NavItem[]> = {
@@ -215,7 +216,7 @@ export function Sidebar({ userName, userRole, userEmail: _userEmail, avatarUrl }
                     {item.icon}
                   </span>
                 </span>
-                <span className="leading-none truncate max-w-[60px] text-center">{item.label}</span>
+                <span className="leading-none truncate max-w-[70px] text-center">{item.shortLabel || item.label}</span>
               </Link>
             )
           })}
