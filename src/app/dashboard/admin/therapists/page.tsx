@@ -176,7 +176,18 @@ export default function AdminTherapistsPage() {
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-semibold text-slate-900">{therapist.name}</h3>
+                      {therapist.therapistProfile ? (
+                        <a 
+                          href={`/dashboard/paciente/terapeuta/${therapist.therapistProfile.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold text-[#0090FF] hover:underline"
+                        >
+                          {therapist.name}
+                        </a>
+                      ) : (
+                        <h3 className="font-semibold text-slate-900">{therapist.name}</h3>
+                      )}
                       {therapist.therapistProfile?.approved ? (
                         <Badge variant="success" size="sm">Aprovado</Badge>
                       ) : (

@@ -18,7 +18,7 @@ interface User {
   active: boolean
   avatarUrl: string | null
   createdAt: string
-  therapistProfile: { approved: boolean } | null
+  therapistProfile: { id: string; approved: boolean } | null
   patientProfile: { gender: string | null } | null
 }
 
@@ -219,7 +219,18 @@ export default function AdminUsersPage() {
                             className="rounded-lg object-cover flex-shrink-0"
                           />
                           <div className="min-w-0">
-                            <p className="font-medium text-slate-900 truncate">{user.name}</p>
+                            {user.role === 'TERAPEUTA' && user.therapistProfile ? (
+                              <a 
+                                href={`/dashboard/paciente/terapeuta/${user.therapistProfile.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-[#0090FF] hover:underline truncate block"
+                              >
+                                {user.name}
+                              </a>
+                            ) : (
+                              <p className="font-medium text-slate-900 truncate">{user.name}</p>
+                            )}
                             <p className="text-xs text-slate-500 truncate">{user.email}</p>
                           </div>
                         </div>
