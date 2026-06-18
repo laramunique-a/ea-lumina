@@ -54,9 +54,10 @@ export function OnboardingChecklist({ checklist }: OnboardingChecklistProps) {
       completed: checklist.agendaComplete,
       href: '/dashboard/terapeuta/agenda?tab=availability',
     },
-  ]
+  ].filter(item => item.id !== 'financial')
 
   const completedCount = items.filter(item => item.completed).length
+  if (completedCount === items.length) return null
   const progressPercent = Math.round((completedCount / items.length) * 100)
 
   return (

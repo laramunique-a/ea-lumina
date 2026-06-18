@@ -35,7 +35,7 @@ const therapistNav: NavItem[] = [
   { label: 'Agenda',     href: '/dashboard/terapeuta/agenda',  icon: <Calendar size={17} /> },
   { label: 'Terapias',   href: '/dashboard/terapeuta/terapias', icon: <HeartHandshake size={17} /> },
   { label: 'Obs. Cósmico', href: '/dashboard/terapeuta/observador', icon: <Sparkles size={17} /> },
-  { label: 'Financeiro', href: '/dashboard/terapeuta/financeiro', icon: <DollarSign size={17} /> },
+  // { label: 'Financeiro', href: '/dashboard/terapeuta/financeiro', icon: <DollarSign size={17} /> },
   { label: 'Meu Perfil', href: '/dashboard/terapeuta/perfil',  icon: <Settings size={17} /> },
 ]
 
