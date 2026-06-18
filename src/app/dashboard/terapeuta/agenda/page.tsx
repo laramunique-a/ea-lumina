@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { CheckCircle, XCircle, Check, Clock, Save, Plus, Trash2, CalendarDays } from 'lucide-react'
+import { CheckCircle, XCircle, Check, Clock, Save, Plus, Trash2, CalendarDays, Sparkles } from 'lucide-react'
 
 // ============================================================
 // TIPOS
@@ -388,6 +388,28 @@ function TerapeutaAgendaContent() {
                 <Save size={16} />
                 Salvar Modo Atual
               </Button>
+            </div>
+
+            {/* Guia Didático Rápido */}
+            <div className="mb-8 p-5 rounded-2xl bg-amber-50/50 border border-amber-200/50 text-slate-700 text-xs leading-relaxed space-y-2">
+              <div className="flex items-center gap-2 text-amber-800 font-bold">
+                <Sparkles size={14} className="text-amber-600" />
+                <span>Como configurar seus horários de atendimento:</span>
+              </div>
+              <ul className="list-disc pl-5 space-y-1 text-slate-600 font-medium">
+                <li>
+                  <strong className="text-slate-800">Escala Semanal:</strong> Defina os dias e horários padrão que você atende normalmente toda semana.
+                </li>
+                <li>
+                  <strong className="text-slate-800">Datas Específicas:</strong> Ajuste horários de um dia específico (como feriados ou recessos) sem alterar sua rotina semanal.
+                </li>
+                <li>
+                  <strong className="text-slate-800">Criando Intervalos:</strong> Clique em <span className="text-amber-700 font-bold">+ ADICIONAR</span> no dia desejado, defina a hora de início, fim e a duração de cada atendimento.
+                </li>
+                <li>
+                  <strong className="text-amber-800 font-bold">Importante:</strong> Após qualquer alteração, sempre clique em <strong className="text-[#C5A03F] font-bold">Salvar Modo Atual</strong> para ativar seus horários na plataforma.
+                </li>
+              </ul>
             </div>
 
             {/* SELETOR DE MODO */}
