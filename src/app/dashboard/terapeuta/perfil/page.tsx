@@ -791,11 +791,6 @@ export default function TerapeutaPerfilPage() {
             </Button>
           </div>
         </div>
-
-        <Button size="lg" loading={loading} onClick={handleSave} fullWidth>
-          <Save size={18} />
-          Salvar alterações
-        </Button>
       </div>
     </div>
   )
