@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { InstallShortcutPrompt } from '@/components/InstallShortcutPrompt'
 
 export const metadata: Metadata = {
   title: {
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             error:   { iconTheme: { primary: '#e05252', secondary: '#fff' } },
           }}
         />
+        <InstallShortcutPrompt />
       </body>
     </html>
   )
