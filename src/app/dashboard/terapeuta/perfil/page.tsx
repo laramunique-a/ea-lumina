@@ -517,6 +517,7 @@ export default function TerapeutaPerfilPage() {
               value={professionalName}
               onChange={(e) => setProfessionalName(e.target.value)}
               placeholder="Ex.: Dra. Ana Silva"
+              tooltip="Nome que será exibido publicamente no seu perfil para os pacientes (ex: Dra. Ana Silva). Pode ser seu nome social, abreviado ou artístico."
             />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Data de nascimento" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="País" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Ex.: Brasil" />

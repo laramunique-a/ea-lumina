@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Info } from 'lucide-react'
 import { InputHTMLAttributes, forwardRef, useState } from 'react'
 
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -12,10 +12,11 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>
   rightIcon?: React.ReactNode
   size?: 'sm' | 'md' | 'lg'
   labelClassName?: string
+  tooltip?: string
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, labelClassName, ...props }, ref) => {
+  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, labelClassName, tooltip, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-')
     const isPassword = type === 'password'
@@ -24,9 +25,27 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={inputId} className={cn("block text-xs font-semibold text-slate-700", labelClassName)}>
-            {label}
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label htmlFor={inputId} className={cn("block text-xs font-semibold text-slate-700", labelClassName)}>
+              {label}
+            </label>
+            {tooltip && (
+              <div className="relative group inline-flex items-center">
+                <button
+                  type="button"
+                  tabIndex={0}
+                  className="text-slate-400 hover:text-slate-600 transition-colors focus:outline-none focus:text-slate-600"
+                  aria-label="Informações sobre o campo"
+                >
+                  <Info size={13} />
+                </button>
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 hidden group-hover:block group-focus-within:block bg-slate-900 text-white text-[11px] font-normal p-2.5 rounded-xl shadow-xl z-50 text-center leading-normal pointer-events-none select-none">
+                  {tooltip}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-slate-900" />
+                </div>
+              </div>
+            )}
+          </div>
         )}
         <div className="relative">
           {leftIcon && (
