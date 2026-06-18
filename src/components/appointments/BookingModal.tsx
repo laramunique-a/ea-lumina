@@ -299,7 +299,7 @@ export function BookingModal({
 
     let allSlots: string[] = []
 
-    const specificAvail = therapist.availability.filter(a => a.date && format(new Date(a.date), 'yyyy-MM-dd') === isoDate)
+    const specificAvail = therapist.availability.filter(a => a.date && a.date.split('T')[0] === isoDate)
     
     if (specificAvail.length > 0) {
       specificAvail.forEach(avail => {

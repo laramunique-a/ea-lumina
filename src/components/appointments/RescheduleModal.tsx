@@ -69,7 +69,7 @@ export function RescheduleModal({
     const isoDate = format(date, 'yyyy-MM-dd')
     const dayOfWeek = date.getDay()
 
-    const specificAvail = therapistData.availability.filter((a: any) => a.date && format(new Date(a.date), 'yyyy-MM-dd') === isoDate)
+    const specificAvail = therapistData.availability.filter((a: any) => a.date && a.date.split('T')[0] === isoDate)
     
     if (specificAvail.length > 0) {
       const allSlots: string[] = []
@@ -93,7 +93,7 @@ export function RescheduleModal({
     const isoDate = format(date, 'yyyy-MM-dd')
     const dayOfWeek = date.getDay()
     return therapistData.availability.some((a: any) => 
-      (a.date && format(new Date(a.date), 'yyyy-MM-dd') === isoDate) || 
+      (a.date && a.date.split('T')[0] === isoDate) || 
       (a.dayOfWeek === dayOfWeek && !a.date)
     )
   }

@@ -282,12 +282,29 @@ export async function POST(request: NextRequest) {
     const sessionStartMin = timeToMinutes(timeStr)
     const sessionEndMin = sessionStartMin + durationMinutes
 
-    const hasAvailability = therapist.availability.some((a) => {
-      if (a.dayOfWeek !== dayOfWeek) return false
-      const blockStart = timeToMinutes(a.startTime)
-      const blockEnd = timeToMinutes(a.endTime)
-      return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
-    })
+    const specificAvail = therapist.availability.filter(
+      (a) => a.date && a.date.toISOString().split('T')[0] === date
+    )
+
+    let hasAvailability = false
+
+    if (specificAvail.length > 0) {
+      hasAvailability = specificAvail.some((a) => {
+        const blockStart = timeToMinutes(a.startTime)
+        const blockEnd = timeToMinutes(a.endTime)
+        return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
+      })
+    } else {
+      const weeklyAvail = therapist.availability.filter(
+        (a) => a.dayOfWeek === dayOfWeek && !a.date
+      )
+      hasAvailability = weeklyAvail.some((a) => {
+        const blockStart = timeToMinutes(a.startTime)
+        const blockEnd = timeToMinutes(a.endTime)
+        return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
+      })
+    }
+
     if (!hasAvailability) {
       return NextResponse.json({ success: false, error: 'Horário não disponível' }, { status: 400 })
     }
