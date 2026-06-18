@@ -404,7 +404,7 @@ function TerapeutaAgendaContent() {
                   <strong className="text-slate-800">Datas Específicas:</strong> Ajuste horários de um dia específico (como feriados ou recessos) sem alterar sua rotina semanal.
                 </li>
                 <li>
-                  <strong className="text-slate-800">Criando Intervalos:</strong> Clique em <span className="text-amber-700 font-bold">+ ADICIONAR</span> no dia desejado, defina a hora de início, fim e a duração de cada atendimento.
+                  <strong className="text-slate-800">Definindo Horários:</strong> Clique em <span className="text-amber-700 font-bold">+ ADICIONAR</span> no dia desejado para definir o horário de início e fim da sua disponibilidade.
                 </li>
                 <li>
                   <strong className="text-amber-800 font-bold">Importante:</strong> Após qualquer alteração, sempre clique em <strong className="text-[#C5A03F] font-bold">Salvar Modo Atual</strong> para ativar seus horários na plataforma.
