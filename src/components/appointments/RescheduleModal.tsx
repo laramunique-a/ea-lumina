@@ -16,6 +16,7 @@ interface Availability {
   startTime: string
   endTime: string
   slotDuration: number
+  active?: boolean
 }
 
 interface RescheduleModalProps {
@@ -73,13 +74,14 @@ export function RescheduleModal({
     
     if (specificAvail.length > 0) {
       const allSlots: string[] = []
-      specificAvail.forEach((avail: any) => {
+      const activeSpecific = specificAvail.filter((a: any) => a.active)
+      activeSpecific.forEach((avail: any) => {
         allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
       })
       return Array.from(new Set(allSlots)).sort()
     }
 
-    const weeklyAvail = therapistData.availability.filter((a: any) => a.dayOfWeek === dayOfWeek && !a.date)
+    const weeklyAvail = therapistData.availability.filter((a: any) => a.dayOfWeek === dayOfWeek && !a.date && a.active)
     const allSlots: string[] = []
     weeklyAvail.forEach((avail: any) => {
       allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
@@ -90,12 +92,7 @@ export function RescheduleModal({
   const isDateAvailable = (date: Date): boolean => {
     if (date < startOfDay(new Date())) return false
     if (!therapistData) return false
-    const isoDate = format(date, 'yyyy-MM-dd')
-    const dayOfWeek = date.getDay()
-    return therapistData.availability.some((a: any) => 
-      (a.date && a.date.split('T')[0] === isoDate) || 
-      (a.dayOfWeek === dayOfWeek && !a.date)
-    )
+    return getAvailableSlotsForDate(date).length > 0
   }
 
   const handleReschedule = async () => {

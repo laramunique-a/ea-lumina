@@ -172,6 +172,17 @@ function TerapeutaAgendaContent() {
     setSlots((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)))
   }
 
+  const blockDay = () => {
+    setSlots((prev) => [
+      ...prev.filter((s) => s.date !== selectedDate),
+      { date: selectedDate, startTime: '00:00', endTime: '00:00', slotDuration: 60, active: false },
+    ])
+  }
+
+  const unblockDay = () => {
+    setSlots((prev) => prev.filter((s) => s.date !== selectedDate))
+  }
+
   const saveAvailability = async () => {
     setSavingAvail(true)
     try {
@@ -508,35 +519,72 @@ function TerapeutaAgendaContent() {
                   </div>
                 ) : (
                   // LISTA POR DATA
-                  <div className="bg-white rounded-3xl border-2 border-dashed border-blue-100 p-6">
-                    <div className="flex items-center justify-between mb-6">
-                       <h3 className="font-black text-slate-900 tracking-tight">
-                         Escala para: <span className="text-[#0090FF]">{formatDateTime(selectedDate).split(' ')[0]}</span>
-                       </h3>
-                       <button
-                         onClick={() => addSlot(undefined, selectedDate)}
-                         className="px-4 py-2 bg-[#0090FF] text-white rounded-xl text-xs font-bold hover:bg-blue-600 shadow-md shadow-blue-100 flex items-center gap-2"
-                       >
-                         <Plus size={14} /> Novo Horário
-                       </button>
-                    </div>
+                  (() => {
+                    const daySlots = slots.filter(s => s.date === selectedDate)
+                    const isDayBlocked = daySlots.length === 1 && daySlots[0].active === false
 
-                    {slots.filter(s => s.date === selectedDate).length > 0 ? (
-                      <div className="space-y-3">
-                        {slots.map((s, i) => ({ ...s, index: i }))
-                              .filter(s => s.date === selectedDate)
-                              .map(slot => (
-                                 <SlotItem key={slot.index} slot={slot} onUpdate={updateSlot} onRemove={removeSlot} />
-                              ))}
+                    return (
+                      <div className={cn(
+                        "bg-white rounded-3xl p-6 border-2 transition-all duration-300",
+                        isDayBlocked ? "border-red-100 bg-red-50/10" : "border-dashed border-blue-100"
+                      )}>
+                        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                          <h3 className="font-black text-slate-900 tracking-tight">
+                            Escala para: <span className="text-[#0090FF]">{formatDateTime(selectedDate).split(' ')[0]}</span>
+                          </h3>
+                          <div className="flex gap-2">
+                            {isDayBlocked ? (
+                              <button
+                                onClick={unblockDay}
+                                className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-200 transition-all border border-slate-200"
+                              >
+                                Desbloquear Dia
+                              </button>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={blockDay}
+                                  className="px-4 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold hover:bg-red-100 transition-all border border-red-200"
+                                >
+                                  Bloquear Dia
+                                </button>
+                                <button
+                                  onClick={() => addSlot(undefined, selectedDate)}
+                                  className="px-4 py-2 bg-[#0090FF] text-white rounded-xl text-xs font-bold hover:bg-blue-600 shadow-md shadow-blue-100 flex items-center gap-2"
+                                >
+                                  <Plus size={14} /> Novo Horário
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {isDayBlocked ? (
+                          <div className="text-center py-12 bg-red-50/20 rounded-2xl border border-red-100/50 p-6">
+                            <span className="text-3xl">🚫</span>
+                            <h4 className="text-sm font-bold text-red-700 mt-3">Dia bloqueado para atendimentos</h4>
+                            <p className="text-xs text-red-500 mt-1 font-medium max-w-sm mx-auto leading-relaxed">
+                              Nenhum paciente poderá agendar sessões com você nesta data. Para voltar a receber agendamentos ou usar a escala semanal, clique em "Desbloquear Dia".
+                            </p>
+                          </div>
+                        ) : daySlots.length > 0 ? (
+                          <div className="space-y-3">
+                            {slots.map((s, i) => ({ ...s, index: i }))
+                                  .filter(s => s.date === selectedDate)
+                                  .map(slot => (
+                                     <SlotItem key={slot.index} slot={slot} onUpdate={updateSlot} onRemove={removeSlot} />
+                                  ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <CalendarDays size={40} className="mx-auto text-slate-200 mb-4" />
+                            <p className="text-sm text-slate-400 font-medium">Nenhum horário exclusivo para este dia.</p>
+                            <p className="text-[10px] text-slate-300 mt-1 uppercase font-bold tracking-widest">Neste caso, vale a escala semanal padrão.</p>
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <CalendarDays size={40} className="mx-auto text-slate-200 mb-4" />
-                        <p className="text-sm text-slate-400 font-medium">Nenhum horário exclusivo para este dia.</p>
-                        <p className="text-[10px] text-slate-300 mt-1 uppercase font-bold tracking-widest">Neste caso, vale a escala semanal padrão.</p>
-                      </div>
-                    )}
-                  </div>
+                    )
+                  })()
                 )}
               </div>
             </div>

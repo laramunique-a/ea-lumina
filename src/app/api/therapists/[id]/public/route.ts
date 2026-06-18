@@ -25,8 +25,7 @@ export async function GET(
           select: { id: true, name: true, avatarUrl: true, phone: true },
         },
         availability: {
-          where: { active: true },
-          select: { dayOfWeek: true, startTime: true, endTime: true, slotDuration: true },
+          select: { dayOfWeek: true, startTime: true, endTime: true, slotDuration: true, date: true, active: true },
         },
         services: {
           where: { active: true },

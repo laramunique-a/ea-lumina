@@ -20,6 +20,7 @@ interface Availability {
   startTime: string
   endTime: string
   slotDuration: number
+  active?: boolean
 }
 
 interface PatientPackage {
@@ -302,11 +303,12 @@ export function BookingModal({
     const specificAvail = therapist.availability.filter(a => a.date && a.date.split('T')[0] === isoDate)
     
     if (specificAvail.length > 0) {
-      specificAvail.forEach(avail => {
+      const activeSpecific = specificAvail.filter(a => a.active)
+      activeSpecific.forEach(avail => {
         allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
       })
     } else {
-      const weeklyAvail = therapist.availability.filter(a => a.dayOfWeek === dayOfWeek && !a.date)
+      const weeklyAvail = therapist.availability.filter(a => a.dayOfWeek === dayOfWeek && !a.date && a.active)
       weeklyAvail.forEach(avail => {
         allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
       })

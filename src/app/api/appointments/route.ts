@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
     const therapist = await prisma.therapistProfile.findFirst({
       where: { id: therapistProfileId, approved: true, user: { active: true } },
       include: {
-        availability: { where: { active: true } },
+        availability: true,
         services: { 
           where: { active: true }, 
           include: { 
@@ -289,14 +289,15 @@ export async function POST(request: NextRequest) {
     let hasAvailability = false
 
     if (specificAvail.length > 0) {
-      hasAvailability = specificAvail.some((a) => {
+      const activeSpecific = specificAvail.filter((a) => a.active)
+      hasAvailability = activeSpecific.some((a) => {
         const blockStart = timeToMinutes(a.startTime)
         const blockEnd = timeToMinutes(a.endTime)
         return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
       })
     } else {
       const weeklyAvail = therapist.availability.filter(
-        (a) => a.dayOfWeek === dayOfWeek && !a.date
+        (a) => a.dayOfWeek === dayOfWeek && !a.date && a.active
       )
       hasAvailability = weeklyAvail.some((a) => {
         const blockStart = timeToMinutes(a.startTime)
