@@ -530,15 +530,11 @@ export default function TerapeutaPerfilPage() {
               disabled={uploadBusy}
             />
             <div className="md:col-span-2">
-              <Input
-                label="Documento de identidade / Passaporte"
-                value={documentId}
-                onChange={(e) => setDocumentId(e.target.value)}
-                placeholder="Número do documento"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <p className="text-sm font-medium text-slate-700 mb-1">Comprovante de identidade</p>
+              <p className="text-sm font-medium text-slate-700 mb-1">Comprovante de Identidade</p>
+              <p className="text-xs text-slate-500 mb-3 leading-relaxed">
+                Anexe um documento de identificação válido para verificação do seu perfil. Após o envio, seu cadastro será analisado pelos administradores da plataforma.<br />
+                <strong>Documentos aceitos:</strong> RG, CNH ou Passaporte.
+              </p>
               <div className="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="text-sm font-medium text-slate-800">Arquivo enviado</span>
