@@ -668,13 +668,13 @@ export default function TerapeutaPerfilPage() {
         </div>
 
 
-        {/* Perfil profissional */}
+        {/* Sobre o profissional */}
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
-          <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Perfil profissional</h2></div>
+          <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Sobre o profissional</h2></div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Descrição profissional (biografia)</label>
             <p className="text-xs text-slate-500 mb-2">
-              Guia: quem você é, o que faz, quem ajuda e qual é o seu enfoque. Texto de apresentação entre 100 e 300 palavras.
+              Guia: quem você é, o que faz, quem ajuda e qual é o seu enfoque. Texto de apresentação entre 100 e 1000 palavras.
             </p>
             <textarea
               value={bio}
@@ -683,34 +683,9 @@ export default function TerapeutaPerfilPage() {
               placeholder="Descreva sua experiência, abordagem e diferenciais..."
               className="w-full px-4 py-3 text-sm border border-slate-100/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0090FF]/20 resize-none"
             />
-            <p className={`mt-1 text-xs ${bio.trim().split(/\s+/).filter(Boolean).length < 100 || bio.trim().split(/\s+/).filter(Boolean).length > 300 ? 'text-amber-600' : 'text-slate-500'}`}>
-              {bio.trim() ? `${bio.trim().split(/\s+/).filter(Boolean).length} palavras` : '0 palavras'} (mín. 100, máx. 300)
+            <p className={`mt-1 text-xs ${bio.trim().split(/\s+/).filter(Boolean).length < 100 || bio.trim().split(/\s+/).filter(Boolean).length > 1000 ? 'text-amber-600' : 'text-slate-500'}`}>
+              {bio.trim() ? `${bio.trim().split(/\s+/).filter(Boolean).length} palavras` : '0 palavras'} (mín. 100, máx. 1000)
             </p>
-          </div>
-          <div>
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Anos de experiência" type="number" value={yearsExp} onChange={(e) => setYearsExp(e.target.value)} />
-          </div>
-
-          <div className="flex justify-end pt-4 border-t border-slate-100">
-            <Button size="md" loading={loading} onClick={handleSave}>
-              <Save size={16} />
-              Salvar alterações
-            </Button>
-          </div>
-        </div>
-
-        {/* Público alvo */}
-        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
-          <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Público alvo e metas</h2></div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Qual seu público alvo?</label>
-            <textarea
-              value={publicTargetDescription}
-              onChange={(e) => setPublicTargetDescription(e.target.value)}
-              rows={3}
-              placeholder="Ex.: Adultos com ansiedade, idosos, gestantes, pessoas em processo de luto..."
-              className="w-full px-4 py-3 text-sm border border-slate-100/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0090FF]/20 resize-none"
-            />
           </div>
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
