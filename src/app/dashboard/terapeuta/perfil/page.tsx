@@ -603,6 +603,13 @@ export default function TerapeutaPerfilPage() {
               </div>
             </div>
           </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-100">
+            <Button size="md" loading={loading} onClick={handleSave}>
+              <Save size={16} />
+              Salvar alterações
+            </Button>
+          </div>
         </div>
 
         {/* Dados de contato */}
@@ -651,6 +658,13 @@ export default function TerapeutaPerfilPage() {
               ))}
             </div>
           </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-100">
+            <Button size="md" loading={loading} onClick={handleSave}>
+              <Save size={16} />
+              Salvar alterações
+            </Button>
+          </div>
         </div>
 
 
@@ -676,6 +690,13 @@ export default function TerapeutaPerfilPage() {
           <div>
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Anos de experiência" type="number" value={yearsExp} onChange={(e) => setYearsExp(e.target.value)} />
           </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-100">
+            <Button size="md" loading={loading} onClick={handleSave}>
+              <Save size={16} />
+              Salvar alterações
+            </Button>
+          </div>
         </div>
 
         {/* Público alvo */}
@@ -690,6 +711,13 @@ export default function TerapeutaPerfilPage() {
               placeholder="Ex.: Adultos com ansiedade, idosos, gestantes, pessoas em processo de luto..."
               className="w-full px-4 py-3 text-sm border border-slate-100/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0090FF]/20 resize-none"
             />
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-100">
+            <Button size="md" loading={loading} onClick={handleSave}>
+              <Save size={16} />
+              Salvar alterações
+            </Button>
           </div>
         </div>
 
@@ -779,6 +807,13 @@ export default function TerapeutaPerfilPage() {
                 <p className="text-sm text-slate-400 font-medium">Nenhum certificado adicionado ainda.</p>
               </div>
             )}
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-slate-100">
+            <Button size="md" loading={loading} onClick={handleSave}>
+              <Save size={16} />
+              Salvar alterações
+            </Button>
           </div>
         </div>
 
