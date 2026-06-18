@@ -6,6 +6,7 @@ import { StarRating } from '@/components/ui/StarRating'
 import { formatCurrency, getAvatarUrl } from '@/lib/utils'
 import { CheckCircle, XCircle, Eye, Download, FileText, AlertCircle } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import { withAuth } from '@/lib/auth-fetch'
@@ -177,14 +178,12 @@ export default function AdminTherapistsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       {therapist.therapistProfile ? (
-                        <a 
+                        <Link 
                           href={`/dashboard/paciente/terapeuta/${therapist.therapistProfile.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="font-semibold text-[#0090FF] hover:underline"
                         >
                           {therapist.name}
-                        </a>
+                        </Link>
                       ) : (
                         <h3 className="font-semibold text-slate-900">{therapist.name}</h3>
                       )}

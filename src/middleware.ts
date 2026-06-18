@@ -9,6 +9,7 @@ import { verifyAccessToken } from '@/lib/auth'
 const PROTECTED_ROUTES: Record<string, string[]> = {
   '/dashboard/admin':     ['ADMIN'],
   '/dashboard/terapeuta': ['TERAPEUTA'],
+  '/dashboard/paciente/terapeuta': ['PACIENTE', 'ADMIN'],
   '/dashboard/paciente':  ['PACIENTE'],
   '/api/admin':           ['ADMIN'],
   '/api/availability':    ['TERAPEUTA', 'ADMIN'],

@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/Badge'
 import { getAvatarUrl, formatDate } from '@/lib/utils'
 import { Search, UserCheck, Users, ShieldAlert, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 
@@ -220,14 +221,12 @@ export default function AdminUsersPage() {
                           />
                           <div className="min-w-0">
                             {user.role === 'TERAPEUTA' && user.therapistProfile ? (
-                              <a 
+                              <Link 
                                 href={`/dashboard/paciente/terapeuta/${user.therapistProfile.id}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 className="font-medium text-[#0090FF] hover:underline truncate block"
                               >
                                 {user.name}
-                              </a>
+                              </Link>
                             ) : (
                               <p className="font-medium text-slate-900 truncate">{user.name}</p>
                             )}
