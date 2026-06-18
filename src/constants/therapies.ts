@@ -3,17 +3,17 @@
  * @see `/api/therapy-types`, `/dashboard/admin/therapies`
  */
 export const SEED_THERAPY_TYPE_NAMES = [
-  'ThetaHealing',
-  'Terapias energéticas',
-  'Reiki',
-  'Registros Akáshicos',
+  'Biomagnetismo',
+  'Coaching',
+  'Constelações familiares',
   'Cura quântica',
+  'Hipnose',
+  'Registros Akáshicos',
+  'Reiki',
   'Terapia emocional',
   'Terapia espiritual',
-  'Constelações familiares',
-  'Coaching',
-  'Hipnose',
-  'Biomagnetismo',
+  'Terapias energéticas',
+  'ThetaHealing',
 ] as const
 
 /** Opções do modal “Adicionar terapia” no painel do terapeuta (presets + Outras). */

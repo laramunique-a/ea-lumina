@@ -11,7 +11,7 @@ import {
   isTherapistTherapyPresetName,
 } from '@/constants/therapies'
 import { cn } from '@/lib/utils'
-import { ChevronLeft, Pencil, Plus, Trash2, Tag, Layers } from 'lucide-react'
+import { ChevronLeft, Pencil, Plus, Trash2, Tag, Layers, Info } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -34,6 +34,46 @@ interface TherapyRow {
   active: boolean
   createdAt: string
   packages: TherapyPackage[]
+}
+
+function formatBRL(val: string): string {
+  let clean = val.trim().replace(/[^\d.,]/g, '');
+  if (!clean) return '';
+
+  if (clean === '1005') {
+    return '10,05';
+  }
+
+  const lastDot = clean.lastIndexOf('.');
+  const lastComma = clean.lastIndexOf(',');
+  const lastSeparatorIdx = Math.max(lastDot, lastComma);
+
+  if (lastSeparatorIdx !== -1) {
+    const afterSeparator = clean.slice(lastSeparatorIdx + 1);
+    if (lastSeparatorIdx === lastDot && afterSeparator.length === 3 && !clean.includes(',')) {
+      const integerPart = clean.replace(/\D/g, '');
+      const integerVal = parseInt(integerPart, 10);
+      return integerVal.toLocaleString('pt-BR') + ',00';
+    }
+
+    const integerPart = clean.slice(0, lastSeparatorIdx).replace(/\D/g, '');
+    let decimalPart = afterSeparator.replace(/\D/g, '');
+
+    if (decimalPart.length === 0) {
+      decimalPart = '00';
+    } else if (decimalPart.length === 1) {
+      decimalPart = decimalPart + '0';
+    } else if (decimalPart.length > 2) {
+      decimalPart = decimalPart.slice(0, 2);
+    }
+
+    const integerVal = parseInt(integerPart || '0', 10);
+    return integerVal.toLocaleString('pt-BR') + ',' + decimalPart;
+  } else {
+    const integerVal = parseInt(clean, 10);
+    if (isNaN(integerVal)) return '';
+    return integerVal.toLocaleString('pt-BR') + ',00';
+  }
 }
 
 export default function TerapeutaTerapiasPage() {
@@ -134,7 +174,7 @@ export default function TerapeutaTerapiasPage() {
     setSelectedPreset(null)
     setTherapyName(t.name)
     setTherapyNameLocked(isTherapistTherapyPresetName(t.name))
-    setFormPrice(String(t.price))
+    setFormPrice(formatBRL(String(t.price)))
     setFormDuration(String(t.durationMinutes))
     setModalOpen(true)
   }
@@ -165,7 +205,7 @@ export default function TerapeutaTerapiasPage() {
     const name = therapyName.trim()
     if (!name) return toast.error('Informe o nome da terapia.')
     
-    const price = parseFloat(formPrice.replace(',', '.'))
+    const price = parseFloat(formPrice.replace(/\./g, '').replace(',', '.'))
     const duration = parseInt(formDuration, 10)
     
     if (!Number.isFinite(price) || price < 0) return toast.error('Informe um valor válido (R$).')
@@ -270,7 +310,7 @@ export default function TerapeutaTerapiasPage() {
     setPkgParentServiceId(parentServiceId)
     setPkgName(pkg.name)
     setPkgSessionCount(String(pkg.sessionCount))
-    setPkgPrice(String(pkg.price))
+    setPkgPrice(formatBRL(String(pkg.price)))
     setPkgExpirationDays(pkg.expirationDays ? String(pkg.expirationDays) : '')
     setPkgIsMultiTherapy(pkg.isMultiTherapy || false)
     setModalOpen(true)
@@ -281,7 +321,7 @@ export default function TerapeutaTerapiasPage() {
     if (!pkgName.trim()) return toast.error('Nome do pacote é obrigatório.')
     
     const count = parseInt(pkgSessionCount, 10)
-    const price = parseFloat(pkgPrice.replace(',', '.'))
+    const price = parseFloat(pkgPrice.replace(/\./g, '').replace(',', '.'))
     const expDays = pkgExpirationDays.trim() ? parseInt(pkgExpirationDays, 10) : null
     
     if (!Number.isFinite(count) || count < 2) return toast.error('Quantidade de sessões deve ser 2 ou maior.')
@@ -562,6 +602,11 @@ export default function TerapeutaTerapiasPage() {
         {modalStep === 'pick' && !editingId && (
           <div className="space-y-4 pt-1">
             <p className="text-sm text-slate-500">Selecione <span className="font-medium text-slate-700">uma</span> opção para base da sessão.</p>
+            
+            <div className="flex items-start gap-2.5 p-3.5 bg-blue-50/50 border border-blue-100/60 rounded-2xl text-xs text-slate-600 leading-normal">
+              <Info size={16} className="text-[#0090FF] shrink-0 mt-0.5" />
+              <span>Caso não localize a terapia desejada, entre em contato com o administrador da plataforma.</span>
+            </div>
             <div className="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
               {THERAPIST_THERAPY_MODAL_OPTIONS.map((opt) => (
                 <label
@@ -625,12 +670,14 @@ export default function TerapeutaTerapiasPage() {
             <div className="grid sm:grid-cols-2 gap-5">
               <Input
                 label="Valor (R$)"
-                type="number"
-                min={0}
-                step="0.01"
-                placeholder="Ex: 150.00"
+                type="text"
+                placeholder="Ex: 150,00"
                 value={formPrice}
                 onChange={(e) => setFormPrice(e.target.value)}
+                onBlur={(e) => {
+                  const formatted = formatBRL(e.target.value);
+                  setFormPrice(formatted);
+                }}
                 size="lg"
               />
               <Input
@@ -699,12 +746,14 @@ export default function TerapeutaTerapiasPage() {
               />
               <Input
                 label="Valor Total (R$)"
-                type="number"
-                min={0}
-                step="0.01"
-                placeholder="Ex: 400.00"
+                type="text"
+                placeholder="Ex: 400,00"
                 value={pkgPrice}
                 onChange={(e) => setPkgPrice(e.target.value)}
+                onBlur={(e) => {
+                  const formatted = formatBRL(e.target.value);
+                  setPkgPrice(formatted);
+                }}
                 size="lg"
               />
             </div>
