@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 interface OnboardingChecklistProps {
   checklist: {
     profileComplete: boolean
+    therapiesComplete: boolean
     documentComplete: boolean
     financialComplete: boolean
     agendaComplete: boolean
@@ -21,9 +22,16 @@ export function OnboardingChecklist({ checklist }: OnboardingChecklistProps) {
     {
       id: 'profile',
       label: 'Completar informações do perfil',
-      description: 'Preencha sua biografia, nome profissional e terapias.',
+      description: 'Preencha seu nome profissional, país, estado, telefone, e-mail e biografia.',
       completed: checklist.profileComplete,
       href: '/dashboard/terapeuta/perfil',
+    },
+    {
+      id: 'therapies',
+      label: 'Cadastrar especialidades e terapias',
+      description: 'Selecione as terapias e técnicas que você oferece.',
+      completed: checklist.therapiesComplete,
+      href: '/dashboard/terapeuta/terapias',
     },
     {
       id: 'document',

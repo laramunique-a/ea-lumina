@@ -41,8 +41,15 @@ async function getTherapistData(userId: string) {
   // Verificações de Completude
   const hasBio = !!therapist.bio && therapist.bio.length > 10
   const hasProfessionalName = !!therapist.professionalName
-  const hasTherapies = therapist.therapies.length > 0
-  const profileComplete = hasBio && hasProfessionalName && hasTherapies
+  const hasCountry = !!therapist.country
+  const hasState = !!therapist.state
+  const hasWhatsapp = !!therapist.whatsapp
+  const hasProfessionalEmail = !!therapist.professionalEmail
+  const hasModality = !!therapist.modality
+  
+  const profileComplete = hasBio && hasProfessionalName && hasCountry && hasState && hasWhatsapp && hasProfessionalEmail && hasModality
+
+  const therapiesComplete = therapist.therapies.length > 0
 
   const documentComplete = !!therapist.documentUrl
 
@@ -54,7 +61,7 @@ async function getTherapistData(userId: string) {
 
   const agendaComplete = availabilityCount > 0
 
-  const allComplete = profileComplete && documentComplete && financialComplete && agendaComplete
+  const allComplete = profileComplete && therapiesComplete && documentComplete && financialComplete && agendaComplete
 
   // Se tudo foi concluído, envia notificação de boas-vindas caso ainda não tenha sido enviada
   if (allComplete) {
@@ -84,6 +91,7 @@ async function getTherapistData(userId: string) {
     totalRevenue: Number(revenue._sum.therapistNet) || 0,
     checklist: {
       profileComplete,
+      therapiesComplete,
       documentComplete,
       financialComplete,
       agendaComplete,
