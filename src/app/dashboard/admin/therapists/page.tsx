@@ -185,17 +185,6 @@ export default function AdminTherapistsPage() {
                       {!therapist.active && <Badge variant="danger" size="sm">Inativo</Badge>}
                     </div>
                     <p className="text-sm text-slate-500 truncate">{therapist.email}</p>
-                    {therapist.therapistProfile && (
-                      <div className="flex items-center gap-3 mt-1 flex-wrap">
-                        <span className="text-xs text-slate-500">
-                          {therapist.therapistProfile.therapies.slice(0, 2).join(', ')}
-                        </span>
-                        <span className="text-xs font-medium text-slate-700">
-                          {formatCurrency(therapist.therapistProfile.price)}/sessão
-                        </span>
-                        <StarRating value={therapist.therapistProfile.rating} size="sm" showValue />
-                      </div>
-                    )}
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0 flex-wrap justify-end">
                     {/* Documento de identidade */}
