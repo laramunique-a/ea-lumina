@@ -24,6 +24,7 @@ const patchTherapySchema = z.object({
     price: z.number().min(0),
     expirationDays: z.number().int().min(0).optional().nullable(),
     isMultiTherapy: z.boolean().optional(),
+    allowedServices: z.array(z.string()).optional(),
     active: z.boolean().optional(),
   })).optional(),
 })
@@ -117,6 +118,7 @@ export async function PATCH(
                 price: pkg.price,
                 expirationDays: pkg.expirationDays,
                 isMultiTherapy: pkg.isMultiTherapy ?? false,
+                allowedServices: pkg.allowedServices ?? [],
                 active: pkg.active ?? true,
               },
             })
@@ -129,6 +131,7 @@ export async function PATCH(
                 price: pkg.price,
                 expirationDays: pkg.expirationDays,
                 isMultiTherapy: pkg.isMultiTherapy ?? false,
+                allowedServices: pkg.allowedServices ?? [],
                 active: pkg.active ?? true,
               },
             })
@@ -167,6 +170,7 @@ export async function PATCH(
           price: Number(p.price),
           expirationDays: p.expirationDays,
           isMultiTherapy: p.isMultiTherapy,
+          allowedServices: p.allowedServices,
           active: p.active
         }))
       },

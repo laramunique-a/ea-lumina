@@ -103,6 +103,7 @@ export async function GET(request: NextRequest) {
                   price: true,
                   expirationDays: true,
                   isMultiTherapy: true,
+                  allowedServices: true,
                 },
               },
             },

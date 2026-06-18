@@ -49,6 +49,7 @@ export async function GET(
                 price: true,
                 expirationDays: true,
                 isMultiTherapy: true,
+                allowedServices: true,
               },
             },
           },
@@ -105,6 +106,7 @@ export async function GET(
         price: Number(p.price),
         expirationDays: p.expirationDays,
         isMultiTherapy: p.isMultiTherapy,
+        allowedServices: p.allowedServices,
       })),
     }))
     const listingPrice = listingPriceFromServices(

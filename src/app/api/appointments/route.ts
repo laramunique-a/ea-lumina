@@ -198,7 +198,19 @@ export async function POST(request: NextRequest) {
       }
 
       // Validar se o pacote serve para esta terapia
-      if (!patientPkg.package.isMultiTherapy && patientPkg.package.serviceId !== serviceId) {
+      const pkg = patientPkg.package
+      let allowed = false
+      if (!pkg.isMultiTherapy) {
+        allowed = pkg.serviceId === serviceId
+      } else {
+        if (pkg.allowedServices.length === 0) {
+          allowed = true // Permite todas as terapias
+        } else {
+          allowed = pkg.allowedServices.includes(serviceId || '')
+        }
+      }
+
+      if (!allowed) {
          return NextResponse.json({ success: false, error: 'Este pacote não pode ser usado para esta terapia.' }, { status: 400 })
       }
 

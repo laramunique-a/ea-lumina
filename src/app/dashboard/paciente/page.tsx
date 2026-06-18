@@ -26,7 +26,13 @@ async function getDashboardData(userId: string) {
                     therapist: {
                       select: {
                         professionalName: true,
-                        user: { select: { name: true, avatarUrl: true } }
+                        user: { select: { name: true, avatarUrl: true } },
+                        services: {
+                          select: {
+                            id: true,
+                            name: true
+                          }
+                        }
                       }
                     }
                   }
@@ -246,7 +252,17 @@ export default async function PacienteDashboardPage() {
 
                   <div className="mt-2 flex-1">
                     <p className="text-[10px] text-slate-500 font-medium">
-                      Pacote válido para: <span className="text-brand-600 font-bold uppercase">{p.package.service?.name || 'Multi-terapia'}</span>
+                      Pacote válido para:{' '}
+                      <span className="text-brand-600 font-bold uppercase">
+                        {p.package.isMultiTherapy
+                          ? p.package.allowedServices && p.package.allowedServices.length > 0
+                            ? p.package.allowedServices
+                                .map((id) => p.package.service?.therapist?.services?.find((s) => s.id === id)?.name)
+                                .filter(Boolean)
+                                .join(', ')
+                            : 'Todas as terapias'
+                          : p.package.service?.name || 'Sessão Individual'}
+                      </span>
                     </p>
                   </div>
 

@@ -30,6 +30,7 @@ const createTherapySchema = z.object({
     price: z.number().min(0, 'Valor do pacote inválido'),
     expirationDays: z.number().int().min(0).optional().nullable(),
     isMultiTherapy: z.boolean().optional(),
+    allowedServices: z.array(z.string()).optional(),
   })).optional(),
 })
 
@@ -61,6 +62,7 @@ export async function GET(request: NextRequest) {
         price: Number(p.price),
         expirationDays: p.expirationDays,
         isMultiTherapy: p.isMultiTherapy,
+        allowedServices: p.allowedServices,
         active: p.active
       }))
     }))
@@ -110,6 +112,7 @@ export async function POST(request: NextRequest) {
             price: p.price,
             expirationDays: p.expirationDays,
             isMultiTherapy: p.isMultiTherapy ?? false,
+            allowedServices: p.allowedServices ?? [],
           }))
         } : undefined
       },
@@ -137,6 +140,7 @@ export async function POST(request: NextRequest) {
           price: Number(p.price),
           expirationDays: p.expirationDays,
           isMultiTherapy: p.isMultiTherapy,
+          allowedServices: p.allowedServices,
           active: p.active
         }))
       },

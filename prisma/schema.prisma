@@ -381,6 +381,7 @@ model TherapyPackage {
   price           Decimal          @db.Decimal(10, 2)
   expirationDays  Int?
   isMultiTherapy  Boolean          @default(false)
+  allowedServices String[]         @default([])
   active          Boolean          @default(true)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt

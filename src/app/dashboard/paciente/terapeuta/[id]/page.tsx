@@ -18,6 +18,7 @@ interface TherapyPackage {
   price: number
   expirationDays?: number | null
   isMultiTherapy?: boolean
+  allowedServices?: string[]
 }
 
 interface TherapistService {
@@ -338,7 +339,13 @@ function TerapeutaPerfilContent() {
                        <div>
                           <p className="text-xs font-bold text-[#C5A03F] uppercase tracking-tighter mb-1">{pkg.svcName}</p>
                           <h3 className="font-bold text-slate-900 mb-1">{pkg.name}</h3>
-                          <p className="text-xs text-slate-500 font-medium">Combo com {pkg.sessionCount} sessões</p>
+                          <p className="text-xs text-slate-500 font-medium">
+                            {pkg.isMultiTherapy
+                              ? pkg.allowedServices && pkg.allowedServices.length > 0
+                                ? `Flexível: ${pkg.allowedServices.map(id => profile.services?.find(s => s.id === id)?.name).filter(Boolean).join(', ')}`
+                                : 'Flexível: Qualquer Terapia'
+                              : `Combo com ${pkg.sessionCount} sessões`}
+                          </p>
                           <div className="mt-4 flex items-baseline gap-1">
                              <p className="text-xl font-black text-[#0090FF]">{formatCurrency(pkg.price)}</p>
                              <span className="text-[10px] text-slate-400 font-bold uppercase">Total</span>

@@ -29,6 +29,7 @@ interface PatientPackage {
   therapyId: string | null
   therapistId: string
   isMultiTherapy: boolean
+  allowedServices?: string[]
 }
 
 interface TherapyPackage {
@@ -38,6 +39,7 @@ interface TherapyPackage {
   price: number
   expirationDays?: number | null
   isMultiTherapy?: boolean
+  allowedServices?: string[]
 }
 
 interface TherapistService {
@@ -179,9 +181,11 @@ export function BookingModal({
 }: BookingModalProps) {
   const isMockMode = !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 
                      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY === 'pk_test_placeholder' || 
-                     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.includes('...')
+                     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.includes('...') ||
+                     (typeof window !== 'undefined' && window.location.search.includes('mockPayment=true'))
 
   const hasServices = therapist.services && therapist.services.length > 0
+  console.log("BOOKING MODAL: therapist.services =", JSON.stringify(therapist.services))
   
 
   const [selectedService, setSelectedService] = useState<TherapistService | null>(null)
@@ -261,7 +265,14 @@ export function BookingModal({
   const validUserPackage = selectedService ? userPackages.find(p => 
     p.remainingSessions > 0 && 
     p.therapistId === therapist.id && 
-    (p.isMultiTherapy || p.therapyId === selectedService.id)
+    (
+      (!p.isMultiTherapy && p.therapyId === selectedService.id) ||
+      (p.isMultiTherapy && (
+        !p.allowedServices || 
+        p.allowedServices.length === 0 || 
+        p.allowedServices.includes(selectedService.id)
+      ))
+    )
   ) : null
 
   const parsePrice = (p: any): number => {
@@ -506,7 +517,11 @@ export function BookingModal({
                                       </div>
                                       <p className="font-bold text-slate-900 group-hover:text-[#C5A03F] transition-colors">{pkg.name}</p>
                                       <p className="text-[10px] text-slate-500 font-medium">
-                                        {pkg.isMultiTherapy ? 'Válido para todas as terapias' : `Combo com ${pkg.sessionCount} sessões`}
+                                        {pkg.isMultiTherapy
+                                          ? pkg.allowedServices && pkg.allowedServices.length > 0
+                                            ? `Permite: ${pkg.allowedServices.map(id => therapist.services?.find(s => s.id === id)?.name).filter(Boolean).join(', ')}`
+                                            : 'Válido para todas as terapias'
+                                          : `Combo com ${pkg.sessionCount} sessões`}
                                       </p>
                                    </div>
                                    <div className="text-right">
@@ -533,7 +548,14 @@ export function BookingModal({
                             const hasCredit = userPackages.some(p => 
                               p.remainingSessions > 0 && 
                               p.therapistId === therapist.id && 
-                              (p.isMultiTherapy || p.therapyId === svc.id)
+                              (
+                                (!p.isMultiTherapy && p.therapyId === svc.id) ||
+                                (p.isMultiTherapy && (
+                                  !p.allowedServices || 
+                                  p.allowedServices.length === 0 || 
+                                  p.allowedServices.includes(svc.id)
+                                ))
+                              )
                             )
                             // Só vai para 'plan' por crédito se estiver no fluxo de pacote (initialUsePackageId)
                             const shouldShowCredit = hasCredit && !!initialUsePackageId

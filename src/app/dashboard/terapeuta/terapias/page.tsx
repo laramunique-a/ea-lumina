@@ -22,6 +22,7 @@ interface TherapyPackage {
   price: number
   expirationDays?: number | null
   isMultiTherapy?: boolean
+  allowedServices?: string[]
   active: boolean
 }
 
@@ -106,6 +107,8 @@ export default function TerapeutaTerapiasPage() {
   const [pkgPrice, setPkgPrice] = useState('')
   const [pkgExpirationDays, setPkgExpirationDays] = useState('')
   const [pkgIsMultiTherapy, setPkgIsMultiTherapy] = useState(false)
+  const [pkgAllowedServices, setPkgAllowedServices] = useState<string[]>([])
+  const [pkgAllTherapies, setPkgAllTherapies] = useState(true)
 
   const [saving, setSaving] = useState(false)
 
@@ -153,6 +156,8 @@ export default function TerapeutaTerapiasPage() {
     setPkgPrice('')
     setPkgExpirationDays('')
     setPkgIsMultiTherapy(false)
+    setPkgAllowedServices([])
+    setPkgAllTherapies(true)
   }
 
   // ---- FLUXO DA SESSÃO INDIVIDUAL ----
@@ -299,6 +304,8 @@ export default function TerapeutaTerapiasPage() {
     setPkgPrice('')
     setPkgExpirationDays('')
     setPkgIsMultiTherapy(false)
+    setPkgAllowedServices([])
+    setPkgAllTherapies(true)
     setModalOpen(true)
   }
 
@@ -313,6 +320,9 @@ export default function TerapeutaTerapiasPage() {
     setPkgPrice(formatBRL(String(pkg.price)))
     setPkgExpirationDays(pkg.expirationDays ? String(pkg.expirationDays) : '')
     setPkgIsMultiTherapy(pkg.isMultiTherapy || false)
+    const hasAllowed = pkg.allowedServices && pkg.allowedServices.length > 0
+    setPkgAllowedServices(pkg.allowedServices || [])
+    setPkgAllTherapies(!hasAllowed)
     setModalOpen(true)
   }
 
@@ -327,8 +337,14 @@ export default function TerapeutaTerapiasPage() {
     if (!Number.isFinite(count) || count < 2) return toast.error('Quantidade de sessões deve ser 2 ou maior.')
     if (!Number.isFinite(price) || price <= 0) return toast.error('Valor total inválido.')
 
+    if (pkgIsMultiTherapy && !pkgAllTherapies && pkgAllowedServices.length === 0) {
+      return toast.error('Selecione pelo menos uma terapia ou marque "Todas as terapias".')
+    }
+
     const parentTherapy = rows.find(r => r.id === pkgParentServiceId)
     if (!parentTherapy) return toast.error('Terapia base não encontrada.')
+
+    const finalAllowedServices = pkgIsMultiTherapy ? (pkgAllTherapies ? [] : pkgAllowedServices) : []
 
     let newPackagesArr = [...(parentTherapy.packages || [])]
     
@@ -340,6 +356,7 @@ export default function TerapeutaTerapiasPage() {
         price,
         expirationDays: expDays,
         isMultiTherapy: pkgIsMultiTherapy,
+        allowedServices: finalAllowedServices,
       } : p)
     } else {
       newPackagesArr.push({
@@ -348,6 +365,7 @@ export default function TerapeutaTerapiasPage() {
         price,
         expirationDays: expDays,
         isMultiTherapy: pkgIsMultiTherapy,
+        allowedServices: finalAllowedServices,
         active: true
       })
     }
@@ -537,7 +555,7 @@ export default function TerapeutaTerapiasPage() {
                   <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 shadow-sm px-6 py-16 text-center">
                     <Layers size={32} className="mx-auto text-purple-200 mb-3" />
                     <h3 className="font-bold text-slate-800 mb-1">Nenhum pacote criado</h3>
-                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Crie "Combos" de 4, 8 ou mais sessões para fidelizar seus pacientes pagando adiantado.</p>
+                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Crie "Combos" de 2 ou mais sessões para fidelizar seus pacientes pagando adiantado.</p>
                     <Button type="button" onClick={openAddPackage} variant="outline" className="rounded-full !border-purple-200 !text-purple-700 hover:!bg-purple-50">
                       <Plus size={18} />
                       Novo Pacote Promocional
@@ -565,6 +583,12 @@ export default function TerapeutaTerapiasPage() {
                                <p className="font-semibold text-slate-700">{p.sessionCount}x sessões</p>
                             </div>
                           </div>
+                          {p.isMultiTherapy && (
+                            <p className="text-[11px] text-slate-500 mt-3 flex items-center gap-1.5 font-medium">
+                              <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                              Terapias: <span className="text-blue-600 font-bold uppercase">{p.allowedServices && p.allowedServices.length > 0 ? p.allowedServices.map(id => rows.find(r => r.id === id)?.name).filter(Boolean).join(', ') : 'Todas'}</span>
+                            </p>
+                          )}
                           {p.expirationDays ? (
                              <p className="text-xs text-slate-500 mt-3 flex items-center gap-1.5 font-medium"><span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Válido por {p.expirationDays} dias</p>
                           ) : (
@@ -734,9 +758,77 @@ export default function TerapeutaTerapiasPage() {
               size="lg"
             />
 
+            <div className="p-4 bg-purple-50/50 rounded-2xl border border-purple-100">
+              <label className="flex items-start gap-4 cursor-pointer group/toggle">
+                <input 
+                  type="checkbox"
+                  checked={pkgIsMultiTherapy}
+                  onChange={(e) => setPkgIsMultiTherapy(e.target.checked)}
+                  className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-purple-600/30 mt-0.5"
+                />
+                <div className="flex-1">
+                  <span className="text-sm font-bold text-slate-800">Flexível (Multi-Terapias)</span>
+                  <span className="text-[11px] text-slate-600 font-medium leading-relaxed block mt-1 pr-2">
+                    Com isso ativo, o paciente pode gastar os créditos desse pacote em qualquer outra terapia que você oferecer na EA Lumina.
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            {pkgIsMultiTherapy && (
+              <div className="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 animate-in fade-in slide-in-from-top-2 duration-300">
+                <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Terapias Permitidas no Pacote</p>
+                
+                <label className="flex items-center gap-3 cursor-pointer py-1.5 hover:bg-slate-100/50 rounded px-1 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={pkgAllTherapies}
+                    onChange={(e) => {
+                      const checked = e.target.checked
+                      setPkgAllTherapies(checked)
+                      if (checked) {
+                        setPkgAllowedServices([])
+                      }
+                    }}
+                    className="w-4.5 h-4.5 rounded border-slate-300 text-purple-600 focus:ring-purple-600/30"
+                  />
+                  <span className="text-sm font-semibold text-slate-800">Todas as terapias</span>
+                </label>
+
+                <div className="border-t border-slate-200 my-2 pt-2 space-y-2 max-h-[160px] overflow-y-auto pr-1">
+                  {rows.map((t) => (
+                    <label 
+                      key={t.id} 
+                      className={cn(
+                        "flex items-center gap-3 cursor-pointer py-1 hover:bg-slate-100/50 rounded px-1 transition-colors",
+                        pkgAllTherapies && "opacity-50 cursor-not-allowed"
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        disabled={pkgAllTherapies}
+                        checked={!pkgAllTherapies && pkgAllowedServices.includes(t.id)}
+                        onChange={(e) => {
+                          const checked = e.target.checked
+                          if (checked) {
+                            setPkgAllowedServices(prev => [...prev, t.id])
+                            setPkgAllTherapies(false)
+                          } else {
+                            setPkgAllowedServices(prev => prev.filter(id => id !== t.id))
+                          }
+                        }}
+                        className="w-4.5 h-4.5 rounded border-slate-300 text-purple-600 focus:ring-purple-600/30"
+                      />
+                      <span className="text-sm text-slate-700 font-medium">{t.name}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="grid sm:grid-cols-2 gap-5">
                <Input
-                label="Qtd total de Sessões"
+                label="Total de Sessões"
                 type="number"
                 min={2}
                 placeholder="Ex: 4"
@@ -767,23 +859,6 @@ export default function TerapeutaTerapiasPage() {
               hint="Deixe vazio se o pacote não expirar"
               size="lg"
             />
-
-            <div className="p-4 bg-purple-50/50 rounded-2xl border border-purple-100">
-              <label className="flex items-start gap-4 cursor-pointer group/toggle">
-                <input 
-                  type="checkbox"
-                  checked={pkgIsMultiTherapy}
-                  onChange={(e) => setPkgIsMultiTherapy(e.target.checked)}
-                  className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-purple-600/30 mt-0.5"
-                />
-                <div className="flex-1">
-                  <span className="text-sm font-bold text-slate-800">Flexível (Multi-Terapias)</span>
-                  <span className="text-[11px] text-slate-600 font-medium leading-relaxed block mt-1 pr-2">
-                    Com isso ativo, o paciente pode gastar os créditos desse pacote em qualquer outra terapia que você oferecer na EA Lumina.
-                  </span>
-                </div>
-              </label>
-            </div>
 
             <div className="flex justify-end gap-3 pt-6 border-t border-slate-100 mt-8">
               <Button type="button" variant="outline" onClick={closeModal} className="rounded-full px-6">

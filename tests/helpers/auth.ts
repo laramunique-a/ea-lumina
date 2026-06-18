@@ -22,18 +22,18 @@ export const ROUTES = {
 } as const
 
 export async function loginAsTherapist(page: Page) {
-  await page.goto(ROUTES.login)
+  await page.goto(ROUTES.login, { waitUntil: 'domcontentloaded' })
   await page.getByLabel('E-mail').fill(TEST_THERAPIST.email)
   await page.getByLabel('Senha').fill(TEST_THERAPIST.password)
-  await page.getByRole('button', { name: 'Entrar' }).click()
+  await page.getByRole('button', { name: /Entrar|Acessar/i }).click()
   await page.waitForURL(/\/dashboard\/terapeuta(\/|$)/)
 }
 
 export async function loginAsPatient(page: Page) {
-  await page.goto(ROUTES.login)
+  await page.goto(ROUTES.login, { waitUntil: 'domcontentloaded' })
   await page.getByLabel('E-mail').fill(TEST_PATIENT.email)
   await page.getByLabel('Senha').fill(TEST_PATIENT.password)
-  await page.getByRole('button', { name: 'Entrar' }).click()
+  await page.getByRole('button', { name: /Entrar|Acessar/i }).click()
   await page.waitForURL(/\/dashboard\/paciente(\/|$)/)
 }
 

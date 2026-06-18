@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
       totalSessions: p.totalSessions,
       expiresAt: p.expiresAt,
       isMultiTherapy: p.package.isMultiTherapy,
+      allowedServices: p.package.allowedServices,
       therapyId: p.package.serviceId,
       therapistId: p.package.service.therapistId
     }))
