@@ -53,11 +53,7 @@ async function getTherapistData(userId: string) {
 
   const documentComplete = !!therapist.documentUrl
 
-  const financialComplete = !!therapist.paymentDetails && (
-    !!therapist.paymentDetails.pixKey || 
-    !!therapist.paymentDetails.stripeAccountId || 
-    (!!therapist.paymentDetails.bankName && !!therapist.paymentDetails.accountNumber)
-  )
+  const financialComplete = !!therapist.paymentDetails?.stripeAccountId
 
   const agendaComplete = availabilityCount > 0
 

@@ -42,8 +42,8 @@ export function OnboardingChecklist({ checklist }: OnboardingChecklistProps) {
     },
     {
       id: 'financial',
-      label: 'Configurar chave Pix ou dados bancários',
-      description: 'Defina como você deseja receber pelos seus atendimentos.',
+      label: 'Configurar dados bancários',
+      description: 'Vincule sua conta bancária via Stripe para receber pelos seus atendimentos.',
       completed: checklist.financialComplete,
       href: '/dashboard/terapeuta/financeiro',
     },
