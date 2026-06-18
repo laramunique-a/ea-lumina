@@ -75,7 +75,9 @@ const TIMEZONE_OPTIONS = [
 function TerapeutaAgendaContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [tab, setTab] = useState<'appointments' | 'availability'>('appointments')
+  const [tab, setTab] = useState<'appointments' | 'availability'>(
+    (searchParams.get('tab') as 'appointments' | 'availability') || 'appointments'
+  )
 
   // — Agendamentos —
   const [appointments, setAppointments] = useState<Appointment[]>([])

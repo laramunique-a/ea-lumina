@@ -8,12 +8,14 @@ import { Calendar, DollarSign, Star, Users } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Avatar } from '@/components/ui/Avatar'
+import { OnboardingChecklist } from '@/components/dashboard/OnboardingChecklist'
 
 async function getTherapistData(userId: string) {
   const therapist = await prisma.therapistProfile.findUnique({
     where: { userId },
     include: {
       user: { select: { avatarUrl: true } },
+      paymentDetails: true,
       appointments: {
         orderBy: { date: 'desc' },
         take: 5,
@@ -26,20 +28,67 @@ async function getTherapistData(userId: string) {
 
   if (!therapist) return null
 
-  const [confirmedCount, pendingCount, revenue] = await Promise.all([
+  const [confirmedCount, pendingCount, revenue, availabilityCount] = await Promise.all([
     prisma.appointment.count({ where: { therapistId: therapist.id, status: 'CONFIRMADO' } }),
     prisma.appointment.count({ where: { therapistId: therapist.id, status: 'PENDENTE' } }),
     prisma.appointment.aggregate({
       _sum: { therapistNet: true },
       where: { therapistId: therapist.id, status: { in: ['CONFIRMADO', 'CONCLUIDO'] } },
     }),
+    prisma.availability.count({ where: { therapistId: therapist.id, active: true } }),
   ])
+
+  // Verificações de Completude
+  const hasBio = !!therapist.bio && therapist.bio.length > 10
+  const hasProfessionalName = !!therapist.professionalName
+  const hasTherapies = therapist.therapies.length > 0
+  const profileComplete = hasBio && hasProfessionalName && hasTherapies
+
+  const documentComplete = !!therapist.documentUrl
+
+  const financialComplete = !!therapist.paymentDetails && (
+    !!therapist.paymentDetails.pixKey || 
+    !!therapist.paymentDetails.stripeAccountId || 
+    (!!therapist.paymentDetails.bankName && !!therapist.paymentDetails.accountNumber)
+  )
+
+  const agendaComplete = availabilityCount > 0
+
+  const allComplete = profileComplete && documentComplete && financialComplete && agendaComplete
+
+  // Se tudo foi concluído, envia notificação de boas-vindas caso ainda não tenha sido enviada
+  if (allComplete) {
+    const existingNotification = await prisma.notification.findFirst({
+      where: {
+        userId,
+        title: 'Perfil Pronto!'
+      }
+    })
+
+    if (!existingNotification) {
+      await prisma.notification.create({
+        data: {
+          userId,
+          title: 'Perfil Pronto!',
+          message: 'Seu perfil foi configurado com sucesso e está pronto para receber agendamentos.',
+          type: 'SUCCESS'
+        }
+      })
+    }
+  }
 
   return {
     therapist,
     confirmedCount,
     pendingCount,
     totalRevenue: Number(revenue._sum.therapistNet) || 0,
+    checklist: {
+      profileComplete,
+      documentComplete,
+      financialComplete,
+      agendaComplete,
+      allComplete
+    }
   }
 }
 
@@ -72,10 +121,12 @@ export default async function TerapeutaDashboardPage() {
     )
   }
 
-  const { therapist, confirmedCount, pendingCount, totalRevenue } = data
+  const { therapist, confirmedCount, pendingCount, totalRevenue, checklist } = data
 
   return (
     <div className="max-w-5xl mx-auto p-6 sm:p-8 space-y-8 pb-24">
+      <OnboardingChecklist checklist={checklist} />
+
       {therapist.approved === false && (
         <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-sm font-medium">
           ⏳ Seu perfil está em análise. Você receberá uma notificação quando for aprovado.
