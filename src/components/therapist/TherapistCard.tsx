@@ -91,10 +91,10 @@ export function TherapistCard({ therapist, onBook, onView, variant = 'grid' }: T
 
   // Grid card
   return (
-    <div className="group bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col cursor-pointer">
+    <div className="group bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col cursor-pointer h-full min-h-[480px]">
 
       {/* Topo */}
-      <div className="relative bg-slate-50 pt-6 pb-4 px-5 flex flex-col items-center text-center border-b border-slate-100">
+      <div className="relative bg-slate-50 pt-6 pb-4 px-5 flex flex-col items-center text-center border-b border-slate-100 h-[190px] justify-center flex-shrink-0">
         {therapist.featured && (
           <div className="absolute top-3 right-3 bg-amber-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1">
             <Star size={8} className="fill-white" />
@@ -109,12 +109,10 @@ export function TherapistCard({ therapist, onBook, onView, variant = 'grid' }: T
           className="rounded-full object-cover w-[72px] h-[72px] border-4 border-white shadow-sm"
         />
         <h3 className="font-semibold text-slate-900 mt-3 text-sm leading-snug">{displayName}</h3>
-        {therapist.city && therapist.city.toLowerCase() !== 'remoto' && (
-          <p className="text-xs text-[#C5A03F] font-bold mt-0.5 uppercase tracking-wider flex items-center justify-center gap-1">
-            <MapPin size={10} />
-            {therapist.city}
-          </p>
-        )}
+        <p className="text-xs text-[#C5A03F] font-bold mt-0.5 uppercase tracking-wider flex items-center justify-center gap-1">
+          <MapPin size={10} />
+          {therapist.city && therapist.city.toLowerCase() !== 'remoto' ? therapist.city : 'Não informada'}
+        </p>
         <div className="flex items-center gap-1.5 mt-2">
           <div className="flex gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -131,43 +129,58 @@ export function TherapistCard({ therapist, onBook, onView, variant = 'grid' }: T
       </div>
 
       {/* Corpo */}
-      <div className="p-4 flex-1 flex flex-col gap-3">
-        <div className="flex items-center gap-2.5 text-xs text-slate-500">
-          {isOnline && (
-            <span className="flex items-center gap-1">
-              <Video size={11} className="text-[#0090FF]" />
-              Online
-            </span>
-          )}
-          {isPresencial && (
-            <span className="flex items-center gap-1">
-              <Users size={11} className="text-[#0090FF]" />
-              Presencial
-            </span>
-          )}
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 flex-1">
-          {therapist.therapies.slice(0, 3).map((t) => (
-            <Badge key={t} variant="default" size="sm">{t}</Badge>
-          ))}
-          {therapist.therapies.length > 3 && (
-            <Badge variant="default" size="sm">+{therapist.therapies.length - 3}</Badge>
+      <div className="p-4 flex-grow flex flex-col justify-between gap-3">
+        <div className="flex items-center gap-2.5 text-xs text-slate-500 min-h-[16px]">
+          {isOnline || isPresencial ? (
+            <>
+              {isOnline && (
+                <span className="flex items-center gap-1">
+                  <Video size={11} className="text-[#0090FF]" />
+                  Online
+                </span>
+              )}
+              {isPresencial && (
+                <span className="flex items-center gap-1">
+                  <Users size={11} className="text-[#0090FF]" />
+                  Presencial
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="text-slate-400 italic">Modalidade não informada</span>
           )}
         </div>
 
-        {therapist.yearsExp && (
-          <div className="flex items-center gap-1 text-[11px] text-slate-400">
-            <Clock size={10} />
-            {therapist.yearsExp} anos de experiência
-          </div>
-        )}
+        {/* Especialidades com altura e limites fixos */}
+        <div className="h-[76px] flex flex-wrap gap-1.5 content-start overflow-hidden">
+          {therapist.therapies && therapist.therapies.length > 0 ? (
+            <>
+              {therapist.therapies.slice(0, 2).map((t) => (
+                <Badge key={t} variant="default" size="sm" className="truncate max-w-[170px]" title={t}>{t}</Badge>
+              ))}
+              {therapist.therapies.length > 2 && (
+                <Badge variant="default" size="sm">+{therapist.therapies.length - 2}</Badge>
+              )}
+            </>
+          ) : (
+            <span className="text-xs text-slate-400 italic mt-1 w-full">Nenhuma especialidade cadastrada</span>
+          )}
+        </div>
 
+        {/* Experiência */}
+        <div className="flex items-center gap-1 text-[11px] text-slate-400 min-h-[16px]">
+          <Clock size={10} />
+          <span>
+            {therapist.yearsExp ? `${therapist.yearsExp} anos de experiência` : 'Sem experiência registrada'}
+          </span>
+        </div>
+
+        {/* Rodapé com Preço e Botões */}
         <div className="border-t border-slate-100 pt-3 mt-auto">
-          <div className="flex items-end justify-between mb-3">
+          <div className="flex items-end justify-between mb-3 min-h-[36px]">
             <div>
               <p className="text-[10px] text-slate-400 uppercase tracking-wide">A partir de</p>
-              <p className="text-xl font-semibold text-slate-900 tracking-tight">{formatCurrency(Number(therapist.price))}</p>
+              <p className="text-xl font-semibold text-slate-900 tracking-tight">{formatCurrency(Number(therapist.price || 0))}</p>
             </div>
             <p className="text-[11px] text-slate-400 mb-0.5">/ sessão</p>
           </div>
