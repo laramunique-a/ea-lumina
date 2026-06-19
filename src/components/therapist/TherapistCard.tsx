@@ -156,7 +156,7 @@ export function TherapistCard({ therapist, onBook, onView, variant = 'grid' }: T
           {therapist.therapies && therapist.therapies.length > 0 ? (
             <>
               {therapist.therapies.slice(0, 2).map((t) => (
-                <Badge key={t} variant="default" size="sm" className="truncate max-w-[170px]" title={t}>{t}</Badge>
+                <Badge key={t} variant="default" size="sm" className="truncate max-w-[170px]">{t}</Badge>
               ))}
               {therapist.therapies.length > 2 && (
                 <Badge variant="default" size="sm">+{therapist.therapies.length - 2}</Badge>
