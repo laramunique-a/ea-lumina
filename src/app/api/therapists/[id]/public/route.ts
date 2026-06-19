@@ -4,21 +4,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { effectiveServiceCharge, listingPriceFromServices } from '@/lib/therapist-pricing'
 import { createSignedDocumentUrl } from '@/lib/supabase'
+import { getSessionFromRequest } from '@/lib/auth'
 
 /**
  * GET /api/therapists/[id]/public
  * Perfil público do terapeuta (para página de apresentação do paciente).
- * Só retorna se approved e user ativo.
+ * Só retorna se approved e user ativo (ou se for ADMIN acessando).
  */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getSessionFromRequest(request)
+    const isAdmin = session?.role === 'ADMIN'
+
     const profile = await prisma.therapistProfile.findUnique({
       where: {
         id: params.id,
-        approved: true,
+        ...(isAdmin ? {} : { approved: true }),
         user: { active: true },
       },
       include: {
