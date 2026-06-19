@@ -89,7 +89,7 @@ export function Sidebar({ userName, userRole, userEmail: _userEmail, avatarUrl }
   const role = roleConfig[userRole] || roleConfig.PACIENTE
   const initials = userName.split(' ').slice(0, 2).map(n => n[0]).join('')
 
-  const mobileNavItems = navItems.slice(0, 4)
+  const mobileNavItems = userRole === 'ADMIN' ? navItems.slice(0, 4) : navItems
 
   const handleLogout = async () => {
     toast.success('Até logo!')
