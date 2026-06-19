@@ -9,6 +9,8 @@ import { getAvatarUrl } from '@/lib/utils'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Save, Lock, CheckCircle2, AlertCircle, Camera } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { useTherapistUnifiedUpload } from '@/hooks/useTherapistUnifiedUpload'
 
 const emptyAnamnesis = {
   objetivo: '',
@@ -102,6 +104,23 @@ function dateMask(val: string) {
 
 export default function PacientePerfilPage() {
   const { user, setUser } = useAuthStore()
+
+  const { fileInputRef, pickFile, handleFileChange, defaultAccept, isUploading } = useTherapistUnifiedUpload({
+    userId: user?.id,
+    profileId: null,
+    profileLoaded: true,
+    onProfileImageSuccess: (url) => {
+      setUser({
+        ...user!,
+        avatarUrl: url,
+      })
+      toast.success('Foto de perfil atualizada com sucesso!')
+    },
+    onError: (msg) => {
+      toast.error(msg)
+    }
+  })
+
   const [formData, setFormData] = useState<FormData>(initialForm)
   const [loadState, setLoadState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [savingBox, setSavingBox] = useState<'pessoais' | 'anamnese' | 'seguranca' | null>(null)
@@ -284,7 +303,7 @@ export default function PacientePerfilPage() {
   }
 
   const handlePhotoUpload = () => {
-    alert('Upload de foto estará disponível em breve.')
+    pickFile('profileImage')
   }
 
   if (!user) return null
@@ -307,10 +326,20 @@ export default function PacientePerfilPage() {
     )
   }
 
-  const avatarUrl = getAvatarUrl(formData.name || user.name, null)
+  const avatarUrl = getAvatarUrl(formData.name || user.name, user.avatarUrl)
 
   return (
     <div className="min-h-full pb-20">
+      <input
+        ref={fileInputRef}
+        type="file"
+        tabIndex={-1}
+        accept={defaultAccept}
+        onChange={handleFileChange}
+        disabled={isUploading}
+        aria-hidden
+        className="pointer-events-none fixed left-4 top-20 z-[60] m-0 h-px w-px min-h-px min-w-px overflow-hidden border-0 p-0 opacity-[0.02]"
+      />
       {showSuccess && (
         <div role="status" aria-live="polite" className="fixed top-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-full bg-[#0090FF] px-5 py-3 text-sm font-bold tracking-wide text-white shadow-xl shadow-[#0090FF]/20 animate-slide-up">
           <CheckCircle2 size={18} className="shrink-0" aria-hidden />
