@@ -1,4 +1,4 @@
-import { GraduationCap, ArrowRight, MessageCircle } from 'lucide-react'
+import { GraduationCap } from 'lucide-react'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -46,27 +46,6 @@ export default function CursosPage() {
             <p className="text-slate-400 text-xs mt-1 font-bold uppercase tracking-widest">
               Equipe EA Lumina
             </p>
-          </div>
-
-          <hr className="border-slate-100 my-6" />
-
-          {/* Call to Action: Suporte/Contato */}
-          <div className="bg-slate-50/50 rounded-2xl p-5 border border-slate-100 text-left space-y-3">
-            <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <MessageCircle size={14} className="text-slate-400" />
-              Tem alguma dúvida ou sugestão?
-            </h3>
-            <p className="text-slate-500 text-xs leading-relaxed font-medium">
-              Queremos ouvir quais cursos e formações você gostaria de ver por aqui. Fale conosco diretamente.
-            </p>
-            <a 
-              href="https://wa.me/5511999999999"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0090FF] uppercase tracking-wider hover:text-[#0077EE] transition-colors"
-            >
-              Falar com o suporte <ArrowRight size={12} />
-            </a>
           </div>
         </div>
 
