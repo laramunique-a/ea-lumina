@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { effectiveServiceCharge, listingPriceFromServices } from '@/lib/therapist-pricing'
+import { createSignedDocumentUrl } from '@/lib/supabase'
 
 /**
  * GET /api/therapists/[id]/public
@@ -116,6 +117,32 @@ export async function GET(
       profilePrice
     )
 
+    const certificatesWithSignedUrls = await Promise.all(
+      profile.certificates.map(async (cert) => {
+        let storagePath: string | null = null
+        try {
+          const url = new URL(cert.fileUrl)
+          const match = url.pathname.match(/\/storage\/v1\/object\/public\/documents\/(.+)/)
+          if (match) {
+            storagePath = match[1]
+          }
+        } catch {
+          storagePath = cert.fileUrl
+        }
+
+        if (storagePath) {
+          const { signedUrl } = await createSignedDocumentUrl(storagePath, 3600)
+          if (signedUrl) {
+            return {
+              ...cert,
+              fileUrl: signedUrl,
+            }
+          }
+        }
+        return cert
+      })
+    )
+
     const data = {
       id: profile.id,
       bio: profile.bio,
@@ -143,7 +170,7 @@ export async function GET(
       availability: profile.availability,
       services: servicesPayload,
       publicTargetDescription: profile.targetAudience?.specialNeeds ?? null,
-      certificates: profile.certificates,
+      certificates: certificatesWithSignedUrls,
       reviews: profile.reviews,
     }
 
