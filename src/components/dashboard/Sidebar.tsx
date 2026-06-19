@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard, Users, Calendar, BarChart3, Settings,
   Search, Clock, LogOut, ChevronLeft,
-  UserCheck, DollarSign, Tags, HeartHandshake, Sparkles,
+  UserCheck, DollarSign, Tags, HeartHandshake, Sparkles, GraduationCap,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -36,6 +36,7 @@ const therapistNav: NavItem[] = [
   { label: 'Agenda e Horários', shortLabel: 'Agenda', href: '/dashboard/terapeuta/agenda',  icon: <Calendar size={17} /> },
   { label: 'Terapias e Pacotes', shortLabel: 'Terapias', href: '/dashboard/terapeuta/terapias', icon: <HeartHandshake size={17} /> },
   { label: 'Obs. Cósmico', shortLabel: 'Cósmico', href: '/dashboard/terapeuta/observador', icon: <Sparkles size={17} /> },
+  { label: 'Cursos e Formações', shortLabel: 'Cursos', href: '/dashboard/terapeuta/cursos', icon: <GraduationCap size={17} /> },
   // { label: 'Financeiro', href: '/dashboard/terapeuta/financeiro', icon: <DollarSign size={17} /> },
   { label: 'Meu Perfil', shortLabel: 'Perfil', href: '/dashboard/terapeuta/perfil',  icon: <Settings size={17} /> },
 ]
