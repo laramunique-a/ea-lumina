@@ -62,6 +62,7 @@ interface TherapistPublic {
     appointment: { service: { name: string } | null }
   }[]
   certificates: { id: string; name: string; fileUrl: string }[]
+  presentationVideoUrl?: string | null
 }
 
 import { Suspense } from 'react'
@@ -224,6 +225,20 @@ function TerapeutaPerfilContent() {
             <section>
               <h2 className="font-semibold text-slate-900 mb-2">Público alvo</h2>
               <p className="text-slate-600 whitespace-pre-wrap">{profile.publicTargetDescription}</p>
+            </section>
+          )}
+
+          {profile.presentationVideoUrl && (
+            <section>
+              <h2 className="font-semibold text-slate-900 mb-4">Apresentação</h2>
+              <div className="rounded-xl overflow-hidden bg-slate-900 max-w-sm mx-auto sm:mx-0 shadow-sm border border-slate-200">
+                <video 
+                  src={profile.presentationVideoUrl} 
+                  controls 
+                  preload="metadata" 
+                  className="w-full aspect-[9/16] object-cover"
+                />
+              </div>
             </section>
           )}
 

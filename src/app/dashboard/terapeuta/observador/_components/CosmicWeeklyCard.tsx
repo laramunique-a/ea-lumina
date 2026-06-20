@@ -7,7 +7,31 @@ interface Props {
   context: CosmicContext;
 }
 
+function getCurrentWeekRange(date = new Date()) {
+  const day = date.getDay(); // 0 = Domingo
+  const startDate = new Date(date);
+  startDate.setDate(date.getDate() - day);
+  
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  const formatDate = (d: Date) => {
+    return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  };
+
+  return {
+    startDate,
+    endDate,
+    today: date,
+    formattedStart: formatDate(startDate),
+    formattedEnd: formatDate(endDate),
+    formattedToday: formatDate(date)
+  };
+}
+
 export function CosmicWeeklyCard({ context }: Props) {
+  const weekInfo = getCurrentWeekRange();
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 p-6 md:p-8 text-white shadow-xl w-full mb-8">
       {/* Elementos decorativos (Glassmorphism / Glow) */}
@@ -26,11 +50,16 @@ export function CosmicWeeklyCard({ context }: Props) {
               </h2>
             </div>
             <div className="hidden md:block h-6 w-[1px] bg-white/20"></div>
-            <div className="flex items-center gap-2 text-sm font-medium text-purple-200 bg-white/5 px-3 py-1.5 rounded-full backdrop-blur-md w-fit border border-white/10">
-              <CalendarIcon className="h-4 w-4" />
-              <span>{context.weekStart}</span>
-              <ArrowRight className="h-3 w-3 mx-1 opacity-70" />
-              <span>{context.weekEnd}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-purple-200 bg-white/5 px-3 py-1.5 rounded-full backdrop-blur-md w-fit border border-white/10">
+                <CalendarIcon className="h-4 w-4" />
+                <span>{weekInfo.formattedStart}</span>
+                <ArrowRight className="h-3 w-3 mx-1 opacity-70" />
+                <span>{weekInfo.formattedEnd}</span>
+              </div>
+              <div className="flex items-center text-xs font-semibold text-purple-300 bg-indigo-500/20 px-3 py-1.5 rounded-full w-fit border border-indigo-500/30">
+                Hoje: {weekInfo.formattedToday}
+              </div>
             </div>
           </div>
 

@@ -173,9 +173,9 @@ export async function GET(
       user: profile.user,
       availability: profile.availability,
       services: servicesPayload,
-      publicTargetDescription: profile.targetAudience?.specialNeeds ?? null,
       certificates: certificatesWithSignedUrls,
       reviews: profile.reviews,
+      presentationVideoUrl: profile.presentationVideoUrl,
     }
 
     return NextResponse.json({ success: true, data })

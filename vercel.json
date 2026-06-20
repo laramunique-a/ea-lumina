@@ -1,4 +1,5 @@
 {
+  "name": "ea-lumina-app",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "framework": "nextjs"

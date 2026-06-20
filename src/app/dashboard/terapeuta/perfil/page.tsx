@@ -6,7 +6,7 @@ import { PhoneInput } from '@/components/ui/PhoneInput'
 import { Badge } from '@/components/ui/Badge'
 import { useAuthStore } from '@/hooks/useAuth'
 import toast from 'react-hot-toast'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { withAuth } from '@/lib/auth-fetch'
 import { useTherapistUnifiedUpload } from '@/hooks/useTherapistUnifiedUpload'
 import { X, Plus, Save, Upload, FileText, ExternalLink, Trash2, User, Camera, Phone, CreditCard, Eye, Download, CheckCircle2, Clock } from 'lucide-react'
@@ -58,6 +58,10 @@ export default function TerapeutaPerfilPage() {
   const [documentFileName, setDocumentFileName] = useState<string | null>(null)
   const [documentExists, setDocumentExists] = useState(false)
   const [documentLoading, setDocumentLoading] = useState(false)
+  
+  const [presentationVideoUrl, setPresentationVideoUrl] = useState<string | null>(null)
+  const [videoUploading, setVideoUploading] = useState(false)
+  const videoInputRef = useRef<HTMLInputElement>(null)
 
   const profileLoaded = !loadingProfile && !!profile
 
@@ -165,6 +169,7 @@ export default function TerapeutaPerfilPage() {
         websiteUrl?: string | null
         documentUrl?: string | null
         documentFileName?: string | null
+        presentationVideoUrl?: string | null
       } | null
 
       const snapshot: LoadedTherapistProfile = {
@@ -213,6 +218,7 @@ export default function TerapeutaPerfilPage() {
         if (hasDoc && tp.documentFileName) {
           setDocumentUploadLabel(tp.documentFileName)
         }
+        setPresentationVideoUrl(tp.presentationVideoUrl || null)
       } else {
         setProfileId(null)
         setDocumentExists(false)
@@ -308,8 +314,69 @@ export default function TerapeutaPerfilPage() {
     }
   }
 
+  const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
 
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error('O vídeo não pode exceder 100MB.')
+      return
+    }
 
+    const url = URL.createObjectURL(file)
+    const videoElement = document.createElement('video')
+    videoElement.src = url
+    videoElement.preload = 'metadata'
+
+    videoElement.onloadedmetadata = async () => {
+      URL.revokeObjectURL(url)
+      if (videoElement.duration > 90) {
+        toast.error('O vídeo deve ter no máximo 1 minuto e 30 segundos (90 segundos).')
+        return
+      }
+
+      // Procede com upload
+      setVideoUploading(true)
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const res = await fetch('/api/therapist/profile/video', withAuth({
+          method: 'POST',
+          body: formData,
+        }))
+        const data = await res.json()
+
+        if (res.ok && data.success) {
+          setPresentationVideoUrl(data.url)
+          toast.success('Vídeo de apresentação salvo com sucesso!')
+        } else {
+          toast.error(data.error || 'Erro ao enviar vídeo.')
+        }
+      } catch {
+        toast.error('Erro de conexão ao enviar vídeo.')
+      } finally {
+        setVideoUploading(false)
+        if (videoInputRef.current) videoInputRef.current.value = ''
+      }
+    }
+  }
+
+  const handleVideoRemove = async () => {
+    try {
+      const res = await fetch('/api/therapist/profile/video', withAuth({ method: 'DELETE' }))
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setPresentationVideoUrl(null)
+        toast.success('Vídeo removido com sucesso.')
+      } else {
+        toast.error(data.error || 'Erro ao remover vídeo.')
+      }
+    } catch {
+      toast.error('Erro de conexão ao remover vídeo.')
+    }
+  }
   const addCert = () => {
     if (newCert.trim()) {
       setCertifications((prev) => [...prev, newCert.trim()])
@@ -696,9 +763,52 @@ export default function TerapeutaPerfilPage() {
           </div>
         </div>
 
+        {/* Vídeo de Apresentação */}
+        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
+          <div className="border-b border-slate-100 pb-6 mb-6">
+            <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Vídeo de Apresentação</h2>
+            <p className="text-sm text-slate-500 font-medium mt-1">Grave um vídeo curto de até 1 minuto e 30 segundos para se apresentar aos pacientes.</p>
+          </div>
 
-
-        {/* Certificações e Documentos — visíveis no perfil público */}
+          <div className="space-y-4">
+            {presentationVideoUrl ? (
+              <div className="space-y-4">
+                <div className="rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm max-w-sm aspect-[9/16] mx-auto flex items-center justify-center">
+                  <video 
+                    src={presentationVideoUrl} 
+                    controls 
+                    preload="metadata" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                  <Button variant="outline" type="button" onClick={() => videoInputRef.current?.click()} loading={videoUploading}>
+                    Substituir Vídeo
+                  </Button>
+                  <Button variant="outline" type="button" onClick={handleVideoRemove} className="text-red-600 hover:bg-red-50 hover:text-red-700">
+                    Remover Vídeo
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-10 px-4 border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
+                <Button type="button" onClick={() => videoInputRef.current?.click()} loading={videoUploading}>
+                  <Upload size={16} className="mr-2" />
+                  Enviar Vídeo
+                </Button>
+                <p className="mt-3 text-xs text-slate-400 font-medium">Aceito: MP4, MOV ou WEBM. Máximo 100MB e 1:30 min.</p>
+              </div>
+            )}
+            
+            <input 
+              type="file" 
+              accept="video/mp4,video/quicktime,video/webm" 
+              ref={videoInputRef} 
+              className="hidden" 
+              onChange={handleVideoSelect} 
+            />
+          </div>
+        </div>
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
           <div className="border-b border-slate-100 pb-6 mb-6">
             <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Certificações e documentos</h2>

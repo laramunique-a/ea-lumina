@@ -12,6 +12,7 @@ node_modules
 .env
 .env.local
 .env.backup
+.env.original_backup
 .env.development.local
 .env.test.local
 .env.production.local

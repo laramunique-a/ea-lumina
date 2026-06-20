@@ -69,10 +69,8 @@ export function CosmicContentGenerator({ onGenerate, bestTopics }: Props) {
             className="w-full rounded-lg border border-slate-200 px-4 py-2.5 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500"
           >
             <option value="">Selecione o formato...</option>
-            <option value="post">Post (Feed)</option>
-            <option value="carrossel">Carrossel</option>
-            <option value="reels">Reels / TikTok (Roteiro)</option>
-            <option value="story">Story (Sequência)</option>
+            <option value="feed">Feed</option>
+            <option value="story">Story</option>
           </select>
           {errors.contentType && (
             <p className="mt-1 text-xs text-red-500">{errors.contentType.message}</p>

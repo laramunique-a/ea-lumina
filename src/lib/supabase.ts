@@ -17,7 +17,7 @@ function friendlyStorageError(message: string | null | undefined): string {
     return 'Chave do armazenamento inválida. No .env, use SUPABASE_SERVICE_ROLE_KEY exatamente como no painel Supabase (Project Settings → API), sem aspas quebradas ou espaços.'
   }
   if (/bucket not found/i.test(message)) {
-    return 'Bucket de Storage inexistente. No Supabase → Storage, crie os buckets com estes nomes exatos: "documents" (certificados) e "avatars" (fotos de perfil). Veja README → Configuração do Supabase.'
+    return 'Bucket de Storage inexistente. No Supabase → Storage, crie os buckets com estes nomes exatos: "documents", "avatars" e "videos". Veja as instruções de configuração.'
   }
   return message
 }
@@ -41,6 +41,7 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 export const STORAGE_BUCKETS = {
   AVATARS: 'avatars',
   DOCUMENTS: 'documents',
+  VIDEOS: 'videos',
 } as const
 
 export async function uploadAvatar(
@@ -228,5 +229,69 @@ export async function deleteCertificateFile(fileUrl: string): Promise<void> {
     }
   } catch {
     // ignore invalid URL
+  }
+}
+
+// ==========================================
+// STORAGE - Vídeos de Apresentação
+// ==========================================
+
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
+
+export async function uploadTherapistVideo(
+  file: File,
+  therapistId: string
+): Promise<{ url: string | null; error: string | null }> {
+  if (!storageConfigured()) {
+    return {
+      url: null,
+      error: 'Armazenamento não configurado.',
+    }
+  }
+
+  if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
+    return { url: null, error: 'Formato inválido. Envie um vídeo MP4, MOV ou WEBM.' }
+  }
+
+  // Máximo sugerido de 100MB (100 * 1024 * 1024 bytes)
+  if (file.size > 100 * 1024 * 1024) {
+    return { url: null, error: 'O vídeo não pode exceder 100MB.' }
+  }
+
+  const fileExt = file.name.split('.').pop() || 'mp4'
+  const fileName = `presentation-${Date.now()}.${fileExt}`
+  const filePath = `therapists/${therapistId}/${fileName}`
+
+  try {
+    const { error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKETS.VIDEOS)
+      .upload(filePath, file, { upsert: true })
+
+    if (error) {
+      return { url: null, error: friendlyStorageError(error.message) }
+    }
+
+    const { data } = supabaseAdmin.storage.from(STORAGE_BUCKETS.VIDEOS).getPublicUrl(filePath)
+
+    return { url: data.publicUrl, error: null }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error('[uploadTherapistVideo]', e)
+    return { url: null, error: friendlyStorageError(msg) || 'Falha de rede no upload' }
+  }
+}
+
+export async function deleteTherapistVideo(fileUrl: string): Promise<void> {
+  if (!storageConfigured()) return
+
+  try {
+    const parts = fileUrl.split(`/${STORAGE_BUCKETS.VIDEOS}/`)
+    if (parts.length < 2) return
+
+    const filePath = parts[1]
+    
+    await supabaseAdmin.storage.from(STORAGE_BUCKETS.VIDEOS).remove([filePath])
+  } catch (e) {
+    console.error('[deleteTherapistVideo]', e)
   }
 }

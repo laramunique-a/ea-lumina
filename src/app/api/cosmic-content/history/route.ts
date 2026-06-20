@@ -27,7 +27,13 @@ export async function GET(req: Request) {
       take: 20,
     });
 
-    return NextResponse.json({ success: true, data: history });
+    const mappedHistory = history.map((item) => ({
+      ...item,
+      copyTitle: item.title,
+      copyCaption: item.copy,
+    }));
+
+    return NextResponse.json({ success: true, data: mappedHistory });
   } catch (error: any) {
     console.error('Error fetching cosmic history:', error);
     return NextResponse.json(

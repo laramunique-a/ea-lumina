@@ -51,21 +51,30 @@ export async function POST(req: Request) {
       additionalNotes
     );
 
-    // Salva o resultado no banco
     const savedGeneration = await prisma.cosmicContentGeneration.create({
       data: {
         therapistId: therapistProfile.id,
         contentType,
         theme,
-        copy: generated.copy,
-        hashtags: generated.hashtags,
-        cta: generated.cta,
-        imagePrompt: generated.imagePrompt,
-        cosmicContext: generated.cosmicAlignment,
+        title: generated.copyTitle,
+        copy: generated.copyCaption,
+        hashtags: [],
+        cta: "",
+        imagePrompt: "",
+        imageUrl: null,
+        cosmicContext: generated.contextUsed.cosmicContext,
+        geminiCopy: generated.geminiCopy,
+        gptCopy: generated.gptCopy,
+        contextUsed: generated.contextUsed,
       },
     });
 
-    return NextResponse.json({ success: true, data: savedGeneration });
+    const responseData = {
+      ...savedGeneration,
+      copy: generated.copyCaption,
+    };
+
+    return NextResponse.json({ success: true, data: responseData });
   } catch (error: any) {
     console.error('Error generating cosmic content:', error);
     return NextResponse.json(
