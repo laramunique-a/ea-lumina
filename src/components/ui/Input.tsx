@@ -13,10 +13,11 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>
   size?: 'sm' | 'md' | 'lg'
   labelClassName?: string
   tooltip?: string
+  required?: boolean
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, labelClassName, tooltip, ...props }, ref) => {
+  ({ className, label, error, hint, leftIcon, rightIcon, size, type, id, labelClassName, tooltip, required, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-')
     const isPassword = type === 'password'
@@ -28,6 +29,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <div className="flex items-center gap-1.5">
             <label htmlFor={inputId} className={cn("block text-xs font-semibold text-slate-700", labelClassName)}>
               {label}
+              {required && <span className="text-red-500 ml-0.5">*</span>}
             </label>
             {tooltip && (
               <div className="relative group inline-flex items-center">

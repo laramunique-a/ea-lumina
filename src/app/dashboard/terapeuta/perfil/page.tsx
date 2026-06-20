@@ -478,6 +478,37 @@ export default function TerapeutaPerfilPage() {
       return
     }
 
+    // Validações de campos obrigatórios
+    if (!professionalName.trim()) {
+      toast.error('O campo "Nome profissional" é obrigatório.')
+      return
+    }
+    if (!birthDate) {
+      toast.error('O campo "Data de nascimento" é obrigatório.')
+      return
+    }
+    if (!documentExists) {
+      toast.error('O envio do "Comprovante de Identidade" é obrigatório.')
+      return
+    }
+    if (!whatsapp.trim()) {
+      toast.error('O campo "WhatsApp / Telefone" é obrigatório.')
+      return
+    }
+    if (!professionalEmail.trim()) {
+      toast.error('O campo "Email profissional" é obrigatório.')
+      return
+    }
+    if (!modality) {
+      toast.error('O campo "Modalidade de atendimento" é obrigatório.')
+      return
+    }
+    const bioWordCount = bio.trim() ? bio.trim().split(/\s+/).filter(Boolean).length : 0
+    if (!bio.trim() || bioWordCount < 100 || bioWordCount > 1000) {
+      toast.error('A biografia é obrigatória e deve conter entre 100 e 1000 palavras.')
+      return
+    }
+
     setLoading(true)
     try {
       const priceNum = parseFloat(price)
@@ -667,13 +698,14 @@ export default function TerapeutaPerfilPage() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Nome completo" value={name} onChange={(e) => setName(e.target.value)} />
             <Input
+              required
               label="Nome profissional"
               value={professionalName}
               onChange={(e) => setProfessionalName(e.target.value)}
               placeholder="Ex.: Dra. Ana Silva"
               tooltip="Nome que será exibido publicamente no seu perfil para os pacientes (ex: Dra. Ana Silva). Pode ser seu nome social, abreviado ou artístico."
             />
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Data de nascimento" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+            <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Data de nascimento" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="País" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Ex.: Brasil" />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Cidade" value={city} onChange={(e) => setCity(e.target.value)} />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Estado (UF)" value={state} onChange={(e) => setState(e.target.value)} placeholder="SP" maxLength={2} />
@@ -685,7 +717,7 @@ export default function TerapeutaPerfilPage() {
               disabled={uploadBusy}
             />
             <div className="md:col-span-2">
-              <p className="text-sm font-medium text-slate-700 mb-1">Comprovante de Identidade</p>
+              <p className="text-sm font-medium text-slate-700 mb-1">Comprovante de Identidade<span className="text-red-500 ml-0.5">*</span></p>
               <p className="text-xs text-slate-500 mb-3 leading-relaxed">
                 Anexe um documento de identificação válido para verificação do seu perfil. Após o envio, seu cadastro será analisado pelos administradores da plataforma.<br />
                 <strong>Documentos aceitos:</strong> RG, CNH ou Passaporte.
@@ -775,6 +807,7 @@ export default function TerapeutaPerfilPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
               <PhoneInput
+                required
                 label="WhatsApp / Telefone"
                 value={whatsapp}
                 onChange={setWhatsapp}
@@ -782,13 +815,13 @@ export default function TerapeutaPerfilPage() {
                 className={`bg-slate-50 border-slate-100/50 rounded-xl ${uploadBusy ? 'opacity-50 pointer-events-none' : ''}`}
               />
             </div>
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Email profissional" type="email" value={professionalEmail} onChange={(e) => setProfessionalEmail(e.target.value)} placeholder="contato@seusite.com" />
+            <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Email profissional" type="email" value={professionalEmail} onChange={(e) => setProfessionalEmail(e.target.value)} placeholder="contato@seusite.com" />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Instagram" value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="@seuusuario" />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Facebook" value={facebook} onChange={(e) => setFacebook(e.target.value)} placeholder="URL ou nome do perfil" />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Site (se tiver)" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://..." />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Modalidade de atendimento</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Modalidade de atendimento<span className="text-red-500 ml-0.5">*</span></label>
             <div className="flex flex-wrap gap-4">
               {[
                 { value: 'ONLINE', label: 'Online' },
@@ -886,7 +919,7 @@ export default function TerapeutaPerfilPage() {
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
           <div className="border-b border-slate-100 pb-6 mb-6"><h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Sobre o profissional</h2></div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Descrição profissional (biografia)</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Descrição profissional (biografia)<span className="text-red-500 ml-0.5">*</span></label>
             <p className="text-xs text-slate-500 mb-2">
               Guia: quem você é, o que faz, quem ajuda e qual é o seu enfoque. Texto de apresentação entre 100 e 1000 palavras.
             </p>

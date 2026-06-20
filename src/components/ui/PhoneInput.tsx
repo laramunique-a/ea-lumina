@@ -89,6 +89,7 @@ interface PhoneInputProps {
   label?: string
   hint?: string
   className?: string
+  required?: boolean
 }
 
 function parsePhone(full: string) {
@@ -106,7 +107,7 @@ function parsePhone(full: string) {
   return { ddi: '+55', ddd: '', number: full }
 }
 
-export function PhoneInput({ value, onChange, label, hint, className }: PhoneInputProps) {
+export function PhoneInput({ value, onChange, label, hint, className, required }: PhoneInputProps) {
   const parsed = parsePhone(value)
   const [ddi, setDdi] = useState(parsed.ddi)
   const [ddd, setDdd] = useState(parsed.ddd)
@@ -158,6 +159,7 @@ export function PhoneInput({ value, onChange, label, hint, className }: PhoneInp
       {label && (
         <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
           {label}
+          {required && <span className="text-red-500 ml-0.5">*</span>}
         </label>
       )}
       <div className="flex gap-2 relative">
