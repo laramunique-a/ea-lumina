@@ -27,6 +27,7 @@ interface Props {
     gptCopy?: CopyBlock | null;
     copyTitle?: string;
     copyCaption?: string;
+    caption?: string;
     contextUsed?: {
       contentType: string;
       theme: string;
@@ -50,7 +51,7 @@ export function CosmicResultCard({ content }: Props) {
   const geminiVersion: CopyBlock = content.geminiCopy || gptVersion;
 
   const displayTitle = content.copyTitle || content.title || 'Título da Publicação';
-  const displayCaption = content.copyCaption || content.copy || 'Nenhuma legenda gerada.';
+  const displayCaption = content.copyCaption || content.caption || content.copy || 'Nenhuma legenda gerada.';
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);

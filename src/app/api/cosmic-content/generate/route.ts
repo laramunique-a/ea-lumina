@@ -71,7 +71,11 @@ export async function POST(req: Request) {
 
     const responseData = {
       ...savedGeneration,
+      title: generated.copyTitle,
       copy: generated.copyCaption,
+      caption: generated.copyCaption,
+      copyTitle: generated.copyTitle,
+      copyCaption: generated.copyCaption,
     };
 
     return NextResponse.json({ success: true, data: responseData });
