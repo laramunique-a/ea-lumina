@@ -41,6 +41,10 @@ export default function TerapeutaPerfilPage() {
   const [price, setPrice] = useState('')
   const [modality, setModality] = useState('AMBOS')
   const [location, setLocation] = useState('')
+  const [cep, setCep] = useState('')
+  const [street, setStreet] = useState('')
+  const [number, setNumber] = useState('')
+  const [neighborhood, setNeighborhood] = useState('')
   const [whatsapp, setWhatsapp] = useState('')
   const [professionalEmail, setProfessionalEmail] = useState('')
   const [instagram, setInstagram] = useState('')
@@ -87,6 +91,31 @@ export default function TerapeutaPerfilPage() {
     },
     onError: (msg) => toast.error(msg),
   })
+
+  const cepMask = (val: string) => {
+    const raw = val.replace(/\D/g, '')
+    if (raw.length <= 5) return raw
+    return `${raw.slice(0, 5)}-${raw.slice(5, 8)}`
+  }
+
+  const handleCepBlur = async () => {
+    const raw = cep.replace(/\D/g, '')
+    if (raw.length === 8) {
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${raw}/json/`)
+        const data = await res.json()
+        if (!data.erro) {
+          setStreet(data.logradouro || '')
+          setNeighborhood(data.bairro || '')
+          setCity(data.localidade || '')
+          setState(data.uf || '')
+          setCountry('Brasil')
+        }
+      } catch (err) {
+        console.error('Erro ao buscar CEP:', err)
+      }
+    }
+  }
 
 
   /** Refetch user + therapist profile from API and sync form state (also used after save). */
@@ -199,7 +228,20 @@ export default function TerapeutaPerfilPage() {
         setBio(tp.bio || '')
         setPrice(String(tp.price ?? ''))
         setModality(tp.modality || 'AMBOS')
-        setLocation(tp.location || '')
+        const loc = tp.location || ''
+        setLocation(loc)
+        if (loc.includes(';;;')) {
+          const parts = loc.split(';;;')
+          setCep(parts[0] || '')
+          setStreet(parts[1] || '')
+          setNumber(parts[2] || '')
+          setNeighborhood(parts[3] || '')
+        } else {
+          setCep('')
+          setStreet(loc)
+          setNumber('')
+          setNeighborhood('')
+        }
         setCity(tp.city || '')
         setState(tp.state || '')
         setYearsExp(tp.yearsExp != null ? String(tp.yearsExp) : '')
@@ -224,6 +266,10 @@ export default function TerapeutaPerfilPage() {
         setDocumentExists(false)
         setDocumentFileName(null)
         setWhatsapp((row as { phone?: string | null }).phone || '')
+        setCep('')
+        setStreet('')
+        setNumber('')
+        setNeighborhood('')
       }
     } catch (e) {
       console.error('Erro ao carregar perfil:', e)
@@ -436,12 +482,15 @@ export default function TerapeutaPerfilPage() {
     try {
       const priceNum = parseFloat(price)
       const yearsNum = yearsExp.trim() === '' ? null : parseInt(yearsExp, 10)
+      
+      const finalLocation = modality === 'ONLINE' ? '' : [cep, street, number, neighborhood].join(';;;')
+
       const profileBody: Record<string, unknown> = {
         bio,
         modality,
-        location,
-        city,
-        state,
+        location: finalLocation || null,
+        city: city || null,
+        state: state || null,
         country: country || null,
         professionalName: professionalName || null,
         nationality: nationality || null,
@@ -739,9 +788,6 @@ export default function TerapeutaPerfilPage() {
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Site (se tiver)" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://..." />
           </div>
           <div>
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Endereço físico de atendimento (se atende presencialmente)" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Rua, número, bairro" />
-          </div>
-          <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Modalidade de atendimento</label>
             <div className="flex flex-wrap gap-4">
               {[
@@ -763,6 +809,69 @@ export default function TerapeutaPerfilPage() {
               ))}
             </div>
           </div>
+
+          {modality !== 'ONLINE' && (
+            <div className="mt-6 border-t border-slate-100 pt-6 space-y-4">
+              <h3 className="text-sm font-bold text-slate-800">Endereço de Atendimento Físico</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Input
+                  className="bg-slate-50 border-slate-100/50 rounded-xl"
+                  label="CEP"
+                  value={cep}
+                  onChange={(e) => setCep(cepMask(e.target.value))}
+                  onBlur={handleCepBlur}
+                  placeholder="00000-000"
+                />
+                <div className="md:col-span-2">
+                  <Input
+                    className="bg-slate-50 border-slate-100/50 rounded-xl"
+                    label="País"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    placeholder="Brasil"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Input
+                    className="bg-slate-50 border-slate-100/50 rounded-xl"
+                    label="Rua / Logradouro"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                    placeholder="Ex: Avenida Paulista"
+                  />
+                </div>
+                <Input
+                  className="bg-slate-50 border-slate-100/50 rounded-xl"
+                  label="Número"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  placeholder="123"
+                />
+                <Input
+                  className="bg-slate-50 border-slate-100/50 rounded-xl"
+                  label="Bairro"
+                  value={neighborhood}
+                  onChange={(e) => setNeighborhood(e.target.value)}
+                  placeholder="Bairro"
+                />
+                <Input
+                  className="bg-slate-50 border-slate-100/50 rounded-xl"
+                  label="Cidade"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Cidade"
+                />
+                <Input
+                  className="bg-slate-50 border-slate-100/50 rounded-xl"
+                  label="Estado (UF)"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  placeholder="SP"
+                  maxLength={2}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
             <Button size="md" loading={loading} onClick={handleSave}>
