@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 async function getInitialData() {
   const therapyTypes = await prisma.therapyType.findMany({
     where: { active: true },
-    orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+    orderBy: { name: 'asc' },
     select: { name: true },
   })
 
