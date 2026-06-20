@@ -96,16 +96,26 @@ export async function POST(request: NextRequest) {
 
     // Lógica de Sincronização Inteligente:
     if (targetDate) {
-      // Estamos salvando horários para uma data específica
-      const dateObj = new Date(targetDate)
-      await prisma.availability.deleteMany({
-        where: { 
-          therapistId: profile.id,
-          date: {
-            equals: dateObj
+      if (targetDate === 'all-dates') {
+        // Deleta todas as datas específicas configuradas
+        await prisma.availability.deleteMany({
+          where: {
+            therapistId: profile.id,
+            date: { not: null }
           }
-        }
-      })
+        })
+      } else {
+        // Deleta apenas a data específica correspondente
+        const dateObj = new Date(targetDate)
+        await prisma.availability.deleteMany({
+          where: { 
+            therapistId: profile.id,
+            date: {
+              equals: dateObj
+            }
+          }
+        })
+      }
     } else {
       // Estamos salvando a grade semanal (onde date é null)
       await prisma.availability.deleteMany({ 

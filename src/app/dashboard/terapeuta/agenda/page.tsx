@@ -186,15 +186,22 @@ function TerapeutaAgendaContent() {
     setSlots((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)))
   }
 
+  const normalizeDateStr = (d: any): string | null => {
+    if (!d) return null
+    if (typeof d === 'string') return d.split('T')[0]
+    if (d instanceof Date) return d.toISOString().split('T')[0]
+    return null
+  }
+
   const blockDay = () => {
     setSlots((prev) => [
-      ...prev.filter((s) => s.date !== selectedDate),
+      ...prev.filter((s) => normalizeDateStr(s.date) !== selectedDate),
       { date: selectedDate, startTime: '00:00', endTime: '00:00', slotDuration: 30, active: false },
     ])
   }
 
   const unblockDay = () => {
-    setSlots((prev) => prev.filter((s) => s.date !== selectedDate))
+    setSlots((prev) => prev.filter((s) => normalizeDateStr(s.date) !== selectedDate))
   }
 
   const saveAvailability = async () => {
@@ -204,10 +211,10 @@ function TerapeutaAgendaContent() {
       const body = {
         slots: (availMode === 'weekly' 
           ? slots.filter(s => !s.date) 
-          : slots.filter(s => s.date === selectedDate)
+          : slots.filter(s => s.date)
         ).map(s => ({ ...s, slotDuration: 30 })),
         timezone,
-        targetDate: availMode === 'date' ? selectedDate : null
+        targetDate: availMode === 'date' ? 'all-dates' : null
       }
 
       const res = await fetch(
@@ -225,7 +232,7 @@ function TerapeutaAgendaContent() {
         toast.success(
           availMode === 'weekly' 
             ? 'Escala semanal salva com sucesso!' 
-            : `Agenda de ${formatDateTime(selectedDate).split(' ')[0]} salva!`
+            : 'Agenda de datas específicas salva com sucesso!'
         )
       } else {
         toast.error(data.error || 'Erro ao salvar')
@@ -410,10 +417,12 @@ function TerapeutaAgendaContent() {
                   Defina sua escala padrão ou ajuste dias específicos no calendário.
                 </p>
               </div>
-              <Button loading={savingAvail} onClick={saveAvailability} className="bg-[#C5A03F] hover:bg-[#B48F2E] shadow-lg shadow-amber-100">
-                <Save size={16} />
-                Salvar Modo Atual
-              </Button>
+              {availMode === 'weekly' && (
+                <Button loading={savingAvail} onClick={saveAvailability} className="bg-[#C5A03F] hover:bg-[#B48F2E] shadow-lg shadow-amber-100">
+                  <Save size={16} />
+                  Salvar Escala Semanal
+                </Button>
+              )}
             </div>
 
             {/* Guia Didático Rápido */}
@@ -535,7 +544,7 @@ function TerapeutaAgendaContent() {
                 ) : (
                   // LISTA POR DATA
                   (() => {
-                    const daySlots = slots.filter(s => s.date === selectedDate)
+                    const daySlots = slots.filter(s => normalizeDateStr(s.date) === selectedDate)
                     const isDayBlocked = daySlots.length === 1 && daySlots[0].active === false
 
                     return (
@@ -585,7 +594,7 @@ function TerapeutaAgendaContent() {
                         ) : daySlots.length > 0 ? (
                           <div className="space-y-3">
                             {slots.map((s, i) => ({ ...s, index: i }))
-                                  .filter(s => s.date === selectedDate)
+                                  .filter(s => normalizeDateStr(s.date) === selectedDate)
                                   .map(slot => (
                                      <SlotItem key={slot.index} slot={slot} onUpdate={updateSlot} onRemove={removeSlot} />
                                   ))}
@@ -597,6 +606,18 @@ function TerapeutaAgendaContent() {
                             <p className="text-[10px] text-slate-300 mt-1 uppercase font-bold tracking-widest">Neste caso, vale a escala semanal padrão.</p>
                           </div>
                         )}
+
+                        {/* Botão de Salvar apenas para Datas Específicas */}
+                        <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end">
+                          <Button 
+                            loading={savingAvail} 
+                            onClick={saveAvailability} 
+                            className="bg-[#0090FF] hover:bg-blue-600 shadow-lg shadow-blue-100 font-bold"
+                          >
+                            <Save size={16} />
+                            Salvar Datas Específicas
+                          </Button>
+                        </div>
                       </div>
                     )
                   })()
