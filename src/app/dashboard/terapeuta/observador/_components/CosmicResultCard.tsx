@@ -16,7 +16,6 @@ interface Props {
     id: string;
     contentType: string;
     theme: string;
-    title?: string | null;
     copy: string;
     hashtags: string[];
     cta: string;
@@ -25,9 +24,9 @@ interface Props {
     createdAt: string;
     geminiCopy?: CopyBlock | null;
     gptCopy?: CopyBlock | null;
+    title?: string;
     copyTitle?: string;
     copyCaption?: string;
-    caption?: string;
     contextUsed?: {
       contentType: string;
       theme: string;
@@ -51,7 +50,7 @@ export function CosmicResultCard({ content }: Props) {
   const geminiVersion: CopyBlock = content.geminiCopy || gptVersion;
 
   const displayTitle = content.copyTitle || content.title || 'Título da Publicação';
-  const displayCaption = content.copyCaption || content.caption || content.copy || 'Nenhuma legenda gerada.';
+  const displayCaption = content.copyCaption || content.copy || 'Nenhuma legenda gerada.';
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);

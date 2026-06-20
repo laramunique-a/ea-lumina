@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     }
 
     const items = await prisma.therapyType.findMany({
-      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+      orderBy: { name: 'asc' },
       select: { id: true, name: true, slug: true, active: true, sortOrder: true, createdAt: true },
     })
 

@@ -22,10 +22,8 @@ export default function AdminTherapiesPage() {
   const [savingId, setSavingId] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
   const [newName, setNewName] = useState('')
-  const [newOrder, setNewOrder] = useState('0')
   const [editId, setEditId] = useState<string | null>(null)
   const [editName, setEditName] = useState('')
-  const [editOrder, setEditOrder] = useState('')
   const [editActive, setEditActive] = useState(true)
 
   const load = useCallback(async () => {
@@ -49,7 +47,6 @@ export default function AdminTherapiesPage() {
   const startEdit = (row: TherapyTypeRow) => {
     setEditId(row.id)
     setEditName(row.name)
-    setEditOrder(String(row.sortOrder))
     setEditActive(row.active)
   }
 
@@ -59,7 +56,6 @@ export default function AdminTherapiesPage() {
 
   const saveEdit = async () => {
     if (!editId) return
-    const sortOrder = parseInt(editOrder, 10)
     if (!editName.trim()) {
       toast.error('Nome é obrigatório')
       return
@@ -73,7 +69,6 @@ export default function AdminTherapiesPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: editName.trim(),
-            sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
             active: editActive,
           }),
         })
@@ -98,7 +93,6 @@ export default function AdminTherapiesPage() {
       toast.error('Informe o nome')
       return
     }
-    const sortOrder = parseInt(newOrder, 10)
     setCreating(true)
     try {
       const res = await fetch(
@@ -108,7 +102,6 @@ export default function AdminTherapiesPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: newName.trim(),
-            sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0,
             active: true,
           }),
         })
@@ -117,7 +110,6 @@ export default function AdminTherapiesPage() {
       if (data.success) {
         toast.success('Tipo criado')
         setNewName('')
-        setNewOrder('0')
         await load()
       } else {
         toast.error(data.error || 'Erro ao criar')
@@ -154,14 +146,8 @@ export default function AdminTherapiesPage() {
             <Plus size={18} className="text-primary-600" />
             Novo tipo
           </h2>
-          <div className="grid sm:grid-cols-[1fr_6rem_auto] gap-3 items-end">
+          <div className="grid sm:grid-cols-[1fr_auto] gap-3 items-end">
             <Input label="Nome" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aromaterapia" />
-            <Input
-              label="Ordem"
-              type="number"
-              value={newOrder}
-              onChange={(e) => setNewOrder(e.target.value)}
-            />
             <Button onClick={createRow} loading={creating} className="h-[46px]">
               Incluir
             </Button>
@@ -185,9 +171,8 @@ export default function AdminTherapiesPage() {
                 <li key={row.id} className="p-4 sm:p-5">
                   {editId === row.id ? (
                     <div className="space-y-3">
-                      <div className="grid sm:grid-cols-2 gap-3">
+                      <div>
                         <Input label="Nome" value={editName} onChange={(e) => setEditName(e.target.value)} />
-                        <Input label="Ordem" type="number" value={editOrder} onChange={(e) => setEditOrder(e.target.value)} />
                       </div>
                       <label className="flex items-center gap-2 text-sm text-slate-700">
                         <input
@@ -221,9 +206,6 @@ export default function AdminTherapiesPage() {
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-slate-400 mt-1">
-                          ordem {row.sortOrder}
-                        </p>
                       </div>
                       <div className="flex gap-1 flex-shrink-0">
                         <button
