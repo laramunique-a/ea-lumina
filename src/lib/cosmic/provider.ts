@@ -224,35 +224,100 @@ No logos.
 
 No watermarks.`;
 
+      const themeLower = theme.toLowerCase();
+
+      // 1. Determine Title dynamically
+      let suggestedTitle = "";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
+        suggestedTitle = "🌿 A calma que você procura começa quando você se escuta";
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('merecimento') || themeLower.includes('dinheiro')) {
+        suggestedTitle = "✨ O fluxo da abundância começa dentro de você";
+      } else if (themeLower.includes('relacionamento') || themeLower.includes('amor')) {
+        suggestedTitle = "💖 A qualidade de suas conexões reflete o amor que você nutre por si";
+      } else {
+        suggestedTitle = `✨ A verdadeira jornada de ${theme.toLowerCase()} começa quando você se escuta`;
+      }
+
+      // 2. Generate Caption parts dynamically
+      // P1: Gancho emocional (Emotional Hook)
+      let hook = "";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
+        hook = `Diante de um mundo acelerado, sentir a mente inquieta e o peito apertado tornou-se um peso invisível que muitos carregam. A sobrecarga mental e a constante sensação de urgência silenciam nossa paz. A energia coletiva desta semana nos convida a dar um passo atrás, buscar o acolhimento interno e silenciar o ruído externo.`;
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('merecimento') || themeLower.includes('dinheiro')) {
+        hook = `Muitas vezes, sem perceber, operamos a partir de crenças de escassez, sentindo que estamos travados ou que o fluxo da vida não flui para nós. A energia coletiva desta semana atua diretamente no fortalecimento da autoestima e no destravamento desse fluxo, nos provocando a questionar onde estamos fechando as portas para receber.`;
+      } else {
+        hook = `A rotina e as pressões cotidianas frequentemente nos afastam do que realmente importa, gerando uma exaustão silenciosa e uma desconexão profunda com nosso propósito. Esta semana, o cosmos nos convida a abrir um espaço seguro de reflexão e acolhimento para reencontrar nosso centro.`;
+      }
+
+      // P2: Reflexão baseada na metáfora principal (Main Metaphor Reflection)
+      let reflection = "";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
+        reflection = `Olhar para a nossa relação com a ansiedade é como observar uma névoa densa matinal. Ela parece permanente e obstrui a visão, mas, sob a luz certa, ela começa a se dissipar lentamente, revelando um céu claro e tranquilo que sempre esteve lá. O caminho para a serenidade não é lutar contra a névoa, mas permitir que ela passe.`;
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('merecimento') || themeLower.includes('dinheiro')) {
+        reflection = `Compreender o nosso merecimento é como abrir um portal de luz dourada em nossa própria essência. Não se trata de buscar a riqueza no mundo externo, mas sim de ativar essa arquitetura interna expansiva, permitindo que a luz quente e abundante flua de dentro para fora, iluminando cada nova oportunidade.`;
+      } else {
+        reflection = `Nossa jornada interna assemelha-se a um jardim secreto que, após enfrentar uma longa e fria estação, começa lentamente a desabrochar. Cada nova folha e flor representa uma parte de nós que escolhemos acolher e integrar, sob a luz de nossa própria consciência.`;
+      }
+
+      // P3: Transformação segura (Safe Transformation)
+      let safeTransformation = "";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
+        safeTransformation = `No espaço terapêutico, minha intenção é guiar você de volta ao seu corpo, incentivando a respiração consciente e promovendo a regulação do seu sistema nervoso. Lembre-se: este é um convite seguro e gentil para pausar, reencontrar a sua âncora e lembrar que você está seguro no aqui e agora.`;
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('merecimento') || themeLower.includes('dinheiro')) {
+        safeTransformation = `Na terapia, trabalhamos para identificar e transmutar os sentimentos de inadequação, conectando você com o seu valor inestimável e inato. Este é um convite para reconhecer suas qualidades únicas e se abrir de forma segura e consciente para receber o melhor da vida.`;
+      } else {
+        safeTransformation = `Através do acompanhamento terapêutico, criamos um espaço de escuta qualificada para acolher todas as suas vivências com amorosidade. Minha missão é ajudar você a reconectar-se com suas raízes e trilhar um caminho de crescimento integrado e respeitoso com seu próprio ritmo.`;
+      }
+
+      if (additionalNotes) {
+        safeTransformation += `\n\nFoco especial do nosso trabalho: ${additionalNotes}`;
+      }
+
+      // P4: CTA terapêutico (Therapeutic CTA)
+      let ctaText = "";
+      const ctaRecommended = currentWeek.recommendedCta || "agendamento terapêutico";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
+        ctaText = `Permita-se viver com mais leveza e presença. Se você sente que é hora de desacelerar, clique no link da bio para realizar seu ${ctaRecommended} e iniciar esse processo de acolhimento.`;
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('merecimento') || themeLower.includes('dinheiro')) {
+        ctaText = `Você está pronto para permitir que a abundância flua em sua vida? Dê esse passo em direção ao seu merecimento. Clique no link da bio para realizar o seu ${ctaRecommended}.`;
+      } else {
+        ctaText = `Que tal abrir espaço para cuidar de você e da sua saúde emocional? Convido você a agendar sua consulta. Clique no link da bio e faça seu ${ctaRecommended}.`;
+      }
+
+      // P5: Hashtags
+      const cleanTheme = theme.replace(/[^\w\s]/gi, '').replace(/\s+/g, '').toLowerCase();
+      const hashtagsList = [
+        `#${cleanTheme}`,
+        "#autoconhecimento",
+        "#saudeemocional",
+        "#terapiaholistica",
+        "#bemestar",
+        "#observadorcosmico",
+        "#transformacao"
+      ];
+      const hashtagsStr = hashtagsList.join(" ");
+
+      const dynamicCaption = `${hook}\n\n${reflection}\n\n${safeTransformation}\n\n${ctaText}\n\n${hashtagsStr}`;
+
       const geminiCopy = {
-        title: undefined,
+        title: suggestedTitle,
         copy: geminiPrompt,
-        cta: ``,
-        hashtags: []
+        cta: ctaText,
+        hashtags: hashtagsList
       } as any;
 
       const gptCopy = {
-        title: undefined,
+        title: suggestedTitle,
         copy: gptPrompt,
-        cta: ``,
-        hashtags: []
+        cta: ctaText,
+        hashtags: hashtagsList
       } as any;
-
-      let suggestedTitle = `✨ A verdadeira jornada de ${theme.toLowerCase()} começa quando você se escuta`;
-      const themeLower = theme.toLowerCase();
-      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
-        suggestedTitle = `🌿 A calma que você procura começa quando você se escuta`;
-      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('dinheiro')) {
-        suggestedTitle = `✨ O portal para sua prosperidade começa a se abrir por dentro`;
-      } else {
-        suggestedTitle = `💫 Nem toda jornada de ${theme.toLowerCase()} acontece do lado de fora`;
-      }
 
       resolve({
         geminiCopy,
         gptCopy,
         copyTitle: suggestedTitle,
-        copyCaption: 'Exemplo de legenda do provedor mock',
+        copyCaption: dynamicCaption,
         contextUsed: {
           contentType,
           theme,
