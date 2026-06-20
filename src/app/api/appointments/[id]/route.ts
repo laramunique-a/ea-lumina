@@ -189,6 +189,40 @@ export async function PATCH(
       return NextResponse.json({ success: true, message: 'Agendamento concluído' })
     }
 
+    if (validated.data.date) {
+      const newDate = new Date(validated.data.date)
+      const newStartMs = newDate.getTime()
+      const newEndMs = newStartMs + appointment.durationMinutes * 60 * 1000
+      const dateStr = newDate.toISOString().split('T')[0]
+
+      const dayAppointments = await prisma.appointment.findMany({
+        where: {
+          therapistId: appointment.therapistId,
+          status: { in: ['PENDENTE', 'CONFIRMADO'] },
+          id: { not: appointment.id },
+          date: {
+            gte: new Date(`${dateStr}T00:00:00`),
+            lte: new Date(`${dateStr}T23:59:59`),
+          },
+        },
+        select: {
+          id: true,
+          date: true,
+          durationMinutes: true,
+        },
+      })
+
+      const hasConflict = dayAppointments.some((apt) => {
+        const bookedStartMs = apt.date.getTime()
+        const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+        return newStartMs < bookedEndMs && bookedStartMs < newEndMs
+      })
+
+      if (hasConflict) {
+        return NextResponse.json({ success: false, error: 'Este horário já está ocupado por outra sessão.' }, { status: 400 })
+      }
+    }
+
     await prisma.appointment.update({
       where: { id: params.id },
       data: {

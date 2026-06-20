@@ -26,6 +26,7 @@ interface RescheduleModalProps {
     id: string
     therapistId: string
     date: string
+    durationMinutes?: number
     therapist: {
         professionalName?: string | null
         user: { name: string }
@@ -72,21 +73,55 @@ export function RescheduleModal({
 
     const specificAvail = therapistData.availability.filter((a: any) => a.date && a.date.split('T')[0] === isoDate)
     
+    const allSlots: string[] = []
     if (specificAvail.length > 0) {
-      const allSlots: string[] = []
       const activeSpecific = specificAvail.filter((a: any) => a.active)
       activeSpecific.forEach((avail: any) => {
-        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
+        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, 30))
       })
-      return Array.from(new Set(allSlots)).sort()
+    } else {
+      const weeklyAvail = therapistData.availability.filter((a: any) => a.dayOfWeek === dayOfWeek && !a.date && a.active)
+      weeklyAvail.forEach((avail: any) => {
+        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, 30))
+      })
     }
 
-    const weeklyAvail = therapistData.availability.filter((a: any) => a.dayOfWeek === dayOfWeek && !a.date && a.active)
-    const allSlots: string[] = []
-    weeklyAvail.forEach((avail: any) => {
-      allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
-    })
-    return Array.from(new Set(allSlots)).sort()
+    let uniqueSlots = Array.from(new Set(allSlots)).sort()
+
+    // Filtrar horários ocupados por outros agendamentos (overlap checking)
+    const dayAppointments = therapistData.appointments?.filter((apt: any) => {
+      return apt.date.split('T')[0] === isoDate && apt.id !== appointment.id
+    }) || []
+
+    const targetDuration = appointment.durationMinutes || 60
+
+    if (dayAppointments.length > 0 && uniqueSlots.length > 0) {
+      uniqueSlots = uniqueSlots.filter(slotTime => {
+        const [h, m] = slotTime.split(':').map(Number)
+        const candidateDate = new Date(date)
+        candidateDate.setHours(h, m, 0, 0)
+        const candidateStartMs = candidateDate.getTime()
+        const candidateEndMs = candidateStartMs + targetDuration * 60 * 1000
+
+        const hasConflict = dayAppointments.some((apt: any) => {
+          const bookedStartMs = new Date(apt.date).getTime()
+          const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+          return candidateStartMs < bookedEndMs && bookedStartMs < candidateEndMs
+        })
+
+        return !hasConflict
+      })
+    }
+
+    // Não mostrar horários passados se for hoje
+    const isToday = date.toDateString() === new Date().toDateString()
+    if (isToday) {
+      const now = new Date()
+      const currentHourStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0')
+      uniqueSlots = uniqueSlots.filter(slot => slot > currentHourStr)
+    }
+
+    return uniqueSlots
   }
 
   const isDateAvailable = (date: Date): boolean => {

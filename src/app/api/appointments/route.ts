@@ -310,6 +310,38 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Horário não disponível' }, { status: 400 })
     }
 
+    // Verificar conflitos de agendamento (overlap / double booking)
+    const dateObjStartMs = dateObj.getTime()
+    const dateObjEndMs = dateObjStartMs + durationMinutes * 60 * 1000
+
+    const dayAppointments = await prisma.appointment.findMany({
+      where: {
+        therapistId: therapist.id,
+        status: { in: ['PENDENTE', 'CONFIRMADO'] },
+        date: {
+          gte: new Date(`${date}T00:00:00`),
+          lte: new Date(`${date}T23:59:59`),
+        },
+      },
+      select: {
+        date: true,
+        durationMinutes: true,
+      },
+    })
+
+    const hasConflict = dayAppointments.some((apt) => {
+      const bookedStartMs = apt.date.getTime()
+      const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+      return dateObjStartMs < bookedEndMs && bookedStartMs < dateObjEndMs
+    })
+
+    if (hasConflict) {
+      return NextResponse.json(
+        { success: false, error: 'Este horário já está reservado por outra sessão.' },
+        { status: 400 }
+      )
+    }
+
     const config = await prisma.platformConfig.findFirst({ orderBy: { updatedAt: 'desc' } })
     const commissionRate = Number(config?.commissionRate ?? 10)
 

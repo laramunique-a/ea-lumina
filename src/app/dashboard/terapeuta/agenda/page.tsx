@@ -67,6 +67,7 @@ const TIMEZONE_OPTIONS = [
   { value: 'America/Cuiaba',     label: 'Cuiabá (GMT-4)' },
   { value: 'America/Porto_Velho', label: 'Porto Velho (GMT-4)' },
   { value: 'Europe/Lisbon',      label: 'Lisboa (GMT+0/+1)' },
+  { value: 'Europe/Dublin',      label: 'Dublin (GMT+0/+1)' },
   { value: 'Europe/London',      label: 'Londres (GMT+0/+1)' },
   { value: 'America/New_York',  label: 'Nova York (GMT-5/-4)' },
   { value: 'America/Los_Angeles', label: 'Los Angeles (GMT-8/-7)' },
@@ -87,6 +88,12 @@ function TerapeutaAgendaContent() {
   // — Disponibilidade —
   const [slots, setSlots] = useState<AvailabilitySlot[]>([])
   const [timezone, setTimezone] = useState('America/Sao_Paulo')
+
+  // Fuso Horários Dinâmicos (Adiciona o detectado se não listado)
+  const timezoneOptions = [...TIMEZONE_OPTIONS]
+  if (timezone && !timezoneOptions.some(opt => opt.value === timezone)) {
+    timezoneOptions.push({ value: timezone, label: `${timezone} (Fuso detectado)` })
+  }
   const [loadingAvail, setLoadingAvail] = useState(true)
   const [savingAvail, setSavingAvail] = useState(false)
 
@@ -148,7 +155,14 @@ function TerapeutaAgendaContent() {
       const data = await res.json()
       if (data.success) {
         setSlots(data.data)
-        if (data.timezone) setTimezone(data.timezone)
+        if (data.timezone) {
+          setTimezone(data.timezone)
+        }
+        // Se for a primeira vez configurando (agenda vazia), detecta o fuso do navegador
+        if (data.data.length === 0) {
+          const detected = Intl.DateTimeFormat().resolvedOptions().timeZone
+          if (detected) setTimezone(detected)
+        }
       }
     } catch {
       toast.error('Erro ao carregar disponibilidade')
@@ -160,7 +174,7 @@ function TerapeutaAgendaContent() {
   const addSlot = (dayOfWeek?: number, date?: string) => {
     setSlots((prev) => [
       ...prev,
-      { dayOfWeek, date, startTime: '09:00', endTime: '18:00', slotDuration: 60, active: true },
+      { dayOfWeek, date, startTime: '09:00', endTime: '18:00', slotDuration: 30, active: true },
     ])
   }
 
@@ -175,7 +189,7 @@ function TerapeutaAgendaContent() {
   const blockDay = () => {
     setSlots((prev) => [
       ...prev.filter((s) => s.date !== selectedDate),
-      { date: selectedDate, startTime: '00:00', endTime: '00:00', slotDuration: 60, active: false },
+      { date: selectedDate, startTime: '00:00', endTime: '00:00', slotDuration: 30, active: false },
     ])
   }
 
@@ -186,11 +200,12 @@ function TerapeutaAgendaContent() {
   const saveAvailability = async () => {
     setSavingAvail(true)
     try {
-      // Separar slots baseados no modo atual
+      // Separar slots baseados no modo atual, forçando slotDuration a 30
       const body = {
-        slots: availMode === 'weekly' 
+        slots: (availMode === 'weekly' 
           ? slots.filter(s => !s.date) 
-          : slots.filter(s => s.date === selectedDate),
+          : slots.filter(s => s.date === selectedDate)
+        ).map(s => ({ ...s, slotDuration: 30 })),
         timezone,
         targetDate: availMode === 'date' ? selectedDate : null
       }
@@ -455,7 +470,7 @@ function TerapeutaAgendaContent() {
                     onChange={(e) => setTimezone(e.target.value)}
                     className="w-full px-3 py-2 text-sm border-2 border-white rounded-xl focus:outline-none focus:border-[#0090FF] bg-white font-bold text-slate-700 shadow-sm transition-all"
                   >
-                    {TIMEZONE_OPTIONS.map((tz) => (
+                    {timezoneOptions.map((tz) => (
                       <option key={tz.value} value={tz.value}>{tz.label}</option>
                     ))}
                   </select>
@@ -598,7 +613,7 @@ function TerapeutaAgendaContent() {
 function SlotItem({ slot, onUpdate, onRemove }: { slot: any, onUpdate: any, onRemove: any }) {
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-slate-50/50 rounded-2xl border border-slate-100 group hover:border-blue-200 transition-all relative">
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 flex-1 w-full sm:w-auto">
+      <div className="grid grid-cols-2 gap-3 flex-1 w-full sm:w-auto">
         <div className="flex flex-col gap-1">
           <label className="sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Início</label>
           <select
@@ -617,16 +632,6 @@ function SlotItem({ slot, onUpdate, onRemove }: { slot: any, onUpdate: any, onRe
             className="w-full px-3 py-2 text-xs border-2 border-white rounded-xl font-bold text-slate-700 bg-white shadow-sm focus:border-[#C5A03F] outline-none transition-all"
           >
             {TIME_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-        <div className="flex flex-col gap-1 col-span-2 sm:col-span-1">
-          <label className="sm:hidden text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Duração da Sessão</label>
-          <select
-            value={slot.slotDuration}
-            onChange={(e) => onUpdate(slot.index, 'slotDuration', Number(e.target.value))}
-            className="w-full px-3 py-2 text-xs border-2 border-white rounded-xl font-bold text-slate-700 bg-white shadow-sm focus:border-[#C5A03F] outline-none transition-all"
-          >
-            {DURATION_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
           </select>
         </div>
       </div>

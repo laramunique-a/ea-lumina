@@ -65,6 +65,7 @@ interface BookingModalProps {
     professionalName?: string | null
     availability: Availability[]
     services?: TherapistService[]
+    appointments?: { date: string; durationMinutes: number }[]
   }
   onSuccess?: () => void
   initialServiceId?: string
@@ -305,16 +306,39 @@ export function BookingModal({
     if (specificAvail.length > 0) {
       const activeSpecific = specificAvail.filter(a => a.active)
       activeSpecific.forEach(avail => {
-        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
+        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, 30))
       })
     } else {
       const weeklyAvail = therapist.availability.filter(a => a.dayOfWeek === dayOfWeek && !a.date && a.active)
       weeklyAvail.forEach(avail => {
-        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, avail.slotDuration))
+        allSlots.push(...generateTimeSlots(avail.startTime, avail.endTime, 30))
       })
     }
 
     let uniqueSlots = Array.from(new Set(allSlots)).sort()
+
+    // Filtrar horários com base nos agendamentos existentes (overlap checking)
+    const dayAppointments = therapist.appointments?.filter(apt => {
+      return apt.date.split('T')[0] === isoDate
+    }) || []
+
+    if (dayAppointments.length > 0 && uniqueSlots.length > 0) {
+      uniqueSlots = uniqueSlots.filter(slotTime => {
+        const [h, m] = slotTime.split(':').map(Number)
+        const candidateDate = new Date(date)
+        candidateDate.setHours(h, m, 0, 0)
+        const candidateStartMs = candidateDate.getTime()
+        const candidateEndMs = candidateStartMs + durationMinutes * 60 * 1000
+
+        const hasConflict = dayAppointments.some(apt => {
+          const bookedStartMs = new Date(apt.date).getTime()
+          const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+          return candidateStartMs < bookedEndMs && bookedStartMs < candidateEndMs
+        })
+
+        return !hasConflict
+      })
+    }
 
     // Não mostrar horários que já passaram se for hoje
     const isToday = date.toDateString() === new Date().toDateString()

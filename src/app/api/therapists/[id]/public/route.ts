@@ -80,6 +80,17 @@ export async function GET(
               } 
             }
           }
+        },
+        appointments: {
+          where: {
+            status: { in: ['PENDENTE', 'CONFIRMADO'] },
+            date: { gte: new Date(new Date().setHours(0, 0, 0, 0)) },
+          },
+          select: {
+            id: true,
+            date: true,
+            durationMinutes: true,
+          },
         }
       },
     })
@@ -176,6 +187,11 @@ export async function GET(
       certificates: certificatesWithSignedUrls,
       reviews: profile.reviews,
       presentationVideoUrl: profile.presentationVideoUrl,
+      appointments: profile.appointments.map((apt) => ({
+        id: apt.id,
+        date: apt.date.toISOString(),
+        durationMinutes: apt.durationMinutes,
+      })),
     }
 
     return NextResponse.json({ success: true, data })

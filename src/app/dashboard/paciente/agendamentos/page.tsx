@@ -16,6 +16,7 @@ interface Appointment {
   date: string
   status: string
   price: number
+  durationMinutes?: number
   notes: string | null
   therapistId: string
   therapist: {
