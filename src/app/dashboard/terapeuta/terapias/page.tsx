@@ -721,7 +721,7 @@ export default function TerapeutaTerapiasPage() {
                 Cancelar
               </Button>
               <Button type="button" loading={saving} onClick={handleSaveTherapy} className="rounded-full px-6 bg-slate-900 text-white hover:bg-slate-800">
-                {editingId ? 'Salvar sessão' : 'Criar Sessão'}
+                {editingId ? 'Salvar atendimento' : 'Criar Atendimento'}
               </Button>
             </div>
           </div>
