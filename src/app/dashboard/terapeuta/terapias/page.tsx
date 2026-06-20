@@ -239,7 +239,7 @@ export default function TerapeutaTerapiasPage() {
         })
         const data = await res.json()
         if (data.success) {
-          toast.success('Sessão individual atualizada.')
+          toast.success('Atendimento individual atualizado.')
           closeModal()
           await load()
         } else {
@@ -260,7 +260,7 @@ export default function TerapeutaTerapiasPage() {
         })
         const data = await res.json()
         if (data.success) {
-          toast.success('Sessão individual salva.')
+          toast.success('Atendimento individual salvo.')
           closeModal()
           await load()
         } else {
@@ -275,12 +275,12 @@ export default function TerapeutaTerapiasPage() {
   }
 
   const handleDeleteTherapy = async (t: TherapyRow) => {
-    if (!confirm(`Remover sessão "${t.name}"?\nOs pacotes promocionais vinculados também serão removidos.`)) return
+    if (!confirm(`Remover atendimento "${t.name}"?\nOs pacotes promocionais vinculados também serão removidos.`)) return
     try {
       const res = await fetch(`/api/therapies/${t.id}`, withAuth({ method: 'DELETE' }))
       const data = await res.json()
       if (data.success) {
-        toast.success('Sessão e pacotes atrelados removidos.')
+        toast.success('Atendimento e pacotes atrelados removidos.')
         await load()
       } else {
         toast.error(data.error || 'Erro ao remover')
@@ -293,7 +293,7 @@ export default function TerapeutaTerapiasPage() {
   // ---- FLUXO DOS PACOTES PROMOCIONAIS ----
 
   const openAddPackage = () => {
-    if (rows.length === 0) return toast.error('Crie uma sessão individual primeiro.')
+    if (rows.length === 0) return toast.error('Crie um atendimento individual primeiro.')
     setEditingId(null)
     setEditingPackageId(null)
     setModalStep('package-form')
@@ -334,7 +334,7 @@ export default function TerapeutaTerapiasPage() {
     const price = parseFloat(pkgPrice.replace(/\./g, '').replace(',', '.'))
     const expDays = pkgExpirationDays.trim() ? parseInt(pkgExpirationDays, 10) : null
     
-    if (!Number.isFinite(count) || count < 2) return toast.error('Quantidade de sessões deve ser 2 ou maior.')
+    if (!Number.isFinite(count) || count < 2) return toast.error('Quantidade de atendimentos deve ser 2 ou maior.')
     if (!Number.isFinite(price) || price <= 0) return toast.error('Valor total inválido.')
 
     if (pkgIsMultiTherapy && !pkgAllTherapies && pkgAllowedServices.length === 0) {
@@ -432,7 +432,7 @@ export default function TerapeutaTerapiasPage() {
 
   const modalTitle =
     modalStep === 'package-form' ? (editingPackageId ? 'Editar pacote promocional' : 'Novo pacote promocional') :
-    (editingId != null ? 'Editar sessão' : modalStep === 'pick' ? 'Nova sessão individual' : 'Dados da sessão')
+    (editingId != null ? 'Editar atendimento' : modalStep === 'pick' ? 'Novo atendimento individual' : 'Dados do atendimento')
 
   return (
     <>
@@ -442,7 +442,7 @@ export default function TerapeutaTerapiasPage() {
         <div className="flex flex-col gap-2">
            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Seus Serviços</h2>
            <p className="text-sm text-slate-600">
-            Gerencie as sessões individuais e os pacotes que serão exibidos no seu perfil para os pacientes.
+            Gerencie os atendimentos individuais e os pacotes que serão exibidos no seu perfil para os pacientes.
           </p>
         </div>
 
@@ -456,7 +456,7 @@ export default function TerapeutaTerapiasPage() {
             )}
           >
             <Tag size={16} className={activeTab === 'sessions' ? "text-[#0090FF]" : ""} />
-            Sessões Individuais
+            Atendimentos Individuais
           </button>
           <button
             onClick={() => setActiveTab('packages')}
@@ -483,18 +483,18 @@ export default function TerapeutaTerapiasPage() {
                 <div className="flex justify-end">
                   <Button type="button" onClick={openAddTherapy} className="shrink-0 bg-slate-900 hover:bg-slate-800 text-white rounded-full">
                     <Plus size={18} />
-                    Adicionar Sessão
+                    Adicionar Atendimento
                   </Button>
                 </div>
 
                 {rows.length === 0 ? (
                   <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 shadow-sm px-6 py-16 text-center">
                     <Tag size={32} className="mx-auto text-slate-300 mb-3" />
-                    <h3 className="font-bold text-slate-800 mb-1">Crie sua primeira sessão</h3>
-                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Adicione as terapias e serviços que você oferece para começar a receber agendamentos.</p>
+                    <h3 className="font-bold text-slate-800 mb-1">Crie seu primeiro atendimento</h3>
+                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Adicione os atendimentos e serviços que você oferece para começar a receber agendamentos.</p>
                     <Button type="button" onClick={openAddTherapy} variant="outline" className="rounded-full">
                       <Plus size={18} />
-                      Nova Sessão
+                      Novo Atendimento
                     </Button>
                   </div>
                 ) : (
@@ -555,7 +555,7 @@ export default function TerapeutaTerapiasPage() {
                   <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 shadow-sm px-6 py-16 text-center">
                     <Layers size={32} className="mx-auto text-purple-200 mb-3" />
                     <h3 className="font-bold text-slate-800 mb-1">Nenhum pacote criado</h3>
-                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Crie "Combos" de 2 ou mais sessões para fidelizar seus pacientes pagando adiantado.</p>
+                    <p className="text-slate-500 text-sm mb-5 max-w-sm mx-auto">Crie "Combos" de 2 ou mais atendimentos para ofertar aos pacientes</p>
                     <Button type="button" onClick={openAddPackage} variant="outline" className="rounded-full !border-purple-200 !text-purple-700 hover:!bg-purple-50">
                       <Plus size={18} />
                       Novo Pacote Promocional
@@ -579,8 +579,8 @@ export default function TerapeutaTerapiasPage() {
                                <p className="font-black text-purple-900">R$ {p.price.toFixed(2)}</p>
                             </div>
                             <div>
-                               <p className="text-[10px] uppercase text-slate-400 font-bold mb-0.5">Sessões</p>
-                               <p className="font-semibold text-slate-700">{p.sessionCount}x sessões</p>
+                               <p className="text-[10px] uppercase text-slate-400 font-bold mb-0.5">Atendimentos</p>
+                               <p className="font-semibold text-slate-700">{p.sessionCount}x atendimentos</p>
                             </div>
                           </div>
                           {p.isMultiTherapy && (
@@ -625,11 +625,11 @@ export default function TerapeutaTerapiasPage() {
         {/* ================= MODAL SESSAO: PICK ================= */}
         {modalStep === 'pick' && !editingId && (
           <div className="space-y-4 pt-1">
-            <p className="text-sm text-slate-500">Selecione <span className="font-medium text-slate-700">uma</span> opção para base da sessão.</p>
+            <p className="text-sm text-slate-500">Selecione <span className="font-medium text-slate-700">uma</span> opção para base do atendimento.</p>
             
             <div className="flex items-start gap-2.5 p-3.5 bg-blue-50/50 border border-blue-100/60 rounded-2xl text-xs text-slate-600 leading-normal">
               <Info size={16} className="text-[#0090FF] shrink-0 mt-0.5" />
-              <span>Caso não localize a terapia desejada, entre em contato com o administrador da plataforma.</span>
+              <span>Caso não localize o atendimento desejado, entre em contato com o administrador da plataforma.</span>
             </div>
             <div className="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
               {THERAPIST_THERAPY_MODAL_OPTIONS.map((opt) => (
@@ -679,7 +679,7 @@ export default function TerapeutaTerapiasPage() {
             )}
 
             <Input
-              label="Nome da Sessão Individual"
+              label="Nome do Atendimento Individual"
               value={therapyName}
               onChange={(e) => setTherapyName(e.target.value)}
               disabled={therapyNameLocked}
@@ -721,7 +721,7 @@ export default function TerapeutaTerapiasPage() {
                 Cancelar
               </Button>
               <Button type="button" loading={saving} onClick={handleSaveTherapy} className="rounded-full px-6 bg-slate-900 text-white hover:bg-slate-800">
-                {editingId ? 'Salvar sessão' : 'Criar Sessão'}
+                {editingId ? 'Salvar atendimento' : 'Criar Atendimento'}
               </Button>
             </div>
           </div>
@@ -733,7 +733,7 @@ export default function TerapeutaTerapiasPage() {
             
             {/* Terapia Base dropdown */}
             <div className="flex flex-col gap-1.5">
-               <label className="text-sm font-semibold text-slate-700">Sessão / Terapia Base associada</label>
+               <label className="text-sm font-semibold text-slate-700">Atendimento / Terapia Base associada</label>
                <select 
                  value={pkgParentServiceId} 
                  onChange={(e) => setPkgParentServiceId(e.target.value)}
@@ -828,7 +828,7 @@ export default function TerapeutaTerapiasPage() {
 
             <div className="grid sm:grid-cols-2 gap-5">
                <Input
-                label="Total de Sessões"
+                label="Total de Atendimentos"
                 type="number"
                 min={2}
                 placeholder="Ex: 4"
