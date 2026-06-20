@@ -9,8 +9,9 @@ import toast from 'react-hot-toast'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { withAuth } from '@/lib/auth-fetch'
 import { useTherapistUnifiedUpload } from '@/hooks/useTherapistUnifiedUpload'
-import { X, Plus, Save, Upload, FileText, ExternalLink, Trash2, User, Camera, Phone, CreditCard, Eye, Download, CheckCircle2, Clock } from 'lucide-react'
+import { X, Plus, Save, Upload, FileText, ExternalLink, Trash2, User, Camera, Phone, CreditCard, Eye, Download, CheckCircle2, Clock, Video } from 'lucide-react'
 import Link from 'next/link'
+import { Modal } from '@/components/ui/Modal'
 import { normalizeLanguagesFromServer } from '@/constants/languages'
 import { LanguageMultiSelect } from '@/components/therapist/LanguageMultiSelect'
 
@@ -65,6 +66,7 @@ export default function TerapeutaPerfilPage() {
   
   const [presentationVideoUrl, setPresentationVideoUrl] = useState<string | null>(null)
   const [videoUploading, setVideoUploading] = useState(false)
+  const [videoModalOpen, setVideoModalOpen] = useState(false)
   const videoInputRef = useRef<HTMLInputElement>(null)
 
   const profileLoaded = !loadingProfile && !!profile
@@ -953,21 +955,52 @@ export default function TerapeutaPerfilPage() {
           <div className="space-y-4">
             {presentationVideoUrl ? (
               <div className="space-y-4">
-                <div className="rounded-xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm max-w-sm aspect-[9/16] mx-auto flex items-center justify-center">
-                  <video 
-                    src={presentationVideoUrl} 
-                    controls 
-                    preload="metadata" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                  <Button variant="outline" type="button" onClick={() => videoInputRef.current?.click()} loading={videoUploading}>
-                    Substituir Vídeo
-                  </Button>
-                  <Button variant="outline" type="button" onClick={handleVideoRemove} className="text-red-600 hover:bg-red-50 hover:text-red-700">
-                    Remover Vídeo
-                  </Button>
+                <div className="flex items-center justify-between gap-4 p-4 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all group">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
+                      <video 
+                        src={presentationVideoUrl} 
+                        preload="metadata" 
+                        muted 
+                        className="w-full h-full object-cover opacity-80"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <Video size={16} className="text-white" />
+                      </div>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-slate-800 truncate">Vídeo de Apresentação</p>
+                      <button
+                        type="button"
+                        onClick={() => setVideoModalOpen(true)}
+                        className="text-[#0090FF] hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1 mt-0.5"
+                      >
+                        Visualizar
+                        <ExternalLink size={10} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      type="button" 
+                      onClick={() => videoInputRef.current?.click()} 
+                      loading={videoUploading}
+                      className="px-3 rounded-xl h-10 w-10 flex items-center justify-center text-slate-400 hover:text-[#0090FF] hover:bg-blue-50"
+                      title="Substituir"
+                    >
+                      <Upload size={16} />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={handleVideoRemove}
+                      className="px-3 rounded-xl h-10 w-10 flex items-center justify-center border-slate-200 text-slate-300 hover:text-red-500 hover:bg-red-50 hover:border-red-200"
+                      title="Remover"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -1082,6 +1115,23 @@ export default function TerapeutaPerfilPage() {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={videoModalOpen}
+        onClose={() => setVideoModalOpen(false)}
+        title="Visualizar Vídeo de Apresentação"
+        size="md"
+      >
+        <div className="rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-sm aspect-[9/16] max-w-xs mx-auto flex items-center justify-center">
+          <video 
+            src={presentationVideoUrl || undefined} 
+            controls 
+            autoPlay
+            preload="metadata" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </Modal>
     </div>
   )
 }
