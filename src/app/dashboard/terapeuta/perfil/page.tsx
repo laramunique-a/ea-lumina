@@ -318,8 +318,8 @@ export default function TerapeutaPerfilPage() {
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (file.size > 100 * 1024 * 1024) {
-      toast.error('O vídeo não pode exceder 100MB.')
+    if (file.size > 200 * 1024 * 1024) {
+      toast.error('O vídeo não pode exceder 200MB.')
       return
     }
 
@@ -328,37 +328,75 @@ export default function TerapeutaPerfilPage() {
     videoElement.src = url
     videoElement.preload = 'metadata'
 
-    videoElement.onloadedmetadata = async () => {
-      URL.revokeObjectURL(url)
-      if (videoElement.duration > 90) {
-        toast.error('O vídeo deve ter no máximo 1 minuto e 30 segundos (90 segundos).')
-        return
-      }
-
-      // Procede com upload
+    const handleUpload = async () => {
       setVideoUploading(true)
       try {
-        const formData = new FormData()
-        formData.append('file', file)
+        const fileExt = file.name.split('.').pop() || 'mp4'
 
-        const res = await fetch('/api/therapist/profile/video', withAuth({
+        // 1. Obter URL assinada de Upload e URL pública de destino
+        const resUrl = await fetch(`/api/therapist/profile/video?ext=${fileExt}`, withAuth())
+        const dataUrl = await resUrl.json().catch(() => ({}))
+
+        if (!resUrl.ok || !dataUrl.success || !dataUrl.signedUrl || !dataUrl.publicUrl) {
+          toast.error(dataUrl.error || 'Erro ao preparar upload do vídeo.')
+          return
+        }
+
+        const { signedUrl, publicUrl } = dataUrl
+
+        // 2. Upload direto do arquivo para o Supabase Storage via PUT
+        const uploadRes = await fetch(signedUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type,
+          },
+        })
+
+        if (!uploadRes.ok) {
+          toast.error('Erro de conexão ao enviar vídeo para o armazenamento.')
+          return
+        }
+
+        // 3. Salvar a nova URL do vídeo no perfil do terapeuta
+        const saveRes = await fetch('/api/therapist/profile/video', withAuth({
           method: 'POST',
-          body: formData,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ videoUrl: publicUrl }),
         }))
-        const data = await res.json()
+        const saveData = await saveRes.json().catch(() => ({}))
 
-        if (res.ok && data.success) {
-          setPresentationVideoUrl(data.url)
+        if (saveRes.ok && saveData.success) {
+          setPresentationVideoUrl(saveData.url)
           toast.success('Vídeo de apresentação salvo com sucesso!')
         } else {
-          toast.error(data.error || 'Erro ao enviar vídeo.')
+          toast.error(saveData.error || 'Erro ao vincular vídeo ao seu perfil.')
         }
-      } catch {
+      } catch (err) {
+        console.error('[handleVideoSelect]', err)
         toast.error('Erro de conexão ao enviar vídeo.')
       } finally {
         setVideoUploading(false)
         if (videoInputRef.current) videoInputRef.current.value = ''
       }
+    }
+
+    videoElement.onloadedmetadata = () => {
+      URL.revokeObjectURL(url)
+      if (videoElement.duration > 60) {
+        toast.error('O vídeo deve ter no máximo 1 minuto (60 segundos).')
+        if (videoInputRef.current) videoInputRef.current.value = ''
+        return
+      }
+      handleUpload()
+    }
+
+    videoElement.onerror = () => {
+      URL.revokeObjectURL(url)
+      console.warn('Não foi possível ler os metadados do vídeo. Prosseguindo com o upload...')
+      handleUpload()
     }
   }
 
@@ -767,7 +805,7 @@ export default function TerapeutaPerfilPage() {
         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] p-6 sm:p-8 space-y-6">
           <div className="border-b border-slate-100 pb-6 mb-6">
             <h2 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">Vídeo de Apresentação</h2>
-            <p className="text-sm text-slate-500 font-medium mt-1">Grave um vídeo curto de até 1 minuto e 30 segundos para se apresentar aos pacientes.</p>
+            <p className="text-sm text-slate-500 font-medium mt-1">Grave um vídeo curto de até 1 minuto para se apresentar aos pacientes.</p>
           </div>
 
           <div className="space-y-4">
@@ -796,7 +834,7 @@ export default function TerapeutaPerfilPage() {
                   <Upload size={16} className="mr-2" />
                   Enviar Vídeo
                 </Button>
-                <p className="mt-3 text-xs text-slate-400 font-medium">Aceito: MP4, MOV ou WEBM. Máximo 100MB e 1:30 min.</p>
+                <p className="mt-3 text-xs text-slate-400 font-medium">Aceito: MP4, MOV ou WEBM. Máximo 200MB e 1:00 min.</p>
               </div>
             )}
             

@@ -253,9 +253,9 @@ export async function uploadTherapistVideo(
     return { url: null, error: 'Formato inválido. Envie um vídeo MP4, MOV ou WEBM.' }
   }
 
-  // Máximo sugerido de 100MB (100 * 1024 * 1024 bytes)
-  if (file.size > 100 * 1024 * 1024) {
-    return { url: null, error: 'O vídeo não pode exceder 100MB.' }
+  // Máximo sugerido de 200MB (200 * 1024 * 1024 bytes)
+  if (file.size > 200 * 1024 * 1024) {
+    return { url: null, error: 'O vídeo não pode exceder 200MB.' }
   }
 
   const fileExt = file.name.split('.').pop() || 'mp4'
@@ -278,6 +278,53 @@ export async function uploadTherapistVideo(
     const msg = e instanceof Error ? e.message : String(e)
     console.error('[uploadTherapistVideo]', e)
     return { url: null, error: friendlyStorageError(msg) || 'Falha de rede no upload' }
+  }
+}
+
+export async function createTherapistVideoUploadUrl(
+  therapistId: string,
+  fileExt: string
+): Promise<{ signedUrl: string | null; token: string | null; publicUrl: string | null; error: string | null }> {
+  if (!storageConfigured()) {
+    return { signedUrl: null, token: null, publicUrl: null, error: 'Armazenamento não configurado.' }
+  }
+
+  const fileName = `presentation-${Date.now()}.${fileExt}`
+  const filePath = `therapists/${therapistId}/${fileName}`
+
+  try {
+    const { data, error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKETS.VIDEOS)
+      .createSignedUploadUrl(filePath)
+
+    if (error || !data) {
+      return {
+        signedUrl: null,
+        token: null,
+        publicUrl: null,
+        error: friendlyStorageError(error?.message) || 'Falha ao gerar URL de upload assinada',
+      }
+    }
+
+    const { data: publicUrlData } = supabaseAdmin.storage
+      .from(STORAGE_BUCKETS.VIDEOS)
+      .getPublicUrl(filePath)
+
+    return {
+      signedUrl: data.signedUrl,
+      token: data.token,
+      publicUrl: publicUrlData.publicUrl,
+      error: null,
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error('[createTherapistVideoUploadUrl]', e)
+    return {
+      signedUrl: null,
+      token: null,
+      publicUrl: null,
+      error: friendlyStorageError(msg) || 'Falha de rede ao gerar URL assinada',
+    }
   }
 }
 

@@ -1,8 +1,52 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { uploadTherapistVideo, deleteTherapistVideo } from '@/lib/supabase';
+import { deleteTherapistVideo, createTherapistVideoUploadUrl } from '@/lib/supabase';
 
+/**
+ * GET /api/therapist/profile/video?ext=mp4
+ * Gera uma URL de upload assinada diretamente para o Supabase Storage.
+ * Isso contorna o limite de 4.5MB da Vercel.
+ */
+export async function GET(req: Request) {
+  try {
+    const session = await getServerSession();
+    if (!session || session.role !== 'TERAPEUTA') {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const ext = searchParams.get('ext') || 'mp4';
+
+    const therapistProfile = await prisma.therapistProfile.findUnique({
+      where: { userId: session.sub },
+    });
+
+    if (!therapistProfile) {
+      return NextResponse.json({ error: 'Perfil não encontrado.' }, { status: 404 });
+    }
+
+    const { signedUrl, token, publicUrl, error } = await createTherapistVideoUploadUrl(
+      therapistProfile.id,
+      ext
+    );
+
+    if (error || !signedUrl) {
+      return NextResponse.json({ error: error || 'Erro ao gerar URL de upload' }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, signedUrl, token, publicUrl });
+  } catch (error: any) {
+    console.error('Error generating signed upload URL:', error);
+    return NextResponse.json({ error: 'Erro interno no servidor.' }, { status: 500 });
+  }
+}
+
+/**
+ * POST /api/therapist/profile/video
+ * Salva a URL do vídeo de apresentação (já enviado diretamente para o Storage) no perfil do terapeuta.
+ * Também exclui o vídeo anterior do storage.
+ */
 export async function POST(req: Request) {
   try {
     const session = await getServerSession();
@@ -10,11 +54,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
-    const formData = await req.formData();
-    const file = formData.get('file') as File;
+    const body = await req.json();
+    const { videoUrl } = body;
 
-    if (!file) {
-      return NextResponse.json({ error: 'Nenhum arquivo enviado.' }, { status: 400 });
+    if (!videoUrl) {
+      return NextResponse.json({ error: 'Nenhuma URL de vídeo fornecida.' }, { status: 400 });
     }
 
     const therapistProfile = await prisma.therapistProfile.findUnique({
@@ -25,30 +69,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Perfil não encontrado.' }, { status: 404 });
     }
 
-    // Se já tinha vídeo, tenta excluir do storage primeiro (opcional mas recomendado)
-    if (therapistProfile.presentationVideoUrl) {
+    // Se já tinha vídeo anterior e é diferente do novo, exclui do storage
+    if (therapistProfile.presentationVideoUrl && therapistProfile.presentationVideoUrl !== videoUrl) {
       await deleteTherapistVideo(therapistProfile.presentationVideoUrl);
     }
 
-    const { url, error } = await uploadTherapistVideo(file, therapistProfile.id);
-
-    if (error || !url) {
-      return NextResponse.json({ error: error || 'Erro ao salvar vídeo' }, { status: 500 });
-    }
-
-    // Salvar no banco de dados
+    // Salvar a nova URL no banco de dados
     await prisma.therapistProfile.update({
       where: { id: therapistProfile.id },
-      data: { presentationVideoUrl: url },
+      data: { presentationVideoUrl: videoUrl },
     });
 
-    return NextResponse.json({ success: true, url });
+    return NextResponse.json({ success: true, url: videoUrl });
   } catch (error: any) {
-    console.error('Error uploading video:', error);
+    console.error('Error saving video URL:', error);
     return NextResponse.json({ error: 'Erro interno no servidor.' }, { status: 500 });
   }
 }
 
+/**
+ * DELETE /api/therapist/profile/video
+ * Remove o vídeo de apresentação atual do perfil do terapeuta e do Storage.
+ */
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession();
