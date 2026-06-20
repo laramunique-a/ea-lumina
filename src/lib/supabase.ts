@@ -253,9 +253,9 @@ export async function uploadTherapistVideo(
     return { url: null, error: 'Formato inválido. Envie um vídeo MP4, MOV ou WEBM.' }
   }
 
-  // Máximo sugerido de 200MB (200 * 1024 * 1024 bytes)
-  if (file.size > 200 * 1024 * 1024) {
-    return { url: null, error: 'O vídeo não pode exceder 200MB.' }
+  // Máximo sugerido de 50MB (50 * 1024 * 1024 bytes)
+  if (file.size > 50 * 1024 * 1024) {
+    return { url: null, error: 'O vídeo não pode exceder 50MB.' }
   }
 
   const fileExt = file.name.split('.').pop() || 'mp4'

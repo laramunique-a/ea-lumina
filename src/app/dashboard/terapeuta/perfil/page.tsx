@@ -318,8 +318,8 @@ export default function TerapeutaPerfilPage() {
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (file.size > 200 * 1024 * 1024) {
-      toast.error('O vídeo não pode exceder 200MB.')
+    if (file.size > 50 * 1024 * 1024) {
+      toast.error('O vídeo não pode exceder 50MB.')
       return
     }
 
@@ -834,7 +834,7 @@ export default function TerapeutaPerfilPage() {
                   <Upload size={16} className="mr-2" />
                   Enviar Vídeo
                 </Button>
-                <p className="mt-3 text-xs text-slate-400 font-medium">Aceito: MP4, MOV ou WEBM. Máximo 200MB e 1:00 min.</p>
+                <p className="mt-3 text-xs text-slate-400 font-medium">Aceito: MP4, MOV ou WEBM. Máximo 50MB e 1:00 min.</p>
               </div>
             )}
             
