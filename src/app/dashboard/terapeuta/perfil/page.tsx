@@ -489,6 +489,18 @@ export default function TerapeutaPerfilPage() {
       toast.error('O campo "Data de nascimento" é obrigatório.')
       return
     }
+    if (!country.trim()) {
+      toast.error('O campo "País" é obrigatório.')
+      return
+    }
+    if (!state.trim()) {
+      toast.error('O campo "Estado (UF)" é obrigatório.')
+      return
+    }
+    if (state.trim().length !== 2) {
+      toast.error('O campo "Estado (UF)" deve conter a sigla de 2 caracteres (ex.: SP).')
+      return
+    }
     if (!documentExists) {
       toast.error('O envio do "Comprovante de Identidade" é obrigatório.')
       return
@@ -523,8 +535,8 @@ export default function TerapeutaPerfilPage() {
         modality,
         location: finalLocation || null,
         city: city || null,
-        state: state || null,
-        country: country || null,
+        state: state.trim().toUpperCase() || null,
+        country: country.trim() || null,
         professionalName: professionalName || null,
         nationality: nationality || null,
         documentId: documentId || null,
@@ -540,6 +552,7 @@ export default function TerapeutaPerfilPage() {
       if (Number.isFinite(priceNum) && priceNum >= 0) profileBody.price = priceNum
       if (yearsNum !== null && Number.isFinite(yearsNum) && yearsNum >= 0) profileBody.yearsExp = yearsNum
       else if (yearsExp.trim() === '') profileBody.yearsExp = null
+
       if (process.env.NODE_ENV === 'development') {
         console.log('[TerapeutaPerfil] save', { profileId, profileKeys: Object.keys(profileBody) })
       }
@@ -708,9 +721,9 @@ export default function TerapeutaPerfilPage() {
               tooltip="Nome que será exibido publicamente no seu perfil para os pacientes (ex: Dra. Ana Silva). Pode ser seu nome social, abreviado ou artístico."
             />
             <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Data de nascimento" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="País" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Ex.: Brasil" />
+            <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="País" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Ex.: Brasil" />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Cidade" value={city} onChange={(e) => setCity(e.target.value)} />
-            <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Estado (UF)" value={state} onChange={(e) => setState(e.target.value)} placeholder="SP" maxLength={2} />
+            <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Estado (UF)" value={state} onChange={(e) => setState(e.target.value)} placeholder="SP" maxLength={2} />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Nacionalidade" value={nationality} onChange={(e) => setNationality(e.target.value)} placeholder="Ex.: Brasileira" />
             <LanguageMultiSelect
               label="Idiomas"
@@ -859,6 +872,7 @@ export default function TerapeutaPerfilPage() {
                 />
                 <div className="md:col-span-2">
                   <Input
+                    required
                     className="bg-slate-50 border-slate-100/50 rounded-xl"
                     label="País"
                     value={country}
@@ -897,6 +911,7 @@ export default function TerapeutaPerfilPage() {
                   placeholder="Cidade"
                 />
                 <Input
+                  required
                   className="bg-slate-50 border-slate-100/50 rounded-xl"
                   label="Estado (UF)"
                   value={state}
