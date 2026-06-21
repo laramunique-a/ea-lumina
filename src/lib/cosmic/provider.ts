@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { buildSmartCopySuggestion } from './narrative-engine';
+import { getThemeVisualDna, getSensoryDetails } from './theme-visual-library';
 
 export interface CosmicContext {
   id?: string;
@@ -186,6 +187,16 @@ export async function getWeeklyCosmicContext(): Promise<CosmicContext> {
   };
 }
 
+export function pickVisualElement(themeName: string, pool: string[], seed: string): string {
+  if (!pool || pool.length === 0) return "";
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % pool.length;
+  return pool[index];
+}
+
 export async function generateCosmicContent(
   therapistId: string,
   contentType: string,
@@ -205,44 +216,55 @@ export async function generateCosmicContent(
     setTimeout(() => {
       const isFeed = contentType.toLowerCase() === 'feed';
       
-      const gptComposition = isFeed
-        ? `Instagram Feed vertical 4:5 composition, ideal size 1080x1350px, premium editorial framing, centered subject, safe margins.`
+      const composition = isFeed
+        ? `Instagram Feed vertical 4:5 composition, ideal size 1080x1350px, centered subject, premium editorial framing, safe margins.`
         : `Instagram Story vertical 9:16 composition, ideal size 1080x1920px, immersive full-screen framing, safe top and bottom margins.`;
 
-      const themeLower = theme.toLowerCase();
-      let dynamicAtmosphere = "accepting, nurturing, soft evening light";
-      if (themeLower.includes('ansiedade') || themeLower.includes('calma') || themeLower.includes('estresse') || themeLower.includes('medo') || themeLower.includes('preocupação')) {
-        dynamicAtmosphere = "calming, peaceful, quiet stillness, soothing safety";
-      } else if (themeLower.includes('prosperidade') || themeLower.includes('merecimento') || themeLower.includes('abundância') || themeLower.includes('dinheiro') || themeLower.includes('sucesso')) {
-        dynamicAtmosphere = "radiant, expansive, warm golden glow, uplifting hope";
-      }
+      // Dynamic Visual DNA Theme Logic
+      const visualDna = getThemeVisualDna(theme);
+      
+      // Seed generation combining inputs and a millisecond timestamp
+      const baseSeed = theme.toLowerCase() + "_" + contentType.toLowerCase() + "_" + (additionalNotes || "") + "_" + Date.now().toString();
+      
+      const selectedSubject = pickVisualElement(theme, visualDna.subjects, baseSeed + "_subject");
+      const selectedEnvironment = pickVisualElement(theme, visualDna.environments, baseSeed + "_environment");
+      const selectedMood = pickVisualElement(theme, visualDna.moods, baseSeed + "_mood");
+      const selectedSymbol = pickVisualElement(theme, visualDna.symbols, baseSeed + "_symbol");
+      const selectedMetaphor = pickVisualElement(theme, visualDna.metaphors, baseSeed + "_metaphor");
+      const selectedPalette = pickVisualElement(theme, visualDna.palettes, baseSeed + "_palette");
+      const selectedScene = pickVisualElement(theme, visualDna.scenes, baseSeed + "_scene");
+      
+      const selectedSensory = getSensoryDetails(theme, selectedEnvironment, selectedMood);
 
-      const gptSubject = `${master.visualScene}${additionalNotes ? `, focusing on the concept of: "${additionalNotes}"` : ""}`;
-      const gptEnvironment = `${master.centralMetaphorEN}. Coherent with the weekly energetic mood: ${currentWeek.collectiveEnergy.toLowerCase()}`;
-      const gptMood = `${master.emotionalAngleEN}, representing a feeling of ${theme.toLowerCase()}`;
-
+      // GPT Prompt Formatting
       const gptPrompt = `Create a premium cinematic therapeutic artwork.
 
 Subject:
-${gptSubject}
+${selectedSubject}
 
 Environment:
-${gptEnvironment}
+${selectedEnvironment}
 
 Emotional mood:
-${gptMood}
+${selectedMood}
+
+Symbolic elements:
+${selectedSymbol}
+
+Visual metaphor:
+${selectedMetaphor}
 
 Lighting:
 soft volumetric lighting, cinematic glow
 
 Composition:
-${gptComposition}
+${composition}
 
 Camera:
 85mm lens, shallow depth of field
 
 Color palette:
-${master.colorPalette}
+${selectedPalette}
 
 Visual style:
 luxury editorial wellness campaign, premium photography, emotionally engaging
@@ -251,41 +273,37 @@ Quality:
 ultra detailed, photorealistic, award-winning composition
 
 Negative prompts:
-text, watermark, logo, blurry elements, low quality`;
+text, watermark, logo, blurry elements, low quality, distorted hands, extra fingers`;
 
-      const geminiScene = `${master.visualScene}${additionalNotes ? `, incorporating the therapeutic vibe of: "${additionalNotes}"` : ""}`;
-      const geminiIntention = `${master.emotionalAngleEN}, serving the therapeutic purpose of: ${master.therapeuticIntention}`;
-      const geminiMetaphor = `${master.centralMetaphorEN}, symbolizing ${theme.toLowerCase()} during a week of ${currentWeek.collectiveEnergy.toLowerCase()}`;
-      const geminiSensory = `${master.symbolicElements.join(", ")}, delicate textures, gentle breeze, serene temperature`;
-      const geminiComposition = isFeed
-        ? `Instagram Feed vertical 4:5 composition, 1080x1350px, clean framing`
-        : `Instagram Story vertical 9:16 composition, 1080x1920px, safe margins`;
-
+      // Gemini Prompt Formatting
       const geminiPrompt = `Create an emotionally resonant visual scene.
 
 Main scene:
-${geminiScene}
+${selectedScene}
 
 Emotional intention:
-${geminiIntention}
+${selectedMood}
 
 Symbolic metaphor:
-${geminiMetaphor}
+${selectedMetaphor}
 
 Atmosphere:
-${dynamicAtmosphere}
+${selectedEnvironment}
 
 Sensory details:
-${geminiSensory}
+${selectedSensory}
 
 Artistic direction:
-modern spiritual editorial aesthetic, elegant, premium wellness branding
+modern spiritual editorial aesthetic, elegant, human-centered, premium wellness branding
+
+Symbolic elements:
+${selectedSymbol}
 
 Color palette:
-${master.colorPalette}
+${selectedPalette}
 
 Composition:
-${geminiComposition}
+${composition}
 
 No text.
 No logos.
@@ -332,3 +350,4 @@ No watermarks.`;
     }, 1500);
   });
 }
+
