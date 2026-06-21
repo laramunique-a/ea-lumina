@@ -99,47 +99,89 @@ export function buildMasterCreativeContext(params: {
   };
 }
 
+const ZODIAC_SEASONS = [
+  { season: "Foco, Estrutura e Inovação", energy: "Energia de concretização e busca por novas perspectivas para o futuro.", topics: ["planejamento", "inovação", "carreira", "foco"] }, // Jan
+  { season: "Intuição, Coletivo e Sonhos", energy: "Forte conexão com o todo, ideal para causas sociais e mergulhos intuitivos.", topics: ["intuição", "comunidade", "sonhos", "espiritualidade"] }, // Feb
+  { season: "Cura Profunda e Novos Inícios", energy: "Fechamento de ciclos emocionais profundos e abertura para agir com coragem.", topics: ["cura", "coragem", "ação", "liberação"] }, // Mar
+  { season: "Coragem, Materialização e Estabilidade", energy: "Impulso realizador muito forte. A energia pede que tiremos os planos do papel com consistência.", topics: ["materialização", "estabilidade", "iniciativa", "segurança"] }, // Apr
+  { season: "Segurança, Comunicação e Trocas", energy: "Momento para nutrir o que tem valor e expressar nossas ideias de forma clara.", topics: ["comunicação", "valores", "trocas", "autoestima"] }, // May
+  { season: "Aprendizado, Emoções e Acolhimento", energy: "Mente curiosa unida à necessidade de segurança emocional e conexão com as raízes.", topics: ["emoções", "aprendizado", "família", "acolhimento"] }, // Jun
+  { season: "Autoexpressão, Brilho e Raízes", energy: "A energia favorece mostrar ao mundo quem somos e nutrir nossa criança interior.", topics: ["autoexpressão", "criatividade", "alegria", "autoconfiança"] }, // Jul
+  { season: "Organização, Rotina e Detalhes", energy: "Foco no detalhe, na rotina e em ajustes necessários para que as relações floresçam.", topics: ["rotina", "equilíbrio", "saúde", "purificação"] }, // Aug
+  { season: "Harmonia, Relacionamentos e Transformação", energy: "Necessidade de acordos justos e mergulhos profundos no que precisa ser transformado.", topics: ["transformação", "harmonia", "parcerias", "desapego"] }, // Sep
+  { season: "Renascimento, Expansão e Verdade", energy: "Cura através de verdades profundas e otimismo para alçar novos voos.", topics: ["renascimento", "expansão", "verdade", "otimismo"] }, // Oct
+  { season: "Propósito, Sabedoria e Estrutura", energy: "Busca por propósito, filosofia de vida e responsabilidade para ancorar grandes aprendizados.", topics: ["propósito", "sabedoria", "responsabilidade", "metas"] }, // Nov
+  { season: "Encerramentos, Maturidade e Planejamento", energy: "Reflexão sobre as montanhas escaladas e estruturação das bases para o próximo ano.", topics: ["conclusão", "ambição", "legado", "maturidade"] } // Dec
+];
+
+const MOON_PHASES = [
+  { phase: "Energia de Inícios", modifier: "É o momento perfeito para plantar sementes de intenção e iniciar movimentos.", topic: "novas intenções" }, // Sem 1
+  { phase: "Energia de Crescimento", modifier: "Os desafios podem surgir, exigindo persistência, ajustes e superação.", topic: "desenvolvimento" }, // Sem 2
+  { phase: "Energia de Apogeu", modifier: "A luz ilumina tudo. Momento de clareza, extroversão, transbordamento e colheita.", topic: "celebração" }, // Sem 3
+  { phase: "Energia de Recolhimento", modifier: "O cosmos pede um movimento para dentro, favorecendo limpeza, descanso e desapego.", topic: "desapego" } // Sem 4
+];
+
 export async function getWeeklyCosmicContext(): Promise<CosmicContext> {
-  const latestWeek = await prisma.cosmicWeek.findFirst({
-    orderBy: { createdAt: 'desc' },
+  const date = new Date();
+  const day = date.getDay(); // 0 = Domingo
+  const diff = date.getDate() - day;
+  const startDate = new Date(date);
+  startDate.setDate(diff);
+  
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  const formatDate = (d: Date) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const weekStartStr = formatDate(startDate);
+  const weekEndStr = formatDate(endDate);
+
+  // Busca se já existe uma leitura gerada para a semana atual
+  const currentWeek = await prisma.cosmicWeek.findFirst({
+    where: { weekStart: weekStartStr },
   });
 
-  if (latestWeek) {
+  if (currentWeek) {
     return {
-      id: latestWeek.id,
-      weekStart: latestWeek.weekStart,
-      weekEnd: latestWeek.weekEnd,
-      weekTheme: latestWeek.weekTheme,
-      collectiveEnergy: latestWeek.collectiveEnergy,
-      bestTopics: latestWeek.bestTopics,
-      recommendedCta: latestWeek.recommendedCta,
+      id: currentWeek.id,
+      weekStart: currentWeek.weekStart,
+      weekEnd: currentWeek.weekEnd,
+      weekTheme: currentWeek.weekTheme,
+      collectiveEnergy: currentWeek.collectiveEnergy,
+      bestTopics: currentWeek.bestTopics,
+      recommendedCta: currentWeek.recommendedCta,
     };
   }
 
-  const mockWeek = await prisma.cosmicWeek.create({
+  // Motor Cósmico Dinâmico (Sincronizado com o ano e mês real)
+  const month = startDate.getMonth(); // 0-11
+  const weekOfMonth = Math.min(Math.floor(startDate.getDate() / 7), 3); // 0-3
+
+  const seasonContext = ZODIAC_SEASONS[month];
+  const moonContext = MOON_PHASES[weekOfMonth];
+
+  const combinedTheme = `${seasonContext.season} e ${moonContext.phase}`;
+  const combinedEnergy = `${seasonContext.energy} ${moonContext.modifier}`;
+  const combinedTopics = [...seasonContext.topics, moonContext.topic];
+
+  const newWeek = await prisma.cosmicWeek.create({
     data: {
-      weekStart: "18/05/2026",
-      weekEnd: "25/05/2026",
-      weekTheme: "Abundância e Merecimento",
-      collectiveEnergy: "Semana favorável para autoestima, expansão emocional e desbloqueio financeiro.",
-      bestTopics: [
-        "prosperidade",
-        "autocuidado",
-        "limites",
-        "merecimento"
-      ],
+      weekStart: weekStartStr,
+      weekEnd: weekEndStr,
+      weekTheme: combinedTheme,
+      collectiveEnergy: combinedEnergy,
+      bestTopics: combinedTopics,
       recommendedCta: "agendamento terapêutico"
     }
   });
 
   return {
-    id: mockWeek.id,
-    weekStart: mockWeek.weekStart,
-    weekEnd: mockWeek.weekEnd,
-    weekTheme: mockWeek.weekTheme,
-    collectiveEnergy: mockWeek.collectiveEnergy,
-    bestTopics: mockWeek.bestTopics,
-    recommendedCta: mockWeek.recommendedCta,
+    id: newWeek.id,
+    weekStart: newWeek.weekStart,
+    weekEnd: newWeek.weekEnd,
+    weekTheme: newWeek.weekTheme,
+    collectiveEnergy: newWeek.collectiveEnergy,
+    bestTopics: newWeek.bestTopics,
+    recommendedCta: newWeek.recommendedCta,
   };
 }
 
