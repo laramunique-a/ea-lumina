@@ -24,6 +24,165 @@ function getThemeCategory(theme: string): ThemeCategory {
   return 'autocuidado';
 }
 
+const TITULOS: Record<ThemeCategory, { text: string; keywords: string[] }[]> = {
+  ansiedade: [
+    { text: "Você não precisa resolver tudo hoje.", keywords: ["hoje", "tempo", "urgência", "resolver"] },
+    { text: "A calma também pode ser construída aos poucos.", keywords: ["calma", "construção", "tempo", "ritmo"] },
+    { text: "Sua mente não precisa carregar o mundo.", keywords: ["mente", "carregar", "mundo", "peso"] },
+    { text: "Respire antes de se cobrar tanto.", keywords: ["respire", "respirar", "cobrança", "cobrar", "pressão"] },
+    { text: "Nem toda urgência do dia é real.", keywords: ["urgência", "real", "dia", "calma"] },
+    { text: "A pressa tenta nos convencer de que tudo é perigo.", keywords: ["pressa", "perigo", "mente", "correr"] },
+    { text: "Há um lugar seguro dentro do momento presente.", keywords: ["presente", "seguro", "abrigo", "agora"] },
+    { text: "Deixe que o amanhã se resolva no tempo dele.", keywords: ["amanhã", "tempo", "espera", "futuro"] },
+    { text: "Seus pensamentos não são fatos absolutos.", keywords: ["pensamentos", "mente", "fatos", "realidade"] },
+    { text: "O medo do futuro consome a beleza do agora.", keywords: ["medo", "futuro", "beleza", "agora", "presente"] },
+    { text: "Menos cobrança, mais espaço para respirar.", keywords: ["cobrança", "respirar", "espaço", "peito", "alívio"] },
+    { text: "O silêncio da mente é um exercício diário.", keywords: ["silêncio", "exercício", "mente", "calma"] },
+    { text: "Onde está a sua atenção neste exato segundo?", keywords: ["atenção", "segundo", "agora", "presente"] },
+    { text: "Desacelerar não significa parar de crescer.", keywords: ["desacelerar", "crescer", "movimento", "ritmo"] },
+    { text: "Sua mente acelerada não define quem você é.", keywords: ["mente", "acelerada", "identidade", "quem sou"] },
+    { text: "Há força na suavidade e na paciência.", keywords: ["suavidade", "paciência", "força", "calma"] },
+    { text: "O ritmo do mundo não precisa ser o seu ritmo.", keywords: ["ritmo", "mundo", "tempo", "velocidade"] },
+    { text: "Quem você seria se parasse de correr por um instante?", keywords: ["correr", "parar", "instante", "presença"] },
+    { text: "Um suspiro profundo é o início de toda calma.", keywords: ["suspiro", "profundo", "calma", "respiração"] },
+    { text: "Permita-se ser humano e imperfeito hoje.", keywords: ["humano", "imperfeito", "hoje", "permissão"] },
+    { text: "Soltar a necessidade de controle traz leveza.", keywords: ["soltar", "controle", "leveza", "liberdade"] },
+    { text: "Nem todo pensamento acelerado merece ser escutado.", keywords: ["pensamento", "acelerado", "escutar", "mente"] },
+    { text: "Estabilidade emocional começa na aceitação do sentir.", keywords: ["estabilidade", "aceitação", "sentir", "emoções"] },
+    { text: "A tempestade de pensamentos também vai passar.", keywords: ["tempestade", "pensamentos", "passar", "tempo"] },
+    { text: "Volte para o seu corpo, sinta o seu chão.", keywords: ["corpo", "chão", "pés", "presença", "terra"] },
+    { text: "Onde está o seu centro quando tudo se agita?", keywords: ["centro", "agitação", "tempestade", "calma"] },
+    { text: "A paz que você busca está na presença.", keywords: ["paz", "presença", "agora", "silêncio"] },
+    { text: "Você é maior do que o barulho da sua mente.", keywords: ["barulho", "mente", "caos", "maior"] },
+    { text: "Dê a si mesmo a permissão de apenas estar aqui.", keywords: ["permissão", "aqui", "agora", "presente"] },
+    { text: "Silenciar o caos externo exige coragem interna.", keywords: ["caos", "silêncio", "coragem", "interno"] },
+    { text: "Nem toda resposta precisa ser imediata.", keywords: ["resposta", "imediata", "tempo", "espera"] },
+    { text: "O que na sua vida pede menos pressa agora?", keywords: ["pressa", "agora", "vida", "desacelerar"] },
+    { text: "Um passo de cada vez já é um grande avanço.", keywords: ["passo", "vez", "avanço", "caminho"] },
+    { text: "Acolha a incerteza para aliviar o peso.", keywords: ["incerteza", "aliviar", "peso", "acolhimento"] },
+    { text: "Você não está atrasado em relação a ninguém.", keywords: ["atrasado", "tempo", "comparação", "ritmo"] },
+    { text: "Sua mente pode ser um abrigo seguro.", keywords: ["mente", "abrigo", "seguro", "paz"] },
+    { text: "A pressa nos impede de ver as saídas.", keywords: ["pressa", "saídas", "clareza", "visão"] },
+    { text: "O agora é o único lugar que existe.", keywords: ["agora", "lugar", "existe", "presente"] },
+    { text: "Respire fundo e traga a mente para casa.", keywords: ["respire", "mente", "casa", "retorno"] },
+    { text: "Não lute contra os pensamentos, apenas observe-os passar.", keywords: ["lute", "pensamentos", "observe", "passar", "nuvens"] },
+    { text: "Acalmar a mente é um ato de autocompaixão.", keywords: ["acalmar", "mente", "autocompaixão", "gentileza"] },
+    { text: "A urgência mental costuma ser uma ilusão.", keywords: ["urgência", "ilusão", "mente", "calma"] },
+    { text: "Proteja o seu direito de ficar em silêncio.", keywords: ["direito", "silêncio", "proteção", "pausa"] },
+    { text: "O amanhã não precisa ser antecipado.", keywords: ["amanhã", "antecipado", "tempo", "futuro"] },
+    { text: "Deixe ir o que você não pode controlar.", keywords: ["deixe ir", "controlar", "soltar", "controle"] },
+    { text: "Sua paz interior não está à venda.", keywords: ["paz", "interior", "valor", "limites"] },
+    { text: "Sentir medo faz parte, deixar que ele controle não.", keywords: ["medo", "controle", "sentir", "coragem"] },
+    { text: "Há um ritmo natural para todas as coisas.", keywords: ["ritmo", "natural", "tempo", "estação"] },
+    { text: "O peso que você carrega na mente pode ser solto.", keywords: ["peso", "carrega", "mente", "soltar"] },
+    { text: "Menos ansiedade e mais espaço para viver o agora.", keywords: ["ansiedade", "espaço", "viver", "agora", "presente"] }
+  ],
+  prosperidade: [
+    { text: "Prosperidade começa quando você se permite receber.", keywords: ["prosperidade", "receber", "permissão", "fluxo"] },
+    { text: "O crescimento verdadeiro começa de dentro para fora.", keywords: ["crescimento", "crescer", "dentro", "interno"] },
+    { text: "Você não precisa se diminuir para caber no medo.", keywords: ["diminuir", "medo", "cabe", "tamanho"] },
+    { text: "Receber também exige coragem e merecimento.", keywords: ["receber", "coragem", "merecimento", "direito"] },
+    { text: "Qual é o tamanho da sua permissão para crescer?", keywords: ["permissão", "crescer", "tamanho", "expansão"] },
+    { text: "Riqueza sem paz é apenas outra forma de cansaço.", keywords: ["riqueza", "paz", "cansaço", "sucesso"] },
+    { text: "A abundância flui onde a escassez não faz morada.", keywords: ["abundância", "escassez", "fluxo", "morada"] },
+    { text: "O seu valor não está na sua conta bancária.", keywords: ["valor", "conta", "dinheiro", "identidade"] },
+    { text: "Você se permite desfrutar do que já conquistou?", keywords: ["permitir", "desfrutar", "conquistas", "prazer"] },
+    { text: "O fluxo da prosperidade exige aprender a soltar.", keywords: ["fluxo", "prosperidade", "soltar", "confiança"] },
+    { text: "Reconheça o seu merecimento inato antes de realizar.", keywords: ["merecimento", "inato", "realizar", "valor"] },
+    { text: "O sucesso verdadeiro respeita a sua saúde mental.", keywords: ["sucesso", "respeito", "saúde", "equilíbrio"] },
+    { text: "Dinheiro é energia de troca; como está a sua?", keywords: ["dinheiro", "energia", "troca", "relação"] },
+    { text: "Atreva-se a cobrar o preço justo pelo seu valor.", keywords: ["preço", "justo", "valor", "cobrar", "trabalho"] },
+    { text: "A gratidão atrai as circunstâncias certas para a colheita.", keywords: ["gratidão", "colheita", "circunstâncias", "frequência"] },
+    { text: "Liberar crenças de limitação é um ato de prosperidade.", keywords: ["liberar", "crenças", "limitação", "escassez"] },
+    { text: "O medo da falta cria barreiras para a abundância.", keywords: ["medo", "falta", "barreiras", "abundância"] },
+    { text: "Você não precisa de esforço extremo para ser merecedor.", keywords: ["esforço", "merecedor", "esforçar", "facilidade"] },
+    { text: "A abundância é a certeza de que sempre há o essencial.", keywords: ["abundância", "certeza", "essencial", "segurança"] },
+    { text: "Quando você se valoriza, o mundo reflete essa verdade.", keywords: ["valoriza", "mundo", "reflete", "verdade", "merecimento"] },
+    { text: "Realização profissional exige coerência com a sua essência.", keywords: ["realização", "profissional", "coerência", "essência"] },
+    { text: "Você tem medo de brilhar mais do que os outros?", keywords: ["brilhar", "medo", "outros", "sucesso", "comparação"] },
+    { text: "A generosidade abre portas para o fluxo da vida.", keywords: ["generosidade", "portas", "fluxo", "vida"] },
+    { text: "Investir em si mesmo sinaliza o seu próprio valor.", keywords: ["investir", "si mesmo", "valor", "autoestima"] },
+    { text: "A prosperidade engloba tempo livre, saúde e conexões.", keywords: ["prosperidade", "tempo livre", "saúde", "conexões"] },
+    { text: "Deixe ir a necessidade de esforço doloroso para vencer.", keywords: ["esforço", "doloroso", "vencer", "trabalho", "luta"] },
+    { text: "Sua criatividade é a sua fonte de riqueza mais valiosa.", keywords: ["criatividade", "fonte", "riqueza", "valiosa"] },
+    { text: "Confie no ritmo natural das suas conquistas.", keywords: ["ritmo", "natural", "conquistas", "tempo", "confiança"] },
+    { text: "O sucesso duradouro é construído sobre a integridade.", keywords: ["sucesso", "integridade", "duradouro", "valores"] },
+    { text: "Dizer sim para si mesmo atrai novas oportunidades.", keywords: ["oportunidades", "dizer sim", "si mesmo", "abertura"] },
+    { text: "O merecimento inato não exige justificativas.", keywords: ["merecimento", "inato", "justificativas", "valor"] },
+    { text: "Você é digno de prosperar simplesmente por ser quem é.", keywords: ["digno", "prosperar", "ser", "identidade"] },
+    { text: "Rompa com o ciclo de escassez da sua história.", keywords: ["ciclo", "escassez", "história", "ancestralidade", "família"] },
+    { text: "A abundância é um estado mental de presença.", keywords: ["abundância", "estado", "presença", "agora"] },
+    { text: "Seus talentos merecem ser remunerados de forma justa.", keywords: ["talentos", "remunerados", "justa", "remuneração"] },
+    { text: "O que na sua carreira está pedindo mais expansão?", keywords: ["carreira", "expansão", "trabalho", "crescer"] },
+    { text: "Conecte seu trabalho ao seu propósito de vida.", keywords: ["trabalho", "propósito", "vida", "alinhamento"] },
+    { text: "O fluxo do dinheiro acompanha a clareza da intenção.", keywords: ["dinheiro", "fluxo", "clareza", "intenção"] },
+    { text: "Menos comparação profissional, mais foco na sua jornada.", keywords: ["comparação", "jornada", "foco", "carreira"] },
+    { text: "A prosperidade começa no reconhecimento do seu valor próprio.", keywords: ["prosperidade", "reconhecimento", "valor próprio", "merecimento"] },
+    { text: "Abundância não é acumular, é saber que nada falta.", keywords: ["abundância", "acumular", "falta", "suficiente"] },
+    { text: "Não sabote o seu crescimento por medo de incomodar.", keywords: ["sabote", "crescimento", "incomodar", "brilhar"] },
+    { text: "A atitude de abundância transforma pequenos recursos em riqueza.", keywords: ["atitude", "recursos", "riqueza", "abundância"] },
+    { text: "A generosidade consigo mesmo é o primeiro passo da colheita.", keywords: ["generosidade", "consigo mesmo", "colheita", "passo"] },
+    { text: "O merecimento se cultiva aceitando o melhor da vida.", keywords: ["merecimento", "aceitando", "melhor", "vida"] },
+    { text: "A sua fonte interna de criatividade é inesgotável.", keywords: ["fonte", "criatividade", "inesgotável", "criação"] },
+    { text: "Abra as mãos para doar e receber na mesma medida.", keywords: ["mãos", "doar", "receber", "medida", "equilíbrio"] },
+    { text: "A stabilidade profissional nasce do seu alinhamento interno.", keywords: ["estabilidade", "alinhamento", "interno", "carreira"] },
+    { text: "O que você escolhe nutrir hoje trará frutos amanhã.", keywords: ["nutrir", "hoje", "frutos", "amanhã", "tempo"] },
+    { text: "Permita-se sonhar grande e agir com consistência.", keywords: ["sonhar", "grande", "agir", "consistência", "realização"] }
+  ],
+  autocuidado: [
+    { text: "Nem toda pausa é perda de tempo.", keywords: ["pausa", "tempo", "perda", "descanso"] },
+    { text: "Você tem se escutado ou apenas sobrevivido?", keywords: ["escutado", "sobrevivido", "vida", "presença"] },
+    { text: "O corpo fala antes da mente entender.", keywords: ["corpo", "mente", "entender", "fala", "sinais"] },
+    { text: "Cuidar de si também é um compromisso sério.", keywords: ["cuidar", "compromisso", "sério", "si mesmo"] },
+    { text: "O excesso de autocobrança adoece a alma.", keywords: ["excesso", "autocobrança", "adoece", "alma"] },
+    { text: "Acolher-se é o primeiro passo para a cura.", keywords: ["acolher", "primeiro passo", "cura", "acolhimento"] },
+    { text: "Colocar limites nas demandas externas é amor-próprio.", keywords: ["limites", "demandas", "amor-próprio", "proteção"] },
+    { text: "Você é o seu maior aliado nessa caminhada.", keywords: ["maior aliado", "caminhada", "si mesmo", "aliado"] },
+    { text: "O autocuidado profundo vai além do superficial.", keywords: ["autocuidado", "profundo", "superficial", "essência"] },
+    { text: "Dizer não aos outros pode ser o seu melhor sim.", keywords: ["dizer não", "melhor sim", "limites", "outros"] },
+    { text: "A exaustão não deveria ser o preço do sucesso.", keywords: ["exaustão", "preço", "sucesso", "descanso"] },
+    { text: "O amor-próprio é a base de todas as relações.", keywords: ["amor-próprio", "base", "relações", "autoestima"] },
+    { text: "Trate a si mesmo com a gentileza que você dá ao mundo.", keywords: ["gentileza", "mundo", "tratamento", "autocompaixão"] },
+    { text: "Sua história de vida merece ser acolhida por completo.", keywords: ["história", "vida", "acolhida", "passado"] },
+    { text: "O acolhimento interno cura as dores do passado.", keywords: ["acolhimento", "interno", "cura", "dores", "passado"] },
+    { text: "O que o seu corpo está tentando lhe dizer hoje?", keywords: ["corpo", "dizer", "hoje", "sinais", "mensagens"] },
+    { text: "Você não precisa carregar o mundo nas costas.", keywords: ["carregar", "mundo", "costas", "peso", "responsabilidade"] },
+    { text: "Autocompaixão é o antídoto para a perfeição paralisante.", keywords: ["autocompaixão", "antídoto", "perfeição", "paralisante"] },
+    { text: "Qual foi a última vez que você cuidou de si?", keywords: ["cuidar", "última vez", "si", "pausa"] },
+    { text: "Nenhum sucesso externo compensa a falta de paz interna.", keywords: ["sucesso", "paz interna", "paz", "compensação"] },
+    { text: "Seu corpo é o seu templo; como você o habita?", keywords: ["corpo", "templo", "habita", "casa"] },
+    { text: "Aprender a receber cuidado exige vulnerabilidade e coragem.", keywords: ["receber", "cuidado", "vulnerabilidade", "coragem"] },
+    { text: "Não espere esgotar-se para decidir descansar.", keywords: ["esgotar", "descansar", "decisão", "pausa"] },
+    { text: "Afastar-se do que te desgasta é legítima defesa.", keywords: ["afastar", "desgasta", "defesa", "limites"] },
+    { text: "Autoestima nasce da aceitação das suas imperfeições.", keywords: ["autoestima", "aceitação", "imperfeições", "autocompaixão"] },
+    { text: "Você tem o direito de recomeçar quantas vezes quiser.", keywords: ["direito", "recomeçar", "vezes", "renovação"] },
+    { text: "O que na sua rotina drena a sua energia vital?", keywords: ["rotina", "drena", "energia", "vital"] },
+    { text: "Resgatar a conexão consigo mesmo exige silêncio.", keywords: ["conexão", "consigo mesmo", "silêncio", "interior"] },
+    { text: "O descanso é produtivo e restaura a sua alma.", keywords: ["descanso", "produtivo", "restaura", "alma"] },
+    { text: "Seja paciente com o tempo das suas sementes brotarem.", keywords: ["paciente", "tempo", "sementes", "brotar", "crescimento"] },
+    { text: "Você merece o mesmo cuidado que dispensa aos outros.", keywords: ["merece", "cuidado", "outros", "equilíbrio"] },
+    { text: "Cuidar de si é um ato revolucionário de liberdade.", keywords: ["cuidar de si", "revolucionário", "liberdade", "amor-próprio"] },
+    { text: "Sua paz de espírito deve vir sempre em primeiro lugar.", keywords: ["paz de espírito", "paz", "primeiro lugar", "prioridade"] },
+    { text: "Acolha suas vulnerabilidades com ternura e respeito.", keywords: ["vulnerabilidades", "ternura", "respeito", "acolhimento"] },
+    { text: "O autoconhecimento nos devolve a nossa essência.", keywords: ["autoconhecimento", "essência", "identidade", "retorno"] },
+    { text: "Você não precisa provar nada para ninguém hoje.", keywords: ["provar", "ninguém", "hoje", "expectativas"] },
+    { text: "A autovalorização começa no respeito aos seus limites.", keywords: ["autovalorização", "respeito", "limites", "valor"] },
+    { text: "Silencie as cobranças para escutar a sua intuição.", keywords: ["silencie", "cobranças", "escutar", "intuição"] },
+    { text: "O que na sua vida hoje pede mais gentileza?", keywords: ["vida", "hoje", "gentileza", "autocompaixão"] },
+    { text: "Aprenda a nutrir a si mesmo antes de transbordar.", keywords: ["nutrir", "si mesmo", "transbordar", "copo"] },
+    { text: "Suas cicatrizes contam a sua força de sobrevivência.", keywords: ["cicratizes", "força", "sobrevivência", "história", "superação"] },
+    { text: "A autoestima saudável é construída em pequenas escolhas.", keywords: ["autoestima", "saudável", "construída", "escolhas"] },
+    { text: "Liberte-se do peso de tentar agradar a todos.", keywords: ["peso", "agradar", "todos", "liberdade"] },
+    { text: "O autocuidado diário evita o esgotamento futuro.", keywords: ["autocuidado", "diário", "esgotamento", "futuro"] },
+    { text: "Cada amanhecer traz uma nova chance de se priorizar.", keywords: ["amanhecer", "chance", "priorizar", "hoje"] },
+    { text: "A sua história merece ser contada com carinho.", keywords: ["história", "merece", "carinho", "narrativa"] },
+    { text: "Fazer pausas conscientes restaura a sua vitalidade.", keywords: ["pausas", "conscientes", "restaura", "vitalidade"] },
+    { text: "Menos autocrítica e mais espaço para ser você mesmo.", keywords: ["autocrítica", "espaço", "ser você", "liberdade"] },
+    { text: "O acolhimento começa na escuta atenta das suas dores.", keywords: ["acolhimento", "escuta", "atenta", "dores"] },
+    { text: "Confie na sabedoria invisível do seu crescimento.", keywords: ["confie", "sabedoria", "crescimento", "tempo"] }
+  ]
+};
+
 const GANCHOS: Record<ThemeCategory, string[]> = {
   ansiedade: [
     "Nem toda urgência é real; às vezes é apenas o hábito de correr.",
@@ -460,8 +619,8 @@ export function buildSmartCopySuggestion(context: SmartCopyContext): SmartCopyRe
   
   // Ordena decrescente
   scoredMetaphors.sort((a, b) => b.score - a.score);
-  // Pega uma das 3 melhores metáforas pontuadas de forma aleatória para garantir diversidade
-  const topMetaphors = scoredMetaphors.slice(0, Math.min(3, scoredMetaphors.length));
+  // Pega uma das 6 melhores metáforas pontuadas de forma aleatória para garantir diversidade
+  const topMetaphors = scoredMetaphors.slice(0, Math.min(6, scoredMetaphors.length));
   const chosenMetaphor = topMetaphors[Math.floor(Math.random() * topMetaphors.length)].metaphor;
 
   // 2. Seleciona Gancho, Reflexão, Transformação e CTA
@@ -496,25 +655,16 @@ export function buildSmartCopySuggestion(context: SmartCopyContext): SmartCopyRe
   const hashtagGroups = HASHTAGS[category];
   const chosenHashtags = hashtagGroups[Math.floor(Math.random() * hashtagGroups.length)].join(" ");
 
-  // 3. Título dinâmico atrativo de até 12 palavras baseado na metáfora central
-  const titleTemplates = [
-    `✨ Como ${chosenMetaphor.name} revela o caminho de ${context.theme.toLowerCase()}`,
-    `🌿 O que a imagem de ${chosenMetaphor.name} nos ensina hoje`,
-    `💫 ${context.theme}: O segredo que reside em olhar para dentro`,
-    `✨ Nem toda jornada de ${context.theme.toLowerCase()} exige velocidade`,
-    `🌿 Encontrando seu próprio centro através de ${chosenMetaphor.name}`,
-    `💫 O portal do merecimento e ${chosenMetaphor.name} na sua vida`,
-    `🌿 Pausa e clareza: A mensagem de ${chosenMetaphor.name} para a semana`,
-    `✨ ${context.theme}: A transformação de ${chosenMetaphor.name} em silêncio`,
-    `💫 O que a metáfora de ${chosenMetaphor.name} nos revela`,
-    `🌿 Curando suas pressões através de ${chosenMetaphor.name}`
-  ];
+  // 3. Título selecionado da biblioteca curada usando score de compatibilidade
+  const scoredTitles = TITULOS[category].map(t => {
+    const keywordScore = calculateKeywordScore(searchCorpus, t.keywords);
+    const randomNoise = Math.random() * 2;
+    return { title: t, score: keywordScore + randomNoise };
+  }).sort((a, b) => b.score - a.score);
   
-  // Escolhe o template que melhor se alinha à categoria/metáfora
-  const rawTitle = titleTemplates[Math.floor(Math.random() * titleTemplates.length)];
-  // Garante que o título tem no máximo 12 palavras
-  const titleWords = rawTitle.split(" ");
-  const copyTitle = titleWords.slice(0, 12).join(" ");
+  const topTitles = scoredTitles.slice(0, Math.min(6, scoredTitles.length));
+  const chosenTitle = topTitles[Math.floor(Math.random() * topTitles.length)].title;
+  const copyTitle = chosenTitle.text;
 
   // 4. Conjunções de transição dinâmicas
   const conjGanchoRefl = CONJUNCOES_GANCHO_REFLEXAO[Math.floor(Math.random() * CONJUNCOES_GANCHO_REFLEXAO.length)];
