@@ -209,20 +209,31 @@ export async function generateCosmicContent(
         ? `Instagram Feed vertical 4:5 composition, ideal size 1080x1350px, premium editorial framing, centered subject, safe margins.`
         : `Instagram Story vertical 9:16 composition, ideal size 1080x1920px, immersive full-screen framing, safe top and bottom margins.`;
 
-      const geminiComposition = isFeed
-        ? `Create the image for Instagram Feed, vertical 4:5 ratio, ideal size 1080x1350px, with a clean centered composition.`
-        : `Create the image for Instagram Story, vertical 9:16 ratio, ideal size 1080x1920px, with immersive vertical composition and safe space at the top and bottom.`;
+      const themeLower = theme.toLowerCase();
+      let dynamicAtmosphere = "accepting, nurturing, soft evening light";
+      if (themeLower.includes('ansiedade') || themeLower.includes('calma') || themeLower.includes('estresse') || themeLower.includes('medo') || themeLower.includes('preocupação')) {
+        dynamicAtmosphere = "calming, peaceful, quiet stillness, soothing safety";
+      } else if (themeLower.includes('prosperidade') || themeLower.includes('merecimento') || themeLower.includes('abundância') || themeLower.includes('dinheiro') || themeLower.includes('sucesso')) {
+        dynamicAtmosphere = "radiant, expansive, warm golden glow, uplifting hope";
+      }
 
-      const gptPrompt = `Create a cinematic premium therapeutic artwork.
+      const gptSubject = `${master.visualScene}${additionalNotes ? `, focusing on the concept of: "${additionalNotes}"` : ""}`;
+      const gptEnvironment = `${master.centralMetaphorEN}. Coherent with the weekly energetic mood: ${currentWeek.collectiveEnergy.toLowerCase()}`;
+      const gptMood = `${master.emotionalAngleEN}, representing a feeling of ${theme.toLowerCase()}`;
+
+      const gptPrompt = `Create a premium cinematic therapeutic artwork.
 
 Subject:
-${master.visualScene}
+${gptSubject}
 
 Environment:
-${master.centralMetaphorEN}
+${gptEnvironment}
+
+Emotional mood:
+${gptMood}
 
 Lighting:
-soft volumetric light, cinematic atmosphere
+soft volumetric lighting, cinematic glow
 
 Composition:
 ${gptComposition}
@@ -233,39 +244,51 @@ Camera:
 Color palette:
 ${master.colorPalette}
 
-Style:
-luxury wellness campaign, premium editorial photography
+Visual style:
+luxury editorial wellness campaign, premium photography, emotionally engaging
 
 Quality:
-ultra detailed, photorealistic, award-winning photography
+ultra detailed, photorealistic, award-winning composition
 
 Negative prompts:
-text, watermark, logo, blurry elements`;
+text, watermark, logo, blurry elements, low quality`;
 
-      const geminiPrompt = `${geminiComposition}
+      const geminiScene = `${master.visualScene}${additionalNotes ? `, incorporating the therapeutic vibe of: "${additionalNotes}"` : ""}`;
+      const geminiIntention = `${master.emotionalAngleEN}, serving the therapeutic purpose of: ${master.therapeuticIntention}`;
+      const geminiMetaphor = `${master.centralMetaphorEN}, symbolizing ${theme.toLowerCase()} during a week of ${currentWeek.collectiveEnergy.toLowerCase()}`;
+      const geminiSensory = `${master.symbolicElements.join(", ")}, delicate textures, gentle breeze, serene temperature`;
+      const geminiComposition = isFeed
+        ? `Instagram Feed vertical 4:5 composition, 1080x1350px, clean framing`
+        : `Instagram Story vertical 9:16 composition, 1080x1920px, safe margins`;
+
+      const geminiPrompt = `Create an emotionally resonant visual scene.
 
 Main scene:
-${master.visualScene}
+${geminiScene}
 
 Emotional intention:
-${master.emotionalAngleEN}
+${geminiIntention}
 
 Symbolic metaphor:
-${master.centralMetaphorEN}
+${geminiMetaphor}
+
+Atmosphere:
+${dynamicAtmosphere}
 
 Sensory details:
-${master.symbolicElements.join(", ")}
+${geminiSensory}
 
 Artistic direction:
-modern spiritual editorial aesthetic, elegant, human-centered, premium wellness branding
+modern spiritual editorial aesthetic, elegant, premium wellness branding
 
 Color palette:
 ${master.colorPalette}
 
+Composition:
+${geminiComposition}
+
 No text.
-
 No logos.
-
 No watermarks.`;
 
       const geminiCopy = {
