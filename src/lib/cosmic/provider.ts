@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { buildSmartCopySuggestion } from './narrative-engine';
 
 export interface CosmicContext {
   id?: string;
@@ -281,31 +282,16 @@ No watermarks.`;
         hashtags: []
       } as any;
 
-      let suggestedTitle = `✨ A verdadeira jornada de ${theme.toLowerCase()} começa quando você se escuta`;
-      const themeLower = theme.toLowerCase();
-      if (themeLower.includes('ansiedade') || themeLower.includes('calma')) {
-        suggestedTitle = `🌿 A calma que você procura começa quando você se escuta`;
-      } else if (themeLower.includes('prosperidade') || themeLower.includes('abundância') || themeLower.includes('dinheiro')) {
-        suggestedTitle = `✨ O portal para sua prosperidade começa a se abrir por dentro`;
-      } else {
-        suggestedTitle = `💫 Nem toda jornada de ${theme.toLowerCase()} acontece do lado de fora`;
-      }
+      const smartCopy = buildSmartCopySuggestion({
+        contentType,
+        theme,
+        additionalNotes,
+        collectiveEnergy: currentWeek.collectiveEnergy,
+        therapeuticIntention: master.therapeuticIntention,
+      });
 
-      const notesPart = additionalNotes ? `\n\nConsiderando sua intenção de: "${additionalNotes}",` : '';
-      const suggestedCaption = `Como terapeuta, convido você a refletir sobre ${theme.toLowerCase()} nesta semana. 
-
-Olhando para a nossa energia coletiva atual — ${currentWeek.collectiveEnergy.toLowerCase()} — torna-se ainda mais essencial olhar para dentro. 
-
-Nossa intenção terapêutica para este momento é: ${master.therapeuticIntention}.${notesPart}
-
-Para te ajudar a integrar este movimento, proponho um pequeno exercício:
-1. Respire fundo e traga sua atenção para o momento presente.
-2. Identifique onde essa energia se manifesta no seu corpo.
-3. Permita-se sentir e acolher o que surgir, sem julgamentos.
-
-Lembre-se: ${master.transformationPromiseSafe.toLowerCase()}.
-
-Vamos caminhar juntos nessa jornada? Agende um atendimento e vamos aprofundar esse processo. ✨`;
+      const suggestedTitle = smartCopy.copyTitle;
+      const suggestedCaption = smartCopy.copyCaption;
 
       resolve({
         geminiCopy,
