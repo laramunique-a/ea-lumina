@@ -470,7 +470,7 @@ export default function TerapeutaPerfilPage() {
     }
   }
 
-  const handleSave = async () => {
+  const handleSave = async (section: 'basic' | 'contact' | 'bio' | 'certificates' | 'all' = 'all') => {
     if (!user) {
       toast.error('Sessão inválida. Faça login novamente.')
       return
@@ -480,128 +480,166 @@ export default function TerapeutaPerfilPage() {
       return
     }
 
-    // Validações de campos obrigatórios
-    if (!professionalName.trim()) {
-      toast.error('O campo "Nome profissional" é obrigatório.')
-      return
+    // Validações de campos obrigatórios por seção
+    if (section === 'all' || section === 'basic') {
+      if (!professionalName.trim()) {
+        toast.error('O campo "Nome profissional" é obrigatório.')
+        return
+      }
+      if (!birthDate) {
+        toast.error('O campo "Data de nascimento" é obrigatório.')
+        return
+      }
+      if (!country.trim()) {
+        toast.error('O campo "País" é obrigatório.')
+        return
+      }
+      if (!state.trim()) {
+        toast.error('O campo "Estado (UF)" é obrigatório.')
+        return
+      }
+      if (state.trim().length !== 2) {
+        toast.error('O campo "Estado (UF)" deve conter a sigla de 2 caracteres (ex.: SP).')
+        return
+      }
+      if (!documentExists) {
+        toast.error('O envio do "Comprovante de Identidade" é obrigatório.')
+        return
+      }
     }
-    if (!birthDate) {
-      toast.error('O campo "Data de nascimento" é obrigatório.')
-      return
+
+    if (section === 'all' || section === 'contact') {
+      if (!whatsapp.trim()) {
+        toast.error('O campo "WhatsApp / Telefone" é obrigatório.')
+        return
+      }
+      if (!professionalEmail.trim()) {
+        toast.error('O campo "Email profissional" é obrigatório.')
+        return
+      }
+      if (!modality) {
+        toast.error('O campo "Modalidade de atendimento" é obrigatório.')
+        return
+      }
     }
-    if (!country.trim()) {
-      toast.error('O campo "País" é obrigatório.')
-      return
-    }
-    if (!state.trim()) {
-      toast.error('O campo "Estado (UF)" é obrigatório.')
-      return
-    }
-    if (state.trim().length !== 2) {
-      toast.error('O campo "Estado (UF)" deve conter a sigla de 2 caracteres (ex.: SP).')
-      return
-    }
-    if (!documentExists) {
-      toast.error('O envio do "Comprovante de Identidade" é obrigatório.')
-      return
-    }
-    if (!whatsapp.trim()) {
-      toast.error('O campo "WhatsApp / Telefone" é obrigatório.')
-      return
-    }
-    if (!professionalEmail.trim()) {
-      toast.error('O campo "Email profissional" é obrigatório.')
-      return
-    }
-    if (!modality) {
-      toast.error('O campo "Modalidade de atendimento" é obrigatório.')
-      return
-    }
-    const bioWordCount = bio.trim() ? bio.trim().split(/\s+/).filter(Boolean).length : 0
-    if (!bio.trim() || bioWordCount < 100 || bioWordCount > 1000) {
-      toast.error('A biografia é obrigatória e deve conter entre 100 e 1000 palavras.')
-      return
+
+    if (section === 'all' || section === 'bio') {
+      const bioWordCount = bio.trim() ? bio.trim().split(/\s+/).filter(Boolean).length : 0
+      if (!bio.trim() || bioWordCount < 100 || bioWordCount > 1000) {
+        toast.error('A biografia é obrigatória e deve conter entre 100 e 1000 palavras.')
+        return
+      }
     }
 
     setLoading(true)
     try {
-      const priceNum = parseFloat(price)
-      const yearsNum = yearsExp.trim() === '' ? null : parseInt(yearsExp, 10)
+      const promises: Promise<Response>[] = []
+
+      // 1. Preparar payload de atualização do User se aplicável
+      const userPayload: Record<string, unknown> = {}
+      if (section === 'all' || section === 'basic') {
+        userPayload.name = name
+        if (birthDate) userPayload.birthDate = birthDate ? new Date(birthDate) : null
+      }
+      if (section === 'all' || section === 'contact') {
+        userPayload.phone = whatsapp.trim() ? whatsapp : ''
+      }
+
+      if (Object.keys(userPayload).length > 0) {
+        promises.push(
+          fetch(
+            `/api/users/${user.id}`,
+            withAuth({
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(userPayload),
+            })
+          )
+        )
+      }
+
+      // 2. Preparar payload de atualização do TherapistProfile se aplicável
+      const profileBody: Record<string, unknown> = {}
       
-      const finalLocation = modality === 'ONLINE' ? '' : [cep, street, number, neighborhood].join(';;;')
+      if (section === 'all' || section === 'basic') {
+        profileBody.professionalName = professionalName || null
+        profileBody.country = country.trim() || null
+        profileBody.city = city || null
+        profileBody.state = state.trim().toUpperCase() || null
+        profileBody.nationality = nationality || null
+        profileBody.languages = languages.length ? languages : ['Português']
+        
+        const priceNum = parseFloat(price)
+        if (Number.isFinite(priceNum) && priceNum >= 0) profileBody.price = priceNum
 
-      const profileBody: Record<string, unknown> = {
-        bio,
-        modality,
-        location: finalLocation || null,
-        city: city || null,
-        state: state.trim().toUpperCase() || null,
-        country: country.trim() || null,
-        professionalName: professionalName || null,
-        nationality: nationality || null,
-        documentId: documentId || null,
-        languages: languages.length ? languages : ['Português'],
-        certifications,
-        publicTargetDescription: publicTargetDescription || null,
-        whatsapp: whatsapp || null,
-        professionalEmail: professionalEmail || null,
-        instagram: instagram || null,
-        facebook: facebook || null,
-        websiteUrl: websiteUrl || null,
+        const yearsNum = yearsExp.trim() === '' ? null : parseInt(yearsExp, 10)
+        if (yearsNum !== null && Number.isFinite(yearsNum) && yearsNum >= 0) profileBody.yearsExp = yearsNum
+        else if (yearsExp.trim() === '') profileBody.yearsExp = null
       }
-      if (Number.isFinite(priceNum) && priceNum >= 0) profileBody.price = priceNum
-      if (yearsNum !== null && Number.isFinite(yearsNum) && yearsNum >= 0) profileBody.yearsExp = yearsNum
-      else if (yearsExp.trim() === '') profileBody.yearsExp = null
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log('[TerapeutaPerfil] save', { profileId, profileKeys: Object.keys(profileBody) })
+      
+      if (section === 'all' || section === 'contact') {
+        const finalLocation = modality === 'ONLINE' ? '' : [cep, street, number, neighborhood].join(';;;')
+        profileBody.modality = modality
+        profileBody.location = finalLocation || null
+        profileBody.city = city || null
+        profileBody.state = state.trim().toUpperCase() || null
+        profileBody.country = country.trim() || null
+        profileBody.whatsapp = whatsapp || null
+        profileBody.professionalEmail = professionalEmail || null
+        profileBody.instagram = instagram || null
+        profileBody.facebook = facebook || null
+        profileBody.websiteUrl = websiteUrl || null
+      }
+      
+      if (section === 'all' || section === 'bio') {
+        profileBody.bio = bio
       }
 
-      const [userRes, profileRes] = await Promise.all([
-        fetch(
-          `/api/users/${user.id}`,
-          withAuth({
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name,
-              phone: whatsapp.trim() ? whatsapp : '',
-              birthDate: birthDate || undefined,
-            }),
-          })
-        ),
-        fetch(
-          `/api/therapists/${profileId}`,
-          withAuth({
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(profileBody),
-          })
-        ),
-      ])
+      if (section === 'certificates') {
+        profileBody.certifications = certifications
+      }
 
-      const [userData, profileData] = await Promise.all([
-        userRes.json().catch(() => ({})),
-        profileRes.json().catch(() => ({})),
-      ])
+      if (Object.keys(profileBody).length > 0) {
+        promises.push(
+          fetch(
+            `/api/therapists/${profileId}`,
+            withAuth({
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(profileBody),
+            })
+          )
+        )
+      }
 
-      if (userData.success && profileData.success) {
-        toast.success('Perfil atualizado com sucesso!')
+      if (promises.length === 0) {
+        toast.success('Nenhuma alteração a ser salva.')
+        setLoading(false)
+        return
+      }
+
+      const responses = await Promise.all(promises)
+      let allSuccess = true
+      const errors: string[] = []
+
+      for (const res of responses) {
+        const data = await res.json().catch(() => ({}))
+        if (!data.success) {
+          allSuccess = false
+          if (data.error) errors.push(data.error)
+        }
+      }
+
+      if (allSuccess) {
+        toast.success('Seção do perfil atualizada com sucesso!')
         setUser({
           ...user,
-          name: name ?? user.name,
-          professionalName: professionalName ?? null,
+          name: (section === 'all' || section === 'basic') ? name : user.name,
+          professionalName: (section === 'all' || section === 'basic') ? professionalName : user.professionalName,
         })
         await loadProfile({ silent: true })
       } else {
-        const parts = [
-          !userData.success && userData.error,
-          !profileData.success && profileData.error,
-        ].filter(Boolean)
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('[TerapeutaPerfil] save partial failure', { userData, profileData })
-        }
-        toast.error(parts.join(' · ') || 'Erro ao salvar')
+        toast.error(errors.join(' · ') || 'Erro ao salvar alterações da seção')
       }
     } catch (e) {
       if (process.env.NODE_ENV === 'development') {
@@ -806,7 +844,7 @@ export default function TerapeutaPerfilPage() {
           </div>
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
-            <Button size="md" loading={loading} onClick={handleSave}>
+            <Button size="md" loading={loading} onClick={() => handleSave('basic')}>
               <Save size={16} />
               Salvar alterações
             </Button>
@@ -924,7 +962,7 @@ export default function TerapeutaPerfilPage() {
           )}
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
-            <Button size="md" loading={loading} onClick={handleSave}>
+            <Button size="md" loading={loading} onClick={() => handleSave('contact')}>
               <Save size={16} />
               Salvar alterações
             </Button>
@@ -953,7 +991,7 @@ export default function TerapeutaPerfilPage() {
           </div>
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
-            <Button size="md" loading={loading} onClick={handleSave}>
+            <Button size="md" loading={loading} onClick={() => handleSave('bio')}>
               <Save size={16} />
               Salvar alterações
             </Button>
@@ -1123,7 +1161,7 @@ export default function TerapeutaPerfilPage() {
           </div>
 
           <div className="flex justify-end pt-4 border-t border-slate-100">
-            <Button size="md" loading={loading} onClick={handleSave}>
+            <Button size="md" loading={loading} onClick={() => handleSave('certificates')}>
               <Save size={16} />
               Salvar alterações
             </Button>
