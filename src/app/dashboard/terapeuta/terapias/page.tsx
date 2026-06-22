@@ -94,7 +94,8 @@ export default function TerapeutaTerapiasPage() {
   const [editingPackageId, setEditingPackageId] = useState<string | null>(null)
 
   // Campos Terapia individual
-  const [selectedPreset, setSelectedPreset] = useState<TherapistTherapyModalOption | null>(null)
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null)
+  const [therapyOptions, setTherapyOptions] = useState<string[]>([...THERAPIST_THERAPY_MODAL_OPTIONS])
   const [therapyName, setTherapyName] = useState('')
   const [therapyNameLocked, setTherapyNameLocked] = useState(false)
   const [formPrice, setFormPrice] = useState('')
@@ -135,6 +136,25 @@ export default function TerapeutaTerapiasPage() {
   useEffect(() => {
     load()
   }, [load])
+
+  useEffect(() => {
+    const fetchTherapyTypes = async () => {
+      try {
+        const res = await fetch('/api/therapy-types')
+        const data = await res.json()
+        if (data.success && Array.isArray(data.data)) {
+          const names = data.data.map((item: any) => item.name)
+          if (!names.includes('Outras')) {
+            names.push('Outras')
+          }
+          setTherapyOptions(names)
+        }
+      } catch (err) {
+        console.error('Erro ao buscar tipos de terapia da API:', err)
+      }
+    }
+    fetchTherapyTypes()
+  }, [])
 
   const allPackages = rows.flatMap(r => (r.packages || []).map(p => ({ ...p, parentServiceId: r.id, parentServiceName: r.name })))
 
@@ -178,7 +198,7 @@ export default function TerapeutaTerapiasPage() {
     setModalStep('form')
     setSelectedPreset(null)
     setTherapyName(t.name)
-    setTherapyNameLocked(isTherapistTherapyPresetName(t.name))
+    setTherapyNameLocked(isTherapistTherapyPresetName(t.name) || therapyOptions.includes(t.name))
     setFormPrice(formatBRL(String(t.price)))
     setFormDuration(String(t.durationMinutes))
     setModalOpen(true)
@@ -632,7 +652,7 @@ export default function TerapeutaTerapiasPage() {
               <span>Caso não localize o atendimento desejado, entre em contato com o administrador da plataforma.</span>
             </div>
             <div className="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
-              {THERAPIST_THERAPY_MODAL_OPTIONS.map((opt) => (
+              {therapyOptions.map((opt) => (
                 <label
                   key={opt}
                   className={cn(
