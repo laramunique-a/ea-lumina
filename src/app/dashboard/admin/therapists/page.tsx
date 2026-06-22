@@ -15,6 +15,7 @@ interface Therapist {
   id: string
   name: string
   email: string
+  phone: string | null
   avatarUrl: string | null
   createdAt: string
   active: boolean
@@ -194,7 +195,15 @@ export default function AdminTherapistsPage() {
                       )}
                       {!therapist.active && <Badge variant="danger" size="sm">Inativo</Badge>}
                     </div>
-                    <p className="text-sm text-slate-500 truncate">{therapist.email}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2.5 text-sm text-slate-500 mt-1">
+                      <span className="truncate">{therapist.email}</span>
+                      {therapist.phone && (
+                        <>
+                          <span className="hidden sm:inline text-slate-300">•</span>
+                          <span className="font-medium text-slate-700">{therapist.phone}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0 flex-wrap justify-end">
                     {/* Documento de identidade */}
