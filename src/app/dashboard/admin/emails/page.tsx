@@ -833,7 +833,10 @@ export default function EmailsDashboardPage() {
                   ref={editorRef}
                   contentEditable
                   suppressContentEditableWarning
-                  onInput={(e) => setEmailContent(e.currentTarget.innerHTML)}
+                  onInput={(e) => {
+                    const content = e.currentTarget.innerHTML;
+                    setEmailContent(content);
+                  }}
                   className="p-4 min-h-[300px] max-h-[400px] overflow-y-auto outline-none prose prose-sm max-w-none text-slate-800 bg-white"
                   style={{ minHeight: '300px' }}
                 />
@@ -1566,7 +1569,10 @@ export default function EmailsDashboardPage() {
                   <div
                     ref={templateEditorRef}
                     contentEditable
-                    onInput={(e) => setTemplateForm(prev => ({ ...prev, content: e.currentTarget.innerHTML }))}
+                    onInput={(e) => {
+                      const content = e.currentTarget.innerHTML;
+                      setTemplateForm(prev => ({ ...prev, content }));
+                    }}
                     className="p-4 min-h-[250px] max-h-[350px] overflow-y-auto outline-none prose prose-sm max-w-none text-slate-800 bg-white"
                   />
                 </div>
@@ -1706,7 +1712,10 @@ export default function EmailsDashboardPage() {
                   <div
                     ref={automationEditorRef}
                     contentEditable
-                    onInput={(e) => setSelectedAutomation(prev => prev ? ({ ...prev, content: e.currentTarget.innerHTML }) : null)}
+                    onInput={(e) => {
+                      const content = e.currentTarget.innerHTML;
+                      setSelectedAutomation(prev => prev ? ({ ...prev, content }) : null);
+                    }}
                     className="p-4 min-h-[250px] max-h-[350px] overflow-y-auto outline-none prose prose-sm max-w-none text-slate-800 bg-white"
                   />
                 </div>
