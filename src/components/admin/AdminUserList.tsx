@@ -260,7 +260,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
                       alt={user.name}
                       width={56}
                       height={56}
-                      className="rounded-2xl object-cover border border-slate-100"
+                      className="rounded-2xl object-cover border border-slate-100 w-14 h-14 shrink-0"
                     />
                   </div>
 

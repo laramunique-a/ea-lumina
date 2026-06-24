@@ -37,16 +37,14 @@ export function getProfileCompleteness(user: any): CompletenessResult {
 
   // 1. ADMIN
   if (role === 'ADMIN') {
-    // Obrigatórios
-    mandatoryCount += 2
-    if (isEmpty(user.name)) missingMandatory.push({ field: 'name', label: 'Nome' })
-    if (isEmpty(user.email)) missingMandatory.push({ field: 'email', label: 'E-mail' })
-
-    // Opcionais
-    optionalCount += 3
-    if (isEmpty(user.phone)) missingOptional.push({ field: 'phone', label: 'Telefone' })
-    if (isEmpty(user.birthDate)) missingOptional.push({ field: 'birthDate', label: 'Data de Nascimento' })
-    if (isEmpty(user.avatarUrl)) missingOptional.push({ field: 'avatarUrl', label: 'Foto de Perfil' })
+    return {
+      status: 'Completo',
+      indicator: 'none',
+      missingMandatory: [],
+      missingOptional: [],
+      mandatoryCount: 0,
+      optionalCount: 0,
+    }
   }
 
   // 2. PACIENTE
