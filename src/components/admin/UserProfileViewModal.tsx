@@ -104,25 +104,21 @@ export function UserProfileViewModal({
             : 'border-slate-100 bg-slate-50/50'
         }`}
       >
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{label}</span>
-          {role !== 'ADMIN' && (
-            isMissing ? (
-              <span 
-                className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
-                  isMandatory 
-                    ? 'bg-red-100 text-red-700' 
-                    : 'bg-amber-100 text-amber-700'
-                }`}
-              >
-                {isMandatory ? 'Obrigatório Pendente' : 'Opcional'}
-              </span>
-            ) : (
-              isMandatory && <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Obrigatório</span>
-            )
+        <div className="flex flex-wrap items-start justify-between gap-1 mb-1.5">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">{label}</span>
+          {role !== 'ADMIN' && isMissing && (
+            <span 
+              className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full shrink-0 ${
+                isMandatory 
+                  ? 'bg-red-100 text-red-700' 
+                  : 'bg-amber-100 text-amber-700'
+              }`}
+            >
+              {isMandatory ? 'Obrigatório' : 'Opcional'}
+            </span>
           )}
         </div>
-        <div className={`text-sm font-medium ${isMissing ? 'text-slate-400 italic' : 'text-slate-800'}`}>
+        <div className={`text-sm font-medium break-all ${isMissing ? 'text-slate-400 italic' : 'text-slate-800'}`}>
           {isMissing ? 'Não preenchido' : (value !== null && value !== undefined && String(value).trim() !== '' ? String(value) : 'Não informado')}
         </div>
       </div>
