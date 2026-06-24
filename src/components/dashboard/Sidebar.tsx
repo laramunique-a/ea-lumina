@@ -8,6 +8,7 @@ import {
   LayoutDashboard, Users, Calendar, BarChart3, Settings,
   Search, Clock, LogOut, ChevronLeft,
   UserCheck, DollarSign, Tags, HeartHandshake, Sparkles, GraduationCap,
+  Mail,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -26,6 +27,7 @@ const adminNav: NavItem[] = [
   { label: 'Usuários',   shortLabel: 'Usuários', href: '/dashboard/admin/users',       icon: <Users size={17} /> },
   { label: 'Terapeutas', shortLabel: 'Terapeutas', href: '/dashboard/admin/therapists',  icon: <UserCheck size={17} /> },
   { label: 'Terapias',   shortLabel: 'Terapias', href: '/dashboard/admin/therapies',   icon: <Tags size={17} /> },
+  { label: 'E-mails',    shortLabel: 'E-mails',    href: '/dashboard/admin/emails',      icon: <Mail size={17} /> },
   { label: 'Relatórios', shortLabel: 'Relatórios', href: '/dashboard/admin/reports',     icon: <BarChart3 size={17} /> },
   { label: 'Comissão',   shortLabel: 'Comissão', href: '/dashboard/admin/commission',  icon: <DollarSign size={17} /> },
   { label: 'Financeiro', shortLabel: 'Financeiro', href: '/dashboard/admin/financeiro',  icon: <DollarSign size={17} /> },

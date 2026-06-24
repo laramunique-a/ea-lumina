@@ -164,7 +164,7 @@ function TerapeutaPerfilContent() {
               alt={displayName}
               width={120}
               height={120}
-              className="rounded-full object-cover border-4 border-white shadow-card w-[120px] h-[120px] shrink-0"
+              className="rounded-full object-cover border-4 border-white shadow-card"
             />
           </div>
           <div className="flex-1 min-w-0">

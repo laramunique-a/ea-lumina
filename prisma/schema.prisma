@@ -26,6 +26,7 @@ model User {
   passwordResetTokens PasswordResetToken[]
   sentReviews      Review[]          @relation("ReviewAuthor")
   therapistProfile TherapistProfile?
+  emailLogs        EmailLog[]        @relation("UserEmailLogs")
 
   @@map("users")
 }
@@ -496,4 +497,57 @@ model CosmicWeek {
   createdAt        DateTime @default(now()) @map("created_at")
 
   @@map("cosmic_weeks")
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_templates")
+}
+
+model EmailAutomation {
+  id        String   @id @default(cuid())
+  trigger   String   @unique // 'WELCOME_THERAPIST', 'WELCOME_PATIENT', 'INCOMPLETE_PROFILE'
+  subject   String
+  content   String   @db.Text
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_automations")
+}
+
+model EmailCampaign {
+  id              String     @id @default(cuid())
+  subject         String
+  content         String     @db.Text
+  type            String     // 'MANUAL' ou 'AUTOMATIC'
+  trigger         String?    // 'WELCOME_THERAPIST', 'WELCOME_PATIENT', 'INCOMPLETE_PROFILE'
+  status          String     // 'PENDING', 'SENDING', 'SUCCESS', 'FAILED'
+  recipientsCount Int        @default(0) @map("recipients_count")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  logs            EmailLog[]
+
+  @@map("email_campaigns")
+}
+
+model EmailLog {
+  id             String         @id @default(cuid())
+  campaignId     String?        @map("campaign_id")
+  campaign       EmailCampaign? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId         String?        @map("user_id")
+  user           User?          @relation("UserEmailLogs", fields: [userId], references: [id], onDelete: SetNull)
+  recipientEmail String         @map("recipient_email")
+  recipientName  String?        @map("recipient_name")
+  status         String         // 'SUCCESS', 'FAILED'
+  errorMessage   String?        @map("error_message")
+  sentAt         DateTime       @default(now()) @map("sent_at")
+
+  @@map("email_logs")
 }
