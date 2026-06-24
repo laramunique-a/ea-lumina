@@ -147,6 +147,44 @@ export async function uploadCertificate(
   }
 }
 
+// ==========================================
+// STORAGE - Imagens para E-mail Marketing
+// ==========================================
+
+export async function uploadEmailImage(
+  file: File
+): Promise<{ url: string | null; error: string | null }> {
+  if (!storageConfigured()) {
+    return {
+      url: null,
+      error: 'Armazenamento não configurado.',
+    }
+  }
+  const fileExt = file.name.split('.').pop() || 'png'
+  const fileName = `email-${Date.now()}.${fileExt}`
+  const filePath = `emails/${fileName}`
+
+  try {
+    const { error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKETS.AVATARS) // AVATARS é bucket público, ideal para imagens
+      .upload(filePath, file, { upsert: false })
+
+    if (error) {
+      return { url: null, error: friendlyStorageError(error.message) }
+    }
+
+    const { data } = supabaseAdmin.storage.from(STORAGE_BUCKETS.AVATARS).getPublicUrl(filePath)
+
+    return { url: data.publicUrl, error: null }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[uploadEmailImage]', e)
+    }
+    return { url: null, error: friendlyStorageError(msg) || 'Falha de rede no upload' }
+  }
+}
+
 /**
  * Documentos de identidade do terapeuta (RG, CNH, Passaporte).
  * Retorna a URL pública E o storagePath (necessário para signed URLs).

@@ -7,11 +7,12 @@ import {
   uploadAvatar,
   uploadCertificate,
   uploadTherapistDocument,
+  uploadEmailImage,
   isAllowedUnifiedFile,
   isAllowedProfileImage,
 } from '@/lib/supabase'
 
-const UPLOAD_TYPES = ['certification', 'profileImage', 'document'] as const
+const UPLOAD_TYPES = ['certification', 'profileImage', 'document', 'emailImage'] as const
 type UploadType = (typeof UPLOAD_TYPES)[number]
 
 function parseUploadType(raw: string | null): UploadType | null {
@@ -79,6 +80,26 @@ export async function POST(request: NextRequest) {
         data: { avatarUrl: url },
       })
       return NextResponse.json({ success: true, data: { avatarUrl: url, fileName: file.name } })
+    }
+
+    if (type === 'emailImage') {
+      if (session.role !== 'ADMIN') {
+        return NextResponse.json(
+          { success: false, error: 'Apenas administradores podem enviar imagens para e-mails.' },
+          { status: 403 }
+        )
+      }
+      if (!isAllowedProfileImage(file.type)) {
+        return NextResponse.json(
+          { success: false, error: 'Use imagem JPG ou PNG.' },
+          { status: 400 }
+        )
+      }
+      const { url, error: uploadError } = await uploadEmailImage(file)
+      if (uploadError || !url) {
+        return NextResponse.json({ success: false, error: uploadError || 'Falha no upload' }, { status: 400 })
+      }
+      return NextResponse.json({ success: true, data: { url, fileName: file.name } })
     }
 
     if (session.role !== 'TERAPEUTA' && session.role !== 'ADMIN') {

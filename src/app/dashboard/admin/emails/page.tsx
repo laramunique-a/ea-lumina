@@ -76,6 +76,7 @@ export default function EmailsDashboardPage() {
   const [emailSubject, setEmailSubject] = useState('')
   const [emailContent, setEmailContent] = useState('')
   const editorRef = useRef<HTMLDivElement>(null)
+  const imageUploadRef = useRef<HTMLInputElement>(null)
 
   // Templates
   const [templates, setTemplates] = useState<EmailTemplate[]>([])
@@ -263,18 +264,56 @@ export default function EmailsDashboardPage() {
   }
 
   const insertImage = () => {
-    const url = prompt('Digite a URL da imagem/foto:')
-    if (url) executeCommand('insertImage', url)
+    if (imageUploadRef.current) {
+      imageUploadRef.current.click()
+    }
+  }
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    e.target.value = ''
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Selecione uma imagem válida (JPG, PNG).')
+      return
+    }
+
+    const uploadToast = toast.loading('Enviando imagem...')
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('type', 'emailImage')
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      const data = await res.json()
+
+      if (data.success && data.data?.url) {
+        toast.success('Imagem inserida com sucesso!', { id: uploadToast })
+        executeCommand('insertImage', data.data.url)
+      } else {
+        toast.error(data.error || 'Erro ao enviar imagem', { id: uploadToast })
+      }
+    } catch (err) {
+      toast.error('Falha de rede ao enviar imagem', { id: uploadToast })
+    }
   }
 
   // Carregar template para o editor manual
   const handleUseTemplate = (tpl: EmailTemplate) => {
     setEmailSubject(tpl.subject)
     setEmailContent(tpl.content)
-    if (editorRef.current) {
-      editorRef.current.innerHTML = tpl.content
-    }
     setActiveTab('send')
+    setTimeout(() => {
+      if (editorRef.current) {
+        editorRef.current.innerHTML = tpl.content
+      }
+    }, 50)
     toast.success('Template carregado!')
   }
 
@@ -1741,6 +1780,14 @@ export default function EmailsDashboardPage() {
           </div>
         </div>
       )}
+
+      <input
+        type="file"
+        ref={imageUploadRef}
+        onChange={handleImageFileChange}
+        accept="image/jpeg, image/png, image/webp"
+        className="hidden"
+      />
     </div>
   )
 }
