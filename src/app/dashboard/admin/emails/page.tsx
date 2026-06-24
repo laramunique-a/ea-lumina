@@ -131,7 +131,7 @@ export default function EmailsDashboardPage() {
       const data = await res.json()
       if (data.success) {
         // Excluir ADMINs da seleção de e-mails
-        setUsers(data.users.filter((u: User) => u.role !== 'ADMIN'))
+        setUsers(data.data.filter((u: User) => u.role !== 'ADMIN'))
       } else {
         toast.error('Erro ao buscar usuários para destinatários')
       }
