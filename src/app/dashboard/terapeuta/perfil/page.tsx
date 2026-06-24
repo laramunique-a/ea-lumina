@@ -162,6 +162,7 @@ export default function TerapeutaPerfilPage() {
         id: string
         role?: string
         name?: string
+        email?: string
         therapistProfile?: Record<string, unknown> | null
       }
 
