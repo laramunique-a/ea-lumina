@@ -239,16 +239,21 @@ export default function EmailsDashboardPage() {
   }
 
   // Formatação do Editor WYSIWYG
+  // IMPORTANTE: capturamos o innerHTML ANTES de chamar setState para evitar
+  // que o callback do setState acesse uma ref já desmontada (null) no React 18.
   const executeCommand = (command: string, value: string = '') => {
     document.execCommand(command, false, value)
     if (editorRef.current) {
-      setEmailContent(editorRef.current.innerHTML)
+      const content = editorRef.current.innerHTML
+      setEmailContent(content)
     }
     if (templateEditorRef.current) {
-      setTemplateForm(prev => ({ ...prev, content: templateEditorRef.current!.innerHTML }))
+      const content = templateEditorRef.current.innerHTML
+      setTemplateForm(prev => ({ ...prev, content }))
     }
     if (automationEditorRef.current && selectedAutomation) {
-      setSelectedAutomation(prev => prev ? ({ ...prev, content: automationEditorRef.current!.innerHTML }) : null)
+      const content = automationEditorRef.current.innerHTML
+      setSelectedAutomation(prev => prev ? ({ ...prev, content }) : null)
     }
   }
 
