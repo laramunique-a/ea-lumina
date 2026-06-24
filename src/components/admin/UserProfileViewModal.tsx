@@ -82,8 +82,8 @@ export function UserProfileViewModal({
     }
   }
 
-  // Renderiza um campo individual
-  const renderField = (
+  // Renderiza uma linha de informação (label à esquerda, valor à direita)
+  const renderFieldRow = (
     label: string,
     value: any,
     fieldName: string,
@@ -95,30 +95,30 @@ export function UserProfileViewModal({
     )
 
     return (
-      <div 
-        className={`p-3.5 rounded-xl border transition-all ${
-          isMissing 
-            ? isMandatory 
-              ? 'border-red-200 bg-red-50/30' 
-              : 'border-amber-200 bg-amber-50/20'
-            : 'border-slate-100 bg-slate-50/50'
-        }`}
-      >
-        <div className="flex flex-wrap items-start justify-between gap-1 mb-1.5">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">{label}</span>
+      <div className={`flex flex-col sm:flex-row sm:items-center py-3 border-b border-slate-100 last:border-b-0 gap-1.5 sm:gap-6 min-h-[46px] transition-all px-1.5 ${
+        isMissing 
+          ? isMandatory 
+            ? 'bg-red-50/20' 
+            : 'bg-amber-50/10'
+          : ''
+      }`}>
+        <div className="w-full sm:w-52 shrink-0 flex items-center gap-2">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">
+            {label}
+          </span>
           {role !== 'ADMIN' && isMissing && (
             <span 
-              className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full shrink-0 ${
+              className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full shrink-0 ${
                 isMandatory 
-                  ? 'bg-red-100 text-red-700' 
-                  : 'bg-amber-100 text-amber-700'
+                  ? 'bg-red-50 text-red-600 border border-red-200' 
+                  : 'bg-amber-50 text-amber-600 border border-amber-200'
               }`}
             >
               {isMandatory ? 'Obrigatório' : 'Opcional'}
             </span>
           )}
         </div>
-        <div className={`text-sm font-medium break-all ${isMissing ? 'text-slate-400 italic' : 'text-slate-800'}`}>
+        <div className={`text-sm font-semibold break-all flex-1 ${isMissing ? 'text-slate-400 italic' : 'text-slate-700'}`}>
           {isMissing ? 'Não preenchido' : (value !== null && value !== undefined && String(value).trim() !== '' ? String(value) : 'Não informado')}
         </div>
       </div>
@@ -214,41 +214,41 @@ export function UserProfileViewModal({
         )}
 
         {/* 1. SEÇÃO: DADOS PESSOAIS */}
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
           <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
             <User size={16} className="text-[#0090FF]" />
             Dados Pessoais
           </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="divide-y divide-slate-100">
             {role === 'TERAPEUTA' && tp ? (
               <>
-                {renderField('Nome de Cadastro', user.name, 'name', true)}
-                {renderField('Nome Profissional', tp.professionalName, 'professionalName', true)}
-                {renderField('E-mail de Cadastro', user.email, 'email', true)}
-                {renderField('E-mail Profissional', tp.professionalEmail, 'professionalEmail', true)}
-                {renderField('WhatsApp / Telefone', user.phone || tp.whatsapp, 'whatsapp', true)}
-                {renderField('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', true)}
-                {renderField('Nacionalidade', tp.nationality, 'nationality', false)}
-                {renderField('Idiomas', tp.languages?.join(', '), 'languages', false)}
+                {renderFieldRow('Nome de Cadastro', user.name, 'name', true)}
+                {renderFieldRow('Nome Profissional', tp.professionalName, 'professionalName', true)}
+                {renderFieldRow('E-mail de Cadastro', user.email, 'email', true)}
+                {renderFieldRow('E-mail Profissional', tp.professionalEmail, 'professionalEmail', true)}
+                {renderFieldRow('WhatsApp / Telefone', user.phone || tp.whatsapp, 'whatsapp', true)}
+                {renderFieldRow('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', true)}
+                {renderFieldRow('Nacionalidade', tp.nationality, 'nationality', false)}
+                {renderFieldRow('Idiomas', tp.languages?.join(', '), 'languages', false)}
               </>
             ) : role === 'PACIENTE' && pp ? (
               <>
-                {renderField('Nome Completo', user.name, 'name', true)}
-                {renderField('Nome Social', pp.socialName, 'socialName', false)}
-                {renderField('E-mail', user.email, 'email', true)}
-                {renderField('Telefone (WhatsApp)', user.phone, 'phone', true)}
-                {renderField('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', true)}
-                {renderField('Gênero', pp.gender, 'gender', false)}
-                {renderField('Estado Civil', pp.maritalStatus, 'maritalStatus', false)}
-                {renderField('Profissão', pp.profession, 'profession', false)}
+                {renderFieldRow('Nome Completo', user.name, 'name', true)}
+                {renderFieldRow('Nome Social', pp.socialName, 'socialName', false)}
+                {renderFieldRow('E-mail', user.email, 'email', true)}
+                {renderFieldRow('Telefone (WhatsApp)', user.phone, 'phone', true)}
+                {renderFieldRow('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', true)}
+                {renderFieldRow('Gênero', pp.gender, 'gender', false)}
+                {renderFieldRow('Estado Civil', pp.maritalStatus, 'maritalStatus', false)}
+                {renderFieldRow('Profissão', pp.profession, 'profession', false)}
               </>
             ) : (
               // ADMIN
               <>
-                {renderField('Nome Completo', user.name, 'name', true)}
-                {renderField('E-mail', user.email, 'email', true)}
-                {renderField('Telefone', user.phone, 'phone', false)}
-                {renderField('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', false)}
+                {renderFieldRow('Nome Completo', user.name, 'name', true)}
+                {renderFieldRow('E-mail', user.email, 'email', true)}
+                {renderFieldRow('Telefone', user.phone, 'phone', false)}
+                {renderFieldRow('Data de Nascimento', user.birthDate ? new Date(user.birthDate).toLocaleDateString('pt-BR') : '', 'birthDate', false)}
               </>
             )}
           </div>
@@ -256,21 +256,21 @@ export function UserProfileViewModal({
 
         {/* 2. SEÇÃO: ENDEREÇO */}
         {role !== 'ADMIN' && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
             <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
               <MapPin size={16} className="text-[#0090FF]" />
               Endereço
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="divide-y divide-slate-100">
               {role === 'TERAPEUTA' && tp ? (
                 <>
-                  {renderField('País', tp.country, 'country', true)}
-                  {renderField('Estado (UF)', tp.state, 'state', true)}
-                  {renderField('Cidade', tp.city, 'city', false)}
-                  {renderField('Modalidade de Atendimento', tp.modality, 'modality', true)}
+                  {renderFieldRow('País', tp.country, 'country', true)}
+                  {renderFieldRow('Estado (UF)', tp.state, 'state', true)}
+                  {renderFieldRow('Cidade', tp.city, 'city', false)}
+                  {renderFieldRow('Modalidade de Atendimento', tp.modality, 'modality', true)}
                   
                   {tp.modality === 'ONLINE' ? (
-                    <div className="p-3.5 rounded-xl border border-blue-100 bg-blue-50/20 sm:col-span-2 lg:col-span-3 flex items-center gap-2 text-xs font-semibold text-blue-700">
+                    <div className="py-3 px-4 rounded-xl border border-blue-100 bg-blue-50/20 flex items-center gap-2 text-xs font-semibold text-blue-700 my-2">
                       <Globe size={14} /> Atendimento 100% Online. Sem endereço físico cadastrado.
                     </div>
                   ) : (
@@ -285,10 +285,10 @@ export function UserProfileViewModal({
                       }
                       return (
                         <>
-                          {renderField('CEP do Consultório', cep, 'address.cep', true)}
-                          {renderField('Logradouro', street, 'address.street', true)}
-                          {renderField('Número', number, 'address.number', true)}
-                          {renderField('Bairro', neighborhood, 'address.neighborhood', true)}
+                          {renderFieldRow('CEP do Consultório', cep, 'address.cep', true)}
+                          {renderFieldRow('Logradouro', street, 'address.street', true)}
+                          {renderFieldRow('Número', number, 'address.number', true)}
+                          {renderFieldRow('Bairro', neighborhood, 'address.neighborhood', true)}
                         </>
                       )
                     })()
@@ -297,13 +297,13 @@ export function UserProfileViewModal({
               ) : (
                 // PACIENTE
                 <>
-                  {renderField('CEP', pp?.zipCode, 'zipCode', false)}
-                  {renderField('Cidade', pp?.city, 'city', false)}
-                  {renderField('Estado (UF)', pp?.state, 'state', false)}
-                  {renderField('Bairro', pp?.neighborhood, 'neighborhood', false)}
-                  {renderField('Rua', pp?.street, 'street', false)}
-                  {renderField('Número', pp?.number, 'number', false)}
-                  {renderField('Complemento', pp?.complement, 'complement', false)}
+                  {renderFieldRow('CEP', pp?.zipCode, 'zipCode', false)}
+                  {renderFieldRow('Cidade', pp?.city, 'city', false)}
+                  {renderFieldRow('Estado (UF)', pp?.state, 'state', false)}
+                  {renderFieldRow('Bairro', pp?.neighborhood, 'neighborhood', false)}
+                  {renderFieldRow('Rua', pp?.street, 'street', false)}
+                  {renderFieldRow('Número', pp?.number, 'number', false)}
+                  {renderFieldRow('Complemento', pp?.complement, 'complement', false)}
                 </>
               )}
             </div>
@@ -312,57 +312,55 @@ export function UserProfileViewModal({
 
         {/* 5. SEÇÃO: INFORMAÇÕES COMPLEMENTARES */}
         {role === 'TERAPEUTA' && tp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
             <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
               <Globe size={16} className="text-[#0090FF]" />
               Informações Complementares
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {renderField('Instagram', tp.instagram, 'instagram', false)}
-              {renderField('Facebook', tp.facebook, 'facebook', false)}
-              {renderField('Site Pessoal', tp.websiteUrl, 'websiteUrl', false)}
-              {renderField('Vídeo de Apresentação', tp.presentationVideoUrl, 'presentationVideoUrl', false)}
+            <div className="divide-y divide-slate-100">
+              {renderFieldRow('Instagram', tp.instagram, 'instagram', false)}
+              {renderFieldRow('Facebook', tp.facebook, 'facebook', false)}
+              {renderFieldRow('Site Pessoal', tp.websiteUrl, 'websiteUrl', false)}
+              {renderFieldRow('Vídeo de Apresentação', tp.presentationVideoUrl, 'presentationVideoUrl', false)}
             </div>
           </div>
         )}
 
         {role === 'PACIENTE' && pp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
             <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
               <FileText size={16} className="text-[#0090FF]" />
               Informações Complementares (Anamnese)
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {renderField('Objetivo Terapêutico', pp.anamnese?.objetivo, 'anamnese.objetivo', false)}
-              {renderField('Histórico Emocional', pp.anamnese?.historicoEmocional, 'anamnese.historicoEmocional', false)}
-              {renderField('Expectativas', pp.anamnese?.expectativas, 'anamnese.expectativas', false)}
-              {renderField('Uso de Medicamentos', pp.anamnese?.medicamentos, 'anamnese.medicamentos', false)}
-              {renderField('Alergias / Restrições', pp.anamnese?.alergias, 'anamnese.alergias', false)}
+            <div className="divide-y divide-slate-100">
+              {renderFieldRow('Objetivo Terapêutico', pp.anamnese?.objetivo, 'anamnese.objetivo', false)}
+              {renderFieldRow('Histórico Emocional', pp.anamnese?.historicoEmocional, 'anamnese.historicoEmocional', false)}
+              {renderFieldRow('Expectativas', pp.anamnese?.expectativas, 'anamnese.expectativas', false)}
+              {renderFieldRow('Uso de Medicamentos', pp.anamnese?.medicamentos, 'anamnese.medicamentos', false)}
+              {renderFieldRow('Alergias / Restrições', pp.anamnese?.alergias, 'anamnese.alergias', false)}
             </div>
           </div>
         )}
 
         {/* 3. SEÇÃO: DADOS PROFISSIONAIS */}
         {role === 'TERAPEUTA' && tp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
             <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
               <Briefcase size={16} className="text-[#0090FF]" />
               Dados Profissionais
             </h4>
             
-            {/* Biografia / Formação */}
-            <div className="space-y-1">
-              {renderField('Biografia / Formação', tp.bio, 'bio', true)}
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {renderField('Anos de Experiência', tp.yearsExp != null ? `${tp.yearsExp} anos` : '', 'yearsExp', false)}
-              {renderField('Valor da Sessão (Preset)', tp.price ? `R$ ${Number(tp.price).toFixed(2)}` : '', 'price', false)}
+            <div className="divide-y divide-slate-100">
+              {renderFieldRow('Biografia / Formação', tp.bio, 'bio', true)}
+              {renderFieldRow('Anos de Experiência', tp.yearsExp != null ? `${tp.yearsExp} anos` : '', 'yearsExp', false)}
+              {renderFieldRow('Valor da Sessão (Preset)', tp.price ? `R$ ${Number(tp.price).toFixed(2)}` : '', 'price', false)}
               
               {/* Especialidades */}
-              <div className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 sm:col-span-2 lg:col-span-1">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Especialidades / Terapias</span>
-                <div className="flex flex-wrap gap-1">
+              <div className="flex flex-col sm:flex-row sm:items-center py-3 border-b border-slate-100 last:border-b-0 gap-1.5 sm:gap-6 min-h-[46px] transition-all px-1.5">
+                <span className="w-full sm:w-52 shrink-0 text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">
+                  Especialidades / Terapias
+                </span>
+                <div className="flex flex-wrap gap-1 flex-1">
                   {tp.therapies && tp.therapies.length > 0 ? (
                     tp.therapies.map((t: string) => (
                       <Badge key={t} variant="default" size="sm">
