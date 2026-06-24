@@ -1184,13 +1184,13 @@ export default function EmailsDashboardPage() {
                             </span>
                           )}
                           {camp.status === 'WITH_FAILURES' && (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-500">
-                              <AlertTriangle size={14} /> Com Falhas
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-600">
+                              <AlertTriangle size={14} /> Falha
                             </span>
                           )}
                           {camp.status === 'FAILED' && (
                             <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-600">
-                              <XCircle size={14} /> Falhou
+                              <XCircle size={14} /> Falha
                             </span>
                           )}
                           {camp.status === 'SENDING' && (
@@ -1459,16 +1459,16 @@ export default function EmailsDashboardPage() {
                           ) : log.status === 'SUCCESS' ? (
                             <Badge variant="info" size="sm">Enviado</Badge>
                           ) : log.status === 'BOUNCED' ? (
-                            <div className="space-y-0.5">
-                              <Badge variant="danger" size="sm">Falhou</Badge>
-                              <p className="text-[8px] text-rose-500 font-bold max-w-[120px] truncate" title={log.errorMessage || ''}>
+                            <div className="space-y-0.5 flex flex-col items-end text-right">
+                              <Badge variant="danger" size="sm">Falha</Badge>
+                              <p className="text-[10px] text-rose-500 font-bold leading-tight max-w-[200px]" title={log.errorMessage || ''}>
                                 {log.errorMessage || 'E-mail rejeitado'}
                               </p>
                             </div>
                           ) : (
-                            <div className="space-y-0.5">
-                              <Badge variant="danger" size="sm">Falhou</Badge>
-                              <p className="text-[8px] text-rose-500 font-bold max-w-[120px] truncate" title={log.errorMessage || ''}>
+                            <div className="space-y-0.5 flex flex-col items-end text-right">
+                              <Badge variant="danger" size="sm">Falha</Badge>
+                              <p className="text-[10px] text-rose-500 font-bold leading-tight max-w-[200px]" title={log.errorMessage || ''}>
                                 {log.errorMessage || 'Erro SMTP'}
                               </p>
                             </div>
