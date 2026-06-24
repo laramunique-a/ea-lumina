@@ -82,6 +82,49 @@ export function UserProfileViewModal({
     }
   }
 
+  // Renderiza um campo individual (Formato Box)
+  const renderField = (
+    label: string,
+    value: any,
+    fieldName: string,
+    isMandatory: boolean = false
+  ) => {
+    const isMissing = role !== 'ADMIN' && (
+      completeness.missingMandatory.some(m => m.field === fieldName) || 
+      completeness.missingOptional.some(o => o.field === fieldName)
+    )
+
+    return (
+      <div 
+        className={`p-3.5 rounded-xl border transition-all ${
+          isMissing 
+            ? isMandatory 
+              ? 'border-red-200 bg-red-50/30' 
+              : 'border-amber-200 bg-amber-50/20'
+            : 'border-slate-100 bg-slate-50/50'
+        }`}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-1 mb-1.5">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">{label}</span>
+          {role !== 'ADMIN' && isMissing && (
+            <span 
+              className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full shrink-0 ${
+                isMandatory 
+                  ? 'bg-red-100 text-red-700' 
+                  : 'bg-amber-100 text-amber-700'
+              }`}
+            >
+              {isMandatory ? 'Obrigatório' : 'Opcional'}
+            </span>
+          )}
+        </div>
+        <div className={`text-sm font-medium break-all ${isMissing ? 'text-slate-400 italic' : 'text-slate-800'}`}>
+          {isMissing ? 'Não preenchido' : (value !== null && value !== undefined && String(value).trim() !== '' ? String(value) : 'Não informado')}
+        </div>
+      </div>
+    )
+  }
+
   // Renderiza uma linha de informação (label à esquerda, valor à direita)
   const renderFieldRow = (
     label: string,
@@ -344,23 +387,25 @@ export function UserProfileViewModal({
 
         {/* 3. SEÇÃO: DADOS PROFISSIONAIS */}
         {role === 'TERAPEUTA' && tp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-3">
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
             <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
               <Briefcase size={16} className="text-[#0090FF]" />
               Dados Profissionais
             </h4>
             
-            <div className="divide-y divide-slate-100">
-              {renderFieldRow('Biografia / Formação', tp.bio, 'bio', true)}
-              {renderFieldRow('Anos de Experiência', tp.yearsExp != null ? `${tp.yearsExp} anos` : '', 'yearsExp', false)}
-              {renderFieldRow('Valor da Sessão (Preset)', tp.price ? `R$ ${Number(tp.price).toFixed(2)}` : '', 'price', false)}
+            {/* Biografia / Formação */}
+            <div className="space-y-1">
+              {renderField('Biografia / Formação', tp.bio, 'bio', true)}
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {renderField('Anos de Experiência', tp.yearsExp != null ? `${tp.yearsExp} anos` : '', 'yearsExp', false)}
+              {renderField('Valor da Sessão (Preset)', tp.price ? `R$ ${Number(tp.price).toFixed(2)}` : '', 'price', false)}
               
               {/* Especialidades */}
-              <div className="flex flex-col sm:flex-row sm:items-center py-3 border-b border-slate-100 last:border-b-0 gap-1.5 sm:gap-6 min-h-[46px] transition-all px-1.5">
-                <span className="w-full sm:w-52 shrink-0 text-xs font-bold text-slate-400 uppercase tracking-widest leading-normal">
-                  Especialidades / Terapias
-                </span>
-                <div className="flex flex-wrap gap-1 flex-1">
+              <div className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 sm:col-span-2 lg:col-span-1">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Especialidades / Terapias</span>
+                <div className="flex flex-wrap gap-1">
                   {tp.therapies && tp.therapies.length > 0 ? (
                     tp.therapies.map((t: string) => (
                       <Badge key={t} variant="default" size="sm">
