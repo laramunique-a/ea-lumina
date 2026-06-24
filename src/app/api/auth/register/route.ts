@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma'
 import { generateAccessToken, generateRefreshToken, saveRefreshToken, getAuthCookieOptions } from '@/lib/auth'
 import { Role } from '@prisma/client'
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
-import { transporter } from '@/lib/mail.service'
+import { resend } from '@/lib/mail.service'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Nome deve ter ao menos 2 caracteres').max(100),
@@ -218,12 +218,16 @@ export async function POST(request: NextRequest) {
 
         const emailFrom = process.env.EMAIL_FROM || '"EA Lumina" <contato@ealumina.com>'
 
-        transporter.sendMail({
+        resend.emails.send({
           from: emailFrom,
           to: email,
           subject: personalizedSubject,
           html: personalizedContent
-        }).then(async () => {
+        }).then(async (resendRes) => {
+          if (resendRes.error) {
+            throw new Error(resendRes.error.message || 'Erro da API do Resend')
+          }
+          const providerId = resendRes.data?.id
           await prisma.$transaction([
             prisma.emailCampaign.update({
               where: { id: campaign.id },
@@ -235,7 +239,8 @@ export async function POST(request: NextRequest) {
                 userId: user.id,
                 recipientEmail: email,
                 recipientName: name,
-                status: 'SUCCESS'
+                status: 'SUCCESS',
+                providerId
               }
             })
           ])

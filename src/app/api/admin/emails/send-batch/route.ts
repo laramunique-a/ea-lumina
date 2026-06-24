@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
-import { transporter } from '@/lib/mail.service'
+import { resend } from '@/lib/mail.service'
 
 // POST /api/admin/emails/send-batch
 export async function POST(request: NextRequest) {
@@ -40,24 +40,29 @@ export async function POST(request: NextRequest) {
       const personalizedSubject = subject.replace(/\{\{nome\}\}/g, name || 'Usuário')
       const personalizedContent = content.replace(/\{\{nome\}\}/g, name || 'Usuário')
 
-      const mailOptions = {
-        from: emailFrom,
-        to: email,
-        subject: personalizedSubject,
-        html: personalizedContent
-      }
-
       try {
-        await transporter.sendMail(mailOptions)
+        const resendRes = await resend.emails.send({
+          from: emailFrom,
+          to: email,
+          subject: personalizedSubject,
+          html: personalizedContent
+        })
 
-        // Registrar log de sucesso
+        if (resendRes.error) {
+          throw new Error(resendRes.error.message || 'Erro da API do Resend')
+        }
+
+        const providerId = resendRes.data?.id
+
+        // Registrar log de sucesso na entrega ao Resend
         await prisma.emailLog.create({
           data: {
             campaignId: campaignId || null,
             userId: userId || null,
             recipientEmail: email,
             recipientName: name || null,
-            status: 'SUCCESS'
+            status: 'SUCCESS', // Será atualizado para DELIVERED ou BOUNCED pelo Webhook
+            providerId
           }
         })
 

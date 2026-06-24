@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getProfileCompleteness } from '@/lib/profile-completeness'
-import { transporter } from '@/lib/mail.service'
+import { resend } from '@/lib/mail.service'
 
 // GET /api/cron/emails
 export async function GET(request: NextRequest) {
@@ -89,15 +89,19 @@ export async function GET(request: NextRequest) {
       const personalizedSubject = automation.subject.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
       const personalizedContent = automation.content.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
 
-      const mailOptions = {
-        from: emailFrom,
-        to: user.email,
-        subject: personalizedSubject,
-        html: personalizedContent
-      }
-
       try {
-        await transporter.sendMail(mailOptions)
+        const resendRes = await resend.emails.send({
+          from: emailFrom,
+          to: user.email,
+          subject: personalizedSubject,
+          html: personalizedContent
+        })
+
+        if (resendRes.error) {
+          throw new Error(resendRes.error.message || 'Erro da API do Resend')
+        }
+
+        const providerId = resendRes.data?.id
 
         // Registrar log de sucesso
         await prisma.$transaction([
@@ -111,7 +115,8 @@ export async function GET(request: NextRequest) {
               userId: user.id,
               recipientEmail: user.email,
               recipientName: user.name,
-              status: 'SUCCESS'
+              status: 'SUCCESS',
+              providerId
             }
           })
         ])

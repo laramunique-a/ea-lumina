@@ -545,8 +545,9 @@ model EmailLog {
   user           User?          @relation("UserEmailLogs", fields: [userId], references: [id], onDelete: SetNull)
   recipientEmail String         @map("recipient_email")
   recipientName  String?        @map("recipient_name")
-  status         String         // 'SUCCESS', 'FAILED'
+  status         String         // 'SUCCESS', 'FAILED', 'DELIVERED', 'BOUNCED'
   errorMessage   String?        @map("error_message")
+  providerId     String?        @unique @map("provider_id") // ID do Resend
   sentAt         DateTime       @default(now()) @map("sent_at")
 
   @@map("email_logs")

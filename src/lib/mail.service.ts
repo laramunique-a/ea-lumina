@@ -1,18 +1,14 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_PORT === '465',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+// Inicializa o cliente do Resend
+// O RESEND_API_KEY deve ser configurado no painel da Vercel e no .env local
+export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendPasswordResetEmail = async (to: string, resetUrl: string) => {
-  const mailOptions = {
-    from: process.env.EMAIL_FROM || '"EA Lumina" <contato@ealumina.com>',
+  const from = process.env.EMAIL_FROM || 'EA Lumina <contato@ealumina.com>';
+
+  await resend.emails.send({
+    from,
     to,
     subject: 'Recuperação de Senha - EA Lumina',
     html: `
@@ -34,7 +30,5 @@ export const sendPasswordResetEmail = async (to: string, resetUrl: string) => {
         <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 10px;">Equipe EA Lumina &copy; ${new Date().getFullYear()}</p>
       </div>
     `,
-  };
-
-  await transporter.sendMail(mailOptions);
+  });
 };
