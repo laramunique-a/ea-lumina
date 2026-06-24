@@ -32,15 +32,26 @@ export async function POST(request: NextRequest) {
     }
 
     if (statusToUpdate) {
-      // updateMany não quebra caso o emailLog não exista 
-      // (ex: teste enviado manualmente via painel do Resend)
+      // Busca o log para encontrar o campaignId
+      const emailLog = await prisma.emailLog.findFirst({
+        where: { providerId }
+      })
+
       await prisma.emailLog.updateMany({
         where: { providerId },
         data: {
           status: statusToUpdate,
           ...(errorMessage && { errorMessage }),
         },
-      });
+      })
+
+      // Se foi bounce, atualizar também o status da campanha para WITH_FAILURES
+      if (statusToUpdate === 'BOUNCED' && emailLog?.campaignId) {
+        await prisma.emailCampaign.update({
+          where: { id: emailLog.campaignId },
+          data: { status: 'WITH_FAILURES' },
+        })
+      }
     }
 
     return NextResponse.json({ success: true });

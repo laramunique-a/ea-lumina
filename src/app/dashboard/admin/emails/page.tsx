@@ -7,7 +7,7 @@ import {
   Users, CheckCircle, XCircle, Clock, ArrowRight, Loader2, Bold,
   Italic, Underline, Heading1, Heading2, List, ListOrdered, AlignLeft,
   AlignCenter, AlignRight, Link as LinkIcon, Image as ImageIcon, FileText,
-  Check, X, ToggleLeft, ToggleRight, ArrowLeft
+  Check, X, ToggleLeft, ToggleRight, ArrowLeft, AlertTriangle
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
@@ -47,7 +47,7 @@ interface EmailCampaign {
   content: string
   type: 'MANUAL' | 'AUTOMATIC'
   trigger?: string | null
-  status: 'PENDING' | 'SENDING' | 'SUCCESS' | 'FAILED'
+  status: 'PENDING' | 'SENDING' | 'SUCCESS' | 'FAILED' | 'WITH_FAILURES'
   recipientsCount: number
   createdAt: string
   updatedAt: string
@@ -57,7 +57,7 @@ interface EmailLog {
   id: string
   recipientEmail: string
   recipientName?: string | null
-  status: 'SUCCESS' | 'FAILED'
+  status: 'SUCCESS' | 'FAILED' | 'DELIVERED' | 'BOUNCED'
   errorMessage?: string | null
   sentAt: string
 }
@@ -1183,6 +1183,11 @@ export default function EmailsDashboardPage() {
                               <CheckCircle size={14} /> Enviado
                             </span>
                           )}
+                          {camp.status === 'WITH_FAILURES' && (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-500">
+                              <AlertTriangle size={14} /> Com Falhas
+                            </span>
+                          )}
                           {camp.status === 'FAILED' && (
                             <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-600">
                               <XCircle size={14} /> Falhou
@@ -1449,8 +1454,17 @@ export default function EmailsDashboardPage() {
                         </div>
 
                         <div className="text-right shrink-0">
-                          {log.status === 'SUCCESS' ? (
-                            <Badge variant="success" size="sm">Sucesso</Badge>
+                          {log.status === 'DELIVERED' ? (
+                            <Badge variant="success" size="sm">✓ Entregue</Badge>
+                          ) : log.status === 'SUCCESS' ? (
+                            <Badge variant="info" size="sm">Enviado</Badge>
+                          ) : log.status === 'BOUNCED' ? (
+                            <div className="space-y-0.5">
+                              <Badge variant="danger" size="sm">Falhou</Badge>
+                              <p className="text-[8px] text-rose-500 font-bold max-w-[120px] truncate" title={log.errorMessage || ''}>
+                                {log.errorMessage || 'E-mail rejeitado'}
+                              </p>
+                            </div>
                           ) : (
                             <div className="space-y-0.5">
                               <Badge variant="danger" size="sm">Falhou</Badge>
