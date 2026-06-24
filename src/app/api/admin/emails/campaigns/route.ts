@@ -15,6 +15,10 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') // 'MANUAL' ou 'AUTOMATIC'
     const search = searchParams.get('search') || ''
+    const startDate = searchParams.get('startDate')
+    const endDate = searchParams.get('endDate')
+    const page = parseInt(searchParams.get('page') || '1', 10)
+    const limit = parseInt(searchParams.get('limit') || '50', 10)
 
     const where: any = {}
     if (type) {
@@ -23,13 +27,33 @@ export async function GET(request: NextRequest) {
     if (search) {
       where.subject = { contains: search, mode: 'insensitive' }
     }
+    if (startDate || endDate) {
+      where.createdAt = {}
+      if (startDate) {
+        where.createdAt.gte = new Date(startDate)
+      }
+      if (endDate) {
+        const end = new Date(endDate)
+        end.setHours(23, 59, 59, 999)
+        where.createdAt.lte = end
+      }
+    }
 
-    const campaigns = await prisma.emailCampaign.findMany({
-      where,
-      orderBy: { createdAt: 'desc' }
-    })
+    const skip = (page - 1) * limit
 
-    return NextResponse.json({ success: true, campaigns })
+    const [campaigns, totalItems] = await prisma.$transaction([
+      prisma.emailCampaign.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit
+      }),
+      prisma.emailCampaign.count({ where })
+    ])
+
+    const totalPages = Math.ceil(totalItems / limit)
+
+    return NextResponse.json({ success: true, campaigns, totalPages, totalItems, page })
   } catch (error: any) {
     console.error('[GET_CAMPAIGNS_ERROR]', error)
     return NextResponse.json({ success: false, error: error.message || 'Erro interno do servidor' }, { status: 500 })

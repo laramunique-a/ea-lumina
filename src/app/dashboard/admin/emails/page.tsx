@@ -97,6 +97,10 @@ export default function EmailsDashboardPage() {
   const [loadingCampaigns, setLoadingCampaigns] = useState(false)
   const [campaignSearch, setCampaignSearch] = useState('')
   const [campaignTypeFilter, setCampaignTypeFilter] = useState<'ALL' | 'MANUAL' | 'AUTOMATIC'>('ALL')
+  const [campaignPage, setCampaignPage] = useState(1)
+  const [campaignTotalPages, setCampaignTotalPages] = useState(1)
+  const [campaignStartDate, setCampaignStartDate] = useState('')
+  const [campaignEndDate, setCampaignEndDate] = useState('')
   const [selectedCampaignDetail, setSelectedCampaignDetail] = useState<EmailCampaign | null>(null)
   const [campaignLogs, setCampaignLogs] = useState<EmailLog[]>([])
   const [loadingLogs, setLoadingLogs] = useState(false)
@@ -120,8 +124,12 @@ export default function EmailsDashboardPage() {
     fetchUsers()
     fetchTemplates()
     fetchAutomations()
-    fetchCampaigns()
   }, [])
+
+  // Buscar campanhas sempre que mudar filtros ou página
+  useEffect(() => {
+    fetchCampaigns()
+  }, [campaignPage, campaignTypeFilter, campaignSearch, campaignStartDate, campaignEndDate])
 
   // Buscar usuários para listagem
   const fetchUsers = async () => {
@@ -179,10 +187,19 @@ export default function EmailsDashboardPage() {
   const fetchCampaigns = async () => {
     setLoadingCampaigns(true)
     try {
-      const res = await fetch('/api/admin/emails/campaigns')
+      const params = new URLSearchParams()
+      if (campaignTypeFilter !== 'ALL') params.append('type', campaignTypeFilter)
+      if (campaignSearch) params.append('search', campaignSearch)
+      if (campaignStartDate) params.append('startDate', campaignStartDate)
+      if (campaignEndDate) params.append('endDate', campaignEndDate)
+      params.append('page', campaignPage.toString())
+      params.append('limit', '50')
+
+      const res = await fetch(`/api/admin/emails/campaigns?${params.toString()}`)
       const data = await res.json()
       if (data.success) {
         setCampaigns(data.campaigns)
+        setCampaignTotalPages(data.totalPages || 1)
       }
     } catch {
       toast.error('Erro ao buscar histórico de envios')
@@ -596,12 +613,8 @@ export default function EmailsDashboardPage() {
     }
   }
 
-  // Filtragem de Campanhas no Histórico
-  const filteredCampaigns = campaigns.filter((c) => {
-    const matchesSearch = c.subject.toLowerCase().includes(campaignSearch.toLowerCase())
-    const matchesType = campaignTypeFilter === 'ALL' || c.type === campaignTypeFilter
-    return matchesSearch && matchesType
-  })
+  // Filtragem de Campanhas no Histórico (agora feita no backend, mas mantemos a variável para compatibilidade com o JSX)
+  const filteredCampaigns = campaigns
 
   return (
     <div className="p-6 space-y-6">
@@ -1097,16 +1110,41 @@ export default function EmailsDashboardPage() {
         <div className="space-y-4">
           
           {/* Barra de Filtros */}
-          <div className="flex flex-col md:flex-row gap-3">
-            <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Buscar por assunto..."
-                value={campaignSearch}
-                onChange={(e) => setCampaignSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 focus:border-[#0090FF]"
-              />
+          <div className="flex flex-col xl:flex-row gap-3">
+            <div className="flex flex-col md:flex-row gap-3 flex-1">
+              <div className="relative flex-1">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Buscar por assunto..."
+                  value={campaignSearch}
+                  onChange={(e) => {
+                    setCampaignSearch(e.target.value)
+                    setCampaignPage(1)
+                  }}
+                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 focus:border-[#0090FF]"
+                />
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="date"
+                  value={campaignStartDate}
+                  onChange={(e) => {
+                    setCampaignStartDate(e.target.value)
+                    setCampaignPage(1)
+                  }}
+                  className="px-3 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 focus:border-[#0090FF]"
+                />
+                <input
+                  type="date"
+                  value={campaignEndDate}
+                  onChange={(e) => {
+                    setCampaignEndDate(e.target.value)
+                    setCampaignPage(1)
+                  }}
+                  className="px-3 py-2.5 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 focus:border-[#0090FF]"
+                />
+              </div>
             </div>
             
             <div className="flex gap-2 flex-wrap">
@@ -1114,7 +1152,10 @@ export default function EmailsDashboardPage() {
                 <button
                   key={type}
                   type="button"
-                  onClick={() => setCampaignTypeFilter(type)}
+                  onClick={() => {
+                    setCampaignTypeFilter(type)
+                    setCampaignPage(1)
+                  }}
                   className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                     campaignTypeFilter === type
                       ? 'bg-[#0090FF] text-white shadow-sm'
@@ -1222,6 +1263,33 @@ export default function EmailsDashboardPage() {
               </table>
             </div>
           </div>
+          
+          {/* Paginação */}
+          {campaignTotalPages > 1 && (
+            <div className="flex items-center justify-between bg-white px-4 py-3 border border-slate-200 rounded-xl">
+              <div className="text-sm text-slate-500">
+                Página <span className="font-bold text-slate-700">{campaignPage}</span> de <span className="font-bold text-slate-700">{campaignTotalPages}</span>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setCampaignPage(p => Math.max(1, p - 1))}
+                  disabled={campaignPage === 1}
+                  className="px-3 py-1 text-xs"
+                >
+                  Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setCampaignPage(p => Math.min(campaignTotalPages, p + 1))}
+                  disabled={campaignPage === campaignTotalPages}
+                  className="px-3 py-1 text-xs"
+                >
+                  Próxima
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
