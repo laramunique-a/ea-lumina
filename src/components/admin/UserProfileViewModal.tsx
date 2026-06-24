@@ -310,6 +310,38 @@ export function UserProfileViewModal({
           </div>
         )}
 
+        {/* 5. SEÇÃO: INFORMAÇÕES COMPLEMENTARES */}
+        {role === 'TERAPEUTA' && tp && (
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+            <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
+              <Globe size={16} className="text-[#0090FF]" />
+              Informações Complementares
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {renderField('Instagram', tp.instagram, 'instagram', false)}
+              {renderField('Facebook', tp.facebook, 'facebook', false)}
+              {renderField('Site Pessoal', tp.websiteUrl, 'websiteUrl', false)}
+              {renderField('Vídeo de Apresentação', tp.presentationVideoUrl, 'presentationVideoUrl', false)}
+            </div>
+          </div>
+        )}
+
+        {role === 'PACIENTE' && pp && (
+          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
+            <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
+              <FileText size={16} className="text-[#0090FF]" />
+              Informações Complementares (Anamnese)
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {renderField('Objetivo Terapêutico', pp.anamnese?.objetivo, 'anamnese.objetivo', false)}
+              {renderField('Histórico Emocional', pp.anamnese?.historicoEmocional, 'anamnese.historicoEmocional', false)}
+              {renderField('Expectativas', pp.anamnese?.expectativas, 'anamnese.expectativas', false)}
+              {renderField('Uso de Medicamentos', pp.anamnese?.medicamentos, 'anamnese.medicamentos', false)}
+              {renderField('Alergias / Restrições', pp.anamnese?.alergias, 'anamnese.alergias', false)}
+            </div>
+          </div>
+        )}
+
         {/* 3. SEÇÃO: DADOS PROFISSIONAIS */}
         {role === 'TERAPEUTA' && tp && (
           <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
@@ -428,38 +460,6 @@ export function UserProfileViewModal({
                   )}
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* 5. SEÇÃO: INFORMAÇÕES COMPLEMENTARES */}
-        {role === 'TERAPEUTA' && tp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
-            <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
-              <Globe size={16} className="text-[#0090FF]" />
-              Informações Complementares
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {renderField('Instagram', tp.instagram, 'instagram', false)}
-              {renderField('Facebook', tp.facebook, 'facebook', false)}
-              {renderField('Site Pessoal', tp.websiteUrl, 'websiteUrl', false)}
-              {renderField('Vídeo de Apresentação', tp.presentationVideoUrl, 'presentationVideoUrl', false)}
-            </div>
-          </div>
-        )}
-
-        {role === 'PACIENTE' && pp && (
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm space-y-4">
-            <h4 className="text-sm font-black text-slate-800 tracking-wider uppercase flex items-center gap-2 px-1 pb-2 border-b border-slate-100/80">
-              <FileText size={16} className="text-[#0090FF]" />
-              Informações Complementares (Anamnese)
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {renderField('Objetivo Terapêutico', pp.anamnese?.objetivo, 'anamnese.objetivo', false)}
-              {renderField('Histórico Emocional', pp.anamnese?.historicoEmocional, 'anamnese.historicoEmocional', false)}
-              {renderField('Expectativas', pp.anamnese?.expectativas, 'anamnese.expectativas', false)}
-              {renderField('Uso de Medicamentos', pp.anamnese?.medicamentos, 'anamnese.medicamentos', false)}
-              {renderField('Alergias / Restrições', pp.anamnese?.alergias, 'anamnese.alergias', false)}
             </div>
           </div>
         )}
