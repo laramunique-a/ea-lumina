@@ -827,9 +827,9 @@ export default function EmailsDashboardPage() {
                 <div
                   ref={editorRef}
                   contentEditable
+                  suppressContentEditableWarning
                   onInput={(e) => setEmailContent(e.currentTarget.innerHTML)}
                   className="p-4 min-h-[300px] max-h-[400px] overflow-y-auto outline-none prose prose-sm max-w-none text-slate-800 bg-white"
-                  placeholder="Escreva seu e-mail aqui..."
                   style={{ minHeight: '300px' }}
                 />
               </div>
