@@ -39,6 +39,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
   const [search, setSearch] = useState('')
   const [filterRole, setFilterRole] = useState<Role | 'ALL'>('ALL')
   const [filterActive, setFilterActive] = useState<'all' | 'active' | 'inactive'>('all')
+  const [filterApproved, setFilterApproved] = useState<'pending' | 'approved' | 'all'>('pending')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalRecords, setTotalRecords] = useState(0)
@@ -53,7 +54,12 @@ export function AdminUserList({ mode }: AdminUserListProps) {
       let url = `/api/admin/users?page=${page}&perPage=10&sort=name_asc`
 
       if (mode === 'therapists') {
-        url += `&role=TERAPEUTA&approved=false`
+        url += `&role=TERAPEUTA`
+        if (filterApproved === 'pending') {
+          url += `&approved=false`
+        } else if (filterApproved === 'approved') {
+          url += `&approved=true`
+        }
       } else {
         if (filterRole !== 'ALL') url += `&role=${filterRole}`
         if (filterActive === 'active') url += `&active=true`
@@ -78,12 +84,12 @@ export function AdminUserList({ mode }: AdminUserListProps) {
     } finally {
       setLoading(false)
     }
-  }, [page, mode, filterRole, filterActive, search])
+  }, [page, mode, filterRole, filterActive, search, filterApproved])
 
   useEffect(() => {
     // Reinicia página para 1 ao mudar filtros
     setPage(1)
-  }, [filterRole, filterActive, search])
+  }, [filterRole, filterActive, search, filterApproved])
 
   useEffect(() => {
     loadUsers()
@@ -173,7 +179,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
   return (
     <div className="space-y-5">
       {/* Guia de Ações específico para o modo Terapeutas */}
-      {mode === 'therapists' && (
+      {mode === 'therapists' && filterApproved === 'pending' && (
         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex gap-3 text-sm text-blue-800 animate-in fade-in slide-in-from-top-4 duration-500">
           <Info className="shrink-0 text-blue-500" size={20} />
           <div className="space-y-1">
@@ -218,11 +224,25 @@ export function AdminUserList({ mode }: AdminUserListProps) {
             <select
               value={filterActive}
               onChange={(e) => setFilterActive(e.target.value as any)}
-              className="px-3.5 py-2 rounded-xl text-sm font-semibold border border-surface-200 bg-white text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30"
+              className="px-3.5 py-2 rounded-xl text-sm font-semibold border border-surface-200 bg-white text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 hover:border-slate-300"
             >
               <option value="all">Todos status</option>
               <option value="active">Ativos</option>
               <option value="inactive">Inativos</option>
+            </select>
+          </div>
+        )}
+
+        {mode === 'therapists' && (
+          <div className="flex gap-2 flex-wrap">
+            <select
+              value={filterApproved}
+              onChange={(e) => setFilterApproved(e.target.value as any)}
+              className="px-3.5 py-2 rounded-xl text-sm font-semibold border border-surface-200 bg-white text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#0090FF]/30 hover:border-slate-300"
+            >
+              <option value="pending">Pendentes de Revisão</option>
+              <option value="approved">Aprovados</option>
+              <option value="all">Todos os Status</option>
             </select>
           </div>
         )}
@@ -327,7 +347,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
                       Ver Perfil
                     </Button>
 
-                    {mode === 'therapists' && tp && (
+                    {tp && (
                       <>
                         {tp.approved ? (
                           <Button
@@ -424,7 +444,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
           setSelectedUser(null)
         }}
         user={selectedUser}
-        onApprove={mode === 'therapists' ? handleApprove : undefined}
+        onApprove={handleApprove}
         onToggleActive={handleToggleActive}
       />
     </div>
