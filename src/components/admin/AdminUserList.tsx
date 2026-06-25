@@ -39,7 +39,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
   const [search, setSearch] = useState('')
   const [filterRole, setFilterRole] = useState<Role | 'ALL'>('ALL')
   const [filterActive, setFilterActive] = useState<'all' | 'active' | 'inactive'>('all')
-  const [filterApproved, setFilterApproved] = useState<'pending' | 'approved' | 'all'>('pending')
+  const [filterApproved, setFilterApproved] = useState<'pending' | 'approved' | 'rejected' | 'all'>('pending')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalRecords, setTotalRecords] = useState(0)
@@ -56,9 +56,11 @@ export function AdminUserList({ mode }: AdminUserListProps) {
       if (mode === 'therapists') {
         url += `&role=TERAPEUTA`
         if (filterApproved === 'pending') {
-          url += `&approved=false`
+          url += `&approved=false&rejected=false`
         } else if (filterApproved === 'approved') {
           url += `&approved=true`
+        } else if (filterApproved === 'rejected') {
+          url += `&rejected=true`
         }
       } else {
         if (filterRole !== 'ALL') url += `&role=${filterRole}`
@@ -242,6 +244,7 @@ export function AdminUserList({ mode }: AdminUserListProps) {
             >
               <option value="pending">Pendentes de Revisão</option>
               <option value="approved">Aprovados</option>
+              <option value="rejected">Reprovados</option>
               <option value="all">Todos os Status</option>
             </select>
           </div>

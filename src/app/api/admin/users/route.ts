@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || ''
     const activeParam = searchParams.get('active')
     const approvedParam = searchParams.get('approved')
+    const rejectedParam = searchParams.get('rejected')
     const sort = searchParams.get('sort') || 'name_asc' // Padrão agora é A-Z
 
     const where: any = {}
@@ -44,10 +45,18 @@ export async function GET(request: NextRequest) {
     }
 
     // Filtragem por aprovação do perfil de terapeuta
-    if (approvedParam === 'true') {
-      where.therapistProfile = { approved: true }
-    } else if (approvedParam === 'false') {
-      where.therapistProfile = { approved: false }
+    if (approvedParam || rejectedParam) {
+      where.therapistProfile = {}
+      if (approvedParam === 'true') {
+        where.therapistProfile.approved = true
+      } else if (approvedParam === 'false') {
+        where.therapistProfile.approved = false
+      }
+      if (rejectedParam === 'true') {
+        where.therapistProfile.rejected = true
+      } else if (rejectedParam === 'false') {
+        where.therapistProfile.rejected = false
+      }
     }
 
     // Configurar ordenação
