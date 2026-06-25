@@ -327,15 +327,33 @@ export function AdminUserList({ mode }: AdminUserListProps) {
                       Ver Perfil
                     </Button>
 
-                    {mode === 'therapists' && tp && !tp.approved && (
-                      <Button
-                        size="sm"
-                        type="button"
-                        onClick={() => handleApprove(user.id, true)}
-                        className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
-                      >
-                        Aprovar
-                      </Button>
+                    {mode === 'therapists' && tp && (
+                      <>
+                        {tp.approved ? (
+                          <Button
+                            size="sm"
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              if (window.confirm('Revogar a aprovação deste terapeuta?')) {
+                                handleApprove(user.id, false)
+                              }
+                            }}
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50 border-red-100 rounded-xl"
+                          >
+                            Reprovar
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            type="button"
+                            onClick={() => handleApprove(user.id, true)}
+                            className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
+                          >
+                            Aprovar
+                          </Button>
+                        )}
+                      </>
                     )}
 
                     {mode === 'users' && (
