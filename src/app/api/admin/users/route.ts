@@ -87,6 +87,7 @@ export async function GET(request: NextRequest) {
               rating: true,
               reviewCount: true,
               approved: true,
+              rejected: true,
               yearsExp: true,
               documentUrl: true,
               documentFileName: true,

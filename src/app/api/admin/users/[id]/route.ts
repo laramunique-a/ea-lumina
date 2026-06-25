@@ -46,18 +46,21 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (validated.data.approved !== undefined && user.therapistProfile) {
       await prisma.therapistProfile.update({
         where: { userId: params.id },
-        data: { approved: validated.data.approved },
+        data: { 
+          approved: validated.data.approved,
+          rejected: !validated.data.approved,
+        },
       })
 
       // Notificar terapeuta
       await prisma.notification.create({
         data: {
           userId: params.id,
-          title: validated.data.approved ? 'Cadastro aprovado!' : 'Cadastro em revisão',
+          title: validated.data.approved ? 'Cadastro aprovado!' : 'Cadastro reprovado',
           message: validated.data.approved
             ? 'Seu perfil foi aprovado! Agora você pode receber agendamentos na plataforma.'
-            : 'Seu perfil está em processo de revisão. Entre em contato com o suporte para mais informações.',
-          type: validated.data.approved ? 'SUCCESS' : 'WARNING',
+            : 'Seu perfil foi reprovado. Caso queira entender o motivo, entre em contato pelo e-mail contato@ealumina.com.',
+          type: validated.data.approved ? 'SUCCESS' : 'DANGER',
         },
       })
     }

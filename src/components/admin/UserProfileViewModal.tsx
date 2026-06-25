@@ -206,8 +206,8 @@ export function UserProfileViewModal({
                 <Badge variant="danger" size="sm">Inativo</Badge>
               )}
               {tp && (
-                <Badge variant={tp.approved ? 'success' : 'warning'} size="sm">
-                  {tp.approved ? 'Aprovado' : 'Pendente de Aprovação'}
+                <Badge variant={tp.approved ? 'success' : tp.rejected ? 'danger' : 'warning'} size="sm">
+                  {tp.approved ? 'Aprovado' : tp.rejected ? 'Reprovado' : 'Pendente de Aprovação'}
                 </Badge>
               )}
             </div>
@@ -540,13 +540,29 @@ export function UserProfileViewModal({
                   Revogar Aprovação
                 </Button>
               ) : (
-                <Button
-                  type="button"
-                  onClick={() => onApprove(user.id, true)}
-                  className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
-                >
-                  Aprovar Cadastro
-                </Button>
+                <>
+                  <Button
+                    type="button"
+                    onClick={() => onApprove(user.id, true)}
+                    className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
+                  >
+                    Aprovar Cadastro
+                  </Button>
+                  {!tp.rejected && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        if (window.confirm('Reprovar o cadastro deste terapeuta?')) {
+                          onApprove(user.id, false)
+                        }
+                      }}
+                      className="text-red-600 border-red-200 hover:bg-red-50 rounded-xl"
+                    >
+                      Reprovar Cadastro
+                    </Button>
+                  )}
+                </>
               )}
             </>
           )}

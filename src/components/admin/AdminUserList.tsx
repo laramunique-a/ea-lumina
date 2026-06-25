@@ -319,8 +319,8 @@ export function AdminUserList({ mode }: AdminUserListProps) {
                         {roleLabel[user.role as Role]}
                       </Badge>
                       {tp && (
-                        <Badge variant={tp.approved ? 'success' : 'warning'} size="sm">
-                          {tp.approved ? 'Aprovado' : 'Pendente'}
+                        <Badge variant={tp.approved ? 'success' : tp.rejected ? 'danger' : 'warning'} size="sm">
+                          {tp.approved ? 'Aprovado' : tp.rejected ? 'Reprovado' : 'Pendente'}
                         </Badge>
                       )}
                       {!user.active && <Badge variant="danger" size="sm">Inativo</Badge>}
@@ -364,14 +364,31 @@ export function AdminUserList({ mode }: AdminUserListProps) {
                             Reprovar
                           </Button>
                         ) : (
-                          <Button
-                            size="sm"
-                            type="button"
-                            onClick={() => handleApprove(user.id, true)}
-                            className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
-                          >
-                            Aprovar
-                          </Button>
+                          <>
+                            <Button
+                              size="sm"
+                              type="button"
+                              onClick={() => handleApprove(user.id, true)}
+                              className="bg-[#0090FF] hover:bg-[#0077EE] rounded-xl"
+                            >
+                              Aprovar
+                            </Button>
+                            {!tp.rejected && (
+                              <Button
+                                size="sm"
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                  if (window.confirm('Reprovar o cadastro deste terapeuta?')) {
+                                    handleApprove(user.id, false)
+                                  }
+                                }}
+                                className="text-red-500 hover:text-red-600 hover:bg-red-50 border-red-100 rounded-xl"
+                              >
+                                Reprovar
+                              </Button>
+                            )}
+                          </>
                         )}
                       </>
                     )}

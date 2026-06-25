@@ -132,9 +132,17 @@ export default async function TerapeutaDashboardPage() {
       <OnboardingChecklist checklist={checklist} />
 
       {therapist.approved === false && (
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-sm font-medium">
-          ⏳ Seu perfil está em análise. Você receberá uma notificação quando for aprovado.
-        </div>
+        <>
+          {therapist.rejected ? (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-sm font-medium">
+              ❌ Seu perfil foi reprovado pela administração. Se desejar entender o motivo ou solicitar uma nova revisão, entre em contato através do e-mail <a href="mailto:contato@ealumina.com" className="font-bold underline">contato@ealumina.com</a>.
+            </div>
+          ) : (
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-sm font-medium">
+              ⏳ Seu perfil está em análise. Você receberá uma notificação quando for aprovado.
+            </div>
+          )}
+        </>
       )}
 
       {/* KPIs */}

@@ -80,6 +80,7 @@ model TherapistProfile {
   rating               Float                        @default(0)
   reviewCount          Int                          @default(0)
   approved             Boolean                      @default(false)
+  rejected             Boolean                      @default(false)
   featured             Boolean                      @default(false)
   yearsExp             Int?
   certifications       String[]
