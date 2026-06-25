@@ -1,9 +1,19 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendPasswordResetEmail } from '@/lib/mail.service';
 import crypto from 'crypto';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  // Rate limiting: máx 5 solicitações por IP em 1 hora
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`forgot-password:${ip}`, { limit: 5, windowSeconds: 60 * 60 });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Muitas solicitações de recuperação de senha. Tente novamente em 1 hora.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } }
+    );
+  }
   try {
     const { email } = await req.json();
 

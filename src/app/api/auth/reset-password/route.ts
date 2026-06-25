@@ -1,8 +1,19 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  // Rate limiting: máx 10 tentativas por IP em 15 minutos
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`reset-password:${ip}`, { limit: 10, windowSeconds: 15 * 60 });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Muitas tentativas de redefinição. Tente novamente em alguns minutos.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } }
+    );
+  }
+
   try {
     const { token, password } = await req.json();
 
@@ -10,8 +21,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Token e nova senha são obrigatórios' }, { status: 400 });
     }
 
-    if (password.length < 6) {
-      return NextResponse.json({ error: 'A senha deve ter pelo menos 6 caracteres' }, { status: 400 });
+    if (password.length < 8) {
+      return NextResponse.json({ error: 'A senha deve ter pelo menos 8 caracteres' }, { status: 400 });
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return NextResponse.json({ error: 'A senha deve conter pelo menos uma letra maiúscula' }, { status: 400 });
     }
 
     if (!/[0-9]/.test(password)) {

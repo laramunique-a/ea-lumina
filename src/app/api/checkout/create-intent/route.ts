@@ -1,9 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma'
+import { getSessionFromRequest } from '@/lib/auth'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    const session = await getSessionFromRequest(req)
+    if (!session || (session.role !== 'PACIENTE' && session.role !== 'ADMIN')) {
+      return NextResponse.json({ success: false, error: 'Acesso negado' }, { status: 403 })
+    }
+
     const { amount, currency, metadata } = await req.json()
 
     if (!process.env.STRIPE_SECRET_KEY || 

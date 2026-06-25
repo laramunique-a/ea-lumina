@@ -11,6 +11,8 @@ const securityHeaders = [
   { key: 'X-XSS-Protection', value: '1; mode=block' },
   // Restringe acesso a APIs de hardware e sensores desnecessárias
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+  // HSTS (Strict-Transport-Security) para forçar HTTPS
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   // Content Security Policy — permite: próprio domínio, Supabase, Stripe, Meta/WhatsApp
   {
     key: 'Content-Security-Policy',

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
 import { LANDING_THEME } from '@/constants/theme'
+import { Footer } from '@/components/Footer'
 
 // --- DADOS DAS TERAPIAS (Pacientes) ---
 const TERAPIAS = [
@@ -418,6 +419,7 @@ export default function LandingPage() {
             Explorar Catálogo <ArrowRight size={14} />
           </button>
         </div>
+        <Footer />
       </section>
 
     </div>

@@ -3,6 +3,13 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
   try {
+    const secret = request.nextUrl.searchParams.get('secret');
+    const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
+
+    if (webhookSecret && secret !== webhookSecret) {
+      return NextResponse.json({ success: false, error: 'Não autorizado' }, { status: 401 });
+    }
+
     // Webhooks do Resend (via Svix ou direto). 
     // Por simplicidade, estamos lendo diretamente o payload.
     // Em um cenário de alta segurança, recomenda-se validar a assinatura Svix.

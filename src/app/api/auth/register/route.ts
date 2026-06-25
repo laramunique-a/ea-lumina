@@ -15,7 +15,8 @@ const registerSchema = z.object({
   email: z.string().email('E-mail inválido'),
   password: z
     .string()
-    .min(6, 'Senha deve ter ao menos 6 caracteres')
+    .min(8, 'Senha deve ter ao menos 8 caracteres')
+    .regex(/[A-Z]/, 'Senha deve conter ao menos uma letra maiúscula')
     .regex(/[0-9]/, 'Senha deve conter ao menos um número'),
   role: z.enum(['TERAPEUTA', 'PACIENTE']),
   // Campos opcionais do terapeuta

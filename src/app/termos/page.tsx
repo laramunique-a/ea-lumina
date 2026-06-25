@@ -4,12 +4,14 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { Footer } from '@/components/Footer'
 
 export default function TermsPage() {
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] px-6 py-12 selection:bg-[#C5A03F]/20 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-between bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] selection:bg-[#C5A03F]/20 overflow-x-hidden w-full">
       
-      <div className="relative z-10 w-full max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-1000 flex flex-col">
+      <div className="flex-1 flex flex-col items-center justify-center w-full px-6 py-12">
+        <div className="relative z-10 w-full max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-1000 flex flex-col">
         
         {/* Header com Botão Voltar e Logotipo Centralizado */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
@@ -122,11 +124,10 @@ export default function TermsPage() {
           </div>
         </div>
 
-        {/* Footer Minimalista */}
-        <div className="mt-12 text-center">
-          <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }

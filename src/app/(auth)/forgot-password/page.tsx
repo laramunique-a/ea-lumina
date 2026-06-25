@@ -10,6 +10,7 @@ import { Mail, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
+import { Footer } from '@/components/Footer'
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -41,9 +42,12 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] px-6 py-12 selection:bg-[#C5A03F]/20 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-between bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] selection:bg-[#C5A03F]/20 overflow-x-hidden w-full">
       
-      <div className="relative z-10 w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      {/* Espaçador flex para centralizar o card */}
+      <div className="flex-1 flex items-center justify-center w-full px-6 py-12">
+        {/* Card Container */}
+        <div className="relative z-10 w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
         {/* Logo Centralizado (Máscara Circular) */}
         <div className="mb-8 flex justify-center">
@@ -117,11 +121,10 @@ export default function ForgotPasswordPage() {
           )}
         </div>
 
-        {/* Footer Minimalista */}
-        <div className="mt-12 text-center">
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">EA LUMINA • JORNADA DE LUZ</p>
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }
