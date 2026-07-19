@@ -332,8 +332,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Este horário já passou' }, { status: 400 })
     }
 
-    const dateObj = new Date(`${date}T${time}:00`)
-    const dayOfWeek = dateObj.getDay()
+    // Obter o offset do fuso horário do terapeuta (ex: -03:00) para criar a data UTC correta
+    let tzOffset = '-03:00'
+    if (therapist.timezone) {
+      try {
+        const tzString = new Date().toLocaleString('en-US', { timeZone: therapist.timezone, timeZoneName: 'longOffset' })
+        const match = tzString.match(/GMT([-+]\d{1,2}):?(\d{2})?/)
+        if (match) {
+          const hours = match[1]
+          const sign = hours.startsWith('-') ? '-' : '+'
+          const absHours = hours.replace(/[-+]/, '').padStart(2, '0')
+          const minutes = match[2] || '00'
+          tzOffset = `${sign}${absHours}:${minutes}`
+        }
+      } catch (e) {
+        console.error('[Timezone Offset Error]', e)
+      }
+    }
+    const dateObj = new Date(`${date}T${time}:00${tzOffset}`)
+    
+    // Obter o dia da semana imune a deslocamentos de fuso horário
+    const [yr, mo, dy] = date.split('-').map(Number)
+    const dayOfWeek = new Date(yr, mo - 1, dy).getDay()
+    
     const timeStr = time
 
 
