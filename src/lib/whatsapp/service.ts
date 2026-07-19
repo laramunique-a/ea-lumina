@@ -149,6 +149,30 @@ export class WhatsAppService {
 
     } catch (err: any) {
       console.error(`[WhatsAppService] Erro fatal interno:`, err);
+      try {
+        const existing = await prisma.whatsAppNotification.findFirst({
+          where: {
+            appointmentId,
+            event,
+            recipientType
+          }
+        });
+        if (existing) {
+          const backoffMinutes = existing.attempts * 5;
+          const nextRetryAt = new Date(Date.now() + backoffMinutes * 60000);
+          await prisma.whatsAppNotification.update({
+            where: { id: existing.id },
+            data: {
+              status: 'FAILED',
+              errorMessage: err.message || String(err),
+              failedAt: new Date(),
+              nextRetryAt: existing.attempts < 5 ? nextRetryAt : null
+            }
+          });
+        }
+      } catch (dbErr) {
+        console.error(`[WhatsAppService] Erro ao salvar falha no banco:`, dbErr);
+      }
       return false; // Nunca quebra a rota HTTP principal
     }
   }
