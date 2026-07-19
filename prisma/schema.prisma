@@ -1,0 +1,615 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             Role              @default(PACIENTE)
+  active           Boolean           @default(true)
+  avatarUrl        String?
+  phone            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  birthDate        DateTime?
+  notifications    Notification[]
+  patientProfile   PatientProfile?
+  refreshTokens    RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  sentReviews      Review[]          @relation("ReviewAuthor")
+  therapistProfile TherapistProfile?
+  emailLogs        EmailLog[]        @relation("UserEmailLogs")
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+}
+
+model TherapyType {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("therapy_types")
+}
+
+model TherapistProfile {
+  id                   String                       @id @default(cuid())
+  userId               String                       @unique
+  bio                  String?
+  therapies            String[]
+  price                Decimal                      @db.Decimal(10, 2)
+  modality             Modality                     @default(AMBOS)
+  location             String?
+  city                 String?
+  state                String?
+  rating               Float                        @default(0)
+  reviewCount          Int                          @default(0)
+  approved             Boolean                      @default(false)
+  rejected             Boolean                      @default(false)
+  featured             Boolean                      @default(false)
+  yearsExp             Int?
+  certifications       String[]
+  languages            String[]                     @default(["Português"])
+  whatsapp             String?
+  createdAt            DateTime                     @default(now())
+  updatedAt            DateTime                     @updatedAt
+  allowAutoScheduling  Boolean                      @default(false)
+  allowPromos          Boolean                      @default(false)
+  baseCurrency         String?                      @default("BRL")
+  country              String?
+  documentId           String?
+  facebook             String?
+  instagram            String?
+  maxSessionPrice      Decimal?                     @db.Decimal(10, 2)
+  minPromoPrice        Decimal?                     @db.Decimal(10, 2)
+  minSessionPrice      Decimal?                     @db.Decimal(10, 2)
+  nationality          String?
+  professionalEmail    String?
+  professionalName     String?
+  sessionsPerMonthGoal Int?
+  timezone             String?                      @default("America/Sao_Paulo")
+  wantCampaigns        Boolean                      @default(false)
+  websiteUrl           String?
+  documentUrl          String?
+  documentFileName     String?
+  presentationVideoUrl String?                      @map("presentation_video_url")
+  appointments         Appointment[]                @relation("TherapistAppointments")
+  availability         Availability[]
+  reviews              Review[]                     @relation("TherapistReviews")
+  adminData            TherapistAdminData?
+  aiConfig             TherapistAIConfig?
+  certificates         TherapistCertificate[]
+  consent              TherapistConsent?
+  marketingMaterials   TherapistMarketingMaterial[]
+  paymentDetails       TherapistPaymentDetails?
+  paymentMethods       TherapistPaymentMethod[]
+  user                 User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services             TherapistService[]
+  targetAudience       TherapistTargetAudience?
+  cosmicContents       CosmicContentGeneration[]
+  addresses            TherapistAddress[]
+
+  @@map("therapist_profiles")
+}
+
+model Availability {
+  id           String           @id @default(cuid())
+  therapistId  String
+  dayOfWeek    Int?
+  startTime    String
+  endTime      String
+  slotDuration Int              @default(60)
+  active       Boolean          @default(true)
+  createdAt    DateTime         @default(now())
+  date         DateTime?
+  therapist    TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("availability")
+}
+
+model PatientProfile {
+  id               String           @id @default(cuid())
+  userId           String           @unique
+  birthDate        DateTime?
+  gender           Gender?
+  anamnese         Json?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  socialName       String?
+  maritalStatus    String?
+  profession       String?
+  zipCode          String?
+  street           String?
+  number           String?
+  complement       String?
+  neighborhood     String?
+  city             String?
+  state            String?
+  country          String?          @default("Brasil")
+  stripeCustomerId String?          @unique
+  appointments     Appointment[]    @relation("PatientAppointments")
+  packages         PatientPackage[]
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("patient_profiles")
+}
+
+model Appointment {
+  id                    String            @id @default(cuid())
+  therapistId           String
+  patientId             String
+  date                  DateTime
+  durationMinutes       Int               @default(60)
+  status                AppointmentStatus @default(PENDENTE)
+  price                 Decimal           @db.Decimal(10, 2)
+  currency              String            @default("BRL")
+  commissionRate        Decimal           @db.Decimal(5, 2)
+  commission            Decimal?          @db.Decimal(10, 2)
+  therapistNet          Decimal?          @db.Decimal(10, 2)
+  platformRevenue       Decimal?          @db.Decimal(10, 2)
+  notes                 String?
+  cancelReason          String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  serviceId             String?
+  patientPackageId      String?
+  refundAmount          Decimal?          @db.Decimal(10, 2)
+  stripePaymentIntentId String?           @unique
+  stripeTransferId      String?           @unique
+  patient               PatientProfile    @relation("PatientAppointments", fields: [patientId], references: [id])
+  patientPackage        PatientPackage?   @relation(fields: [patientPackageId], references: [id])
+  service               TherapistService? @relation(fields: [serviceId], references: [id])
+  therapist             TherapistProfile  @relation("TherapistAppointments", fields: [therapistId], references: [id])
+  review                Review?
+  whatsappNotifications WhatsAppNotification[]
+
+  @@map("appointments")
+}
+
+model Review {
+  id            String           @id @default(cuid())
+  appointmentId String           @unique
+  therapistId   String
+  authorId      String
+  rating        Int
+  comment       String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  appointment   Appointment      @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  author        User             @relation("ReviewAuthor", fields: [authorId], references: [id])
+  therapist     TherapistProfile @relation("TherapistReviews", fields: [therapistId], references: [id])
+
+  @@map("reviews")
+}
+
+model PlatformConfig {
+  id              String   @id @default(cuid())
+  commissionRate  Decimal  @default(10.00) @db.Decimal(5, 2)
+  maintenanceMode Boolean  @default(false)
+  allowNewSignups Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+  updatedBy       String?
+
+  @@map("platform_config")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model TherapistService {
+  id              String           @id @default(cuid())
+  therapistId     String
+  name            String
+  description     String?
+  durationMinutes Int
+  price           Decimal?         @db.Decimal(10, 2)
+  promoPrice      Decimal?         @db.Decimal(10, 2)
+  priceUsd        Decimal?         @db.Decimal(10, 2)
+  priceEur        Decimal?         @db.Decimal(10, 2)
+  promoPriceUsd   Decimal?         @db.Decimal(10, 2)
+  promoPriceEur   Decimal?         @db.Decimal(10, 2)
+  currency        String           @default("BRL")
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  modality        Modality         @default(AMBOS)
+  problemsHelped  String?
+  appointments    Appointment[]
+  therapist       TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  packages        TherapyPackage[]
+
+  @@map("therapist_services")
+}
+
+model TherapistConsent {
+  id                  String           @id @default(cuid())
+  therapistId         String           @unique
+  termsAccepted       Boolean          @default(false)
+  termsAcceptedAt     DateTime?
+  privacyAccepted     Boolean          @default(false)
+  privacyAcceptedAt   DateTime?
+  imageRightsAccepted Boolean          @default(false)
+  imageRightsAt       DateTime?
+  automationConsent   Boolean          @default(false)
+  automationConsentAt DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  therapist           TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_consents")
+}
+
+model TherapistAdminData {
+  id                   String           @id @default(cuid())
+  therapistId          String           @unique
+  therapistCode        String?          @unique
+  level                TherapistLevel   @default(BASIC)
+  status               TherapistStatus  @default(REVIEW)
+  completenessScore    Int              @default(0)
+  missingFields        String[]         @default([])
+  promoAuthorized      Boolean          @default(false)
+  automationAuthorized Boolean          @default(false)
+  internalNotes        String?
+  country              String?          @default("BR")
+  timezone             String?          @default("America/Sao_Paulo")
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  therapist            TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_admin_data")
+}
+
+model TherapistAIConfig {
+  id                  String           @id @default(cuid())
+  therapistId         String           @unique
+  shortPitch          String?
+  top3Benefits        String[]         @default([])
+  mainProblemsTreated String[]         @default([])
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  therapist           TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_ai_configs")
+}
+
+model TherapistTargetAudience {
+  id           String           @id @default(cuid())
+  therapistId  String           @unique
+  ageGroups    String[]         @default([])
+  genders      String[]         @default([])
+  languages    String[]         @default(["Português"])
+  conditions   String[]         @default([])
+  specialNeeds String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  therapist    TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_target_audiences")
+}
+
+model TherapistMarketingMaterial {
+  id          String           @id @default(cuid())
+  therapistId String
+  type        String
+  url         String
+  caption     String?
+  sortOrder   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  therapist   TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_marketing_materials")
+}
+
+model TherapistPaymentMethod {
+  id          String           @id @default(cuid())
+  therapistId String
+  method      PaymentMethod
+  therapist   TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@unique([therapistId, method])
+  @@map("therapist_payment_methods")
+}
+
+model TherapistPaymentDetails {
+  id                String           @id @default(cuid())
+  therapistId       String           @unique
+  accountHolderName String?
+  bankName          String?
+  accountNumber     String?
+  pixKey            String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  stripeAccountId   String?          @unique
+  therapist         TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_payment_details")
+}
+
+model TherapistCertificate {
+  id          String           @id @default(cuid())
+  therapistId String
+  name        String
+  fileUrl     String
+  sortOrder   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  therapist   TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_certificates")
+}
+
+model TherapistAddress {
+  id           String           @id @default(cuid())
+  therapistId  String           @map("therapist_id")
+  cep          String?
+  street       String
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String
+  state        String
+  country      String?          @default("Brasil")
+  isPrimary    Boolean          @default(false) @map("is_primary")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+
+  therapist    TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("therapist_addresses")
+}
+
+model TherapyPackage {
+  id              String           @id @default(cuid())
+  serviceId       String
+  name            String
+  description     String?
+  sessionCount    Int
+  price           Decimal?         @db.Decimal(10, 2)
+  priceUsd        Decimal?         @db.Decimal(10, 2)
+  priceEur        Decimal?         @db.Decimal(10, 2)
+  expirationDays  Int?
+  isMultiTherapy  Boolean          @default(false)
+  allowedServices String[]         @default([])
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  patientPackages PatientPackage[]
+  service         TherapistService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("therapy_packages")
+}
+
+model PatientPackage {
+  id                String         @id @default(cuid())
+  patientId         String
+  packageId         String
+  totalSessions     Int
+  remainingSessions Int
+  expiresAt         DateTime?
+  status            String         @default("ACTIVE")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  appointments      Appointment[]
+  package           TherapyPackage @relation(fields: [packageId], references: [id])
+  patient           PatientProfile @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("patient_packages")
+}
+
+enum Role {
+  ADMIN
+  TERAPEUTA
+  PACIENTE
+}
+
+enum AppointmentStatus {
+  AGUARDANDO_PAGAMENTO
+  PENDENTE
+  CONFIRMADO
+  CONCLUIDO
+  CANCELADO
+  ATRAZADO
+}
+
+enum Modality {
+  ONLINE
+  PRESENCIAL
+  AMBOS
+}
+
+enum Gender {
+  MASCULINO
+  FEMININO
+  NAO_BINARIO
+  PREFIRO_NAO_INFORMAR
+}
+
+enum TherapistLevel {
+  BASIC
+  CERTIFIED
+  PREMIUM
+  FOUNDER
+}
+
+enum TherapistStatus {
+  ACTIVE
+  INACTIVE
+  REVIEW
+}
+
+enum PaymentMethod {
+  PIX
+  CREDITO
+  DEBITO
+  BOLETO
+  TRANSFERENCIA
+  PAYPAL
+  STRIPE
+  MERCADOPAGO
+  PREX
+  CRIPTOMOEDA
+  DINHEIRO
+}
+
+model CosmicContentGeneration {
+  id              String           @id @default(cuid())
+  therapistId     String
+  contentType     String           @map("content_type")
+  theme           String
+  title           String?
+  copy            String
+  hashtags        String[]
+  cta             String
+  imagePrompt     String           @map("image_prompt")
+  imageUrl        String?          @map("image_url")
+  cosmicContext   String?          @map("cosmic_context")
+  geminiCopy      Json?            @map("gemini_copy")
+  gptCopy         Json?            @map("gpt_copy")
+  contextUsed     Json?            @map("context_used")
+  createdAt       DateTime         @default(now())
+  
+  therapist       TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+
+  @@map("cosmic_content_generations")
+}
+
+model CosmicWeek {
+  id               String   @id @default(cuid())
+  weekStart        String   @map("week_start")
+  weekEnd          String   @map("week_end")
+  weekTheme        String   @map("week_theme")
+  collectiveEnergy String   @map("collective_energy")
+  bestTopics       String[] @map("best_topics")
+  recommendedCta   String   @map("recommended_cta")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("cosmic_weeks")
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_templates")
+}
+
+model EmailAutomation {
+  id        String   @id @default(cuid())
+  trigger   String   @unique // 'WELCOME_THERAPIST', 'WELCOME_PATIENT', 'INCOMPLETE_PROFILE'
+  subject   String
+  content   String   @db.Text
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_automations")
+}
+
+model EmailCampaign {
+  id              String     @id @default(cuid())
+  subject         String
+  content         String     @db.Text
+  type            String     // 'MANUAL' ou 'AUTOMATIC'
+  trigger         String?    // 'WELCOME_THERAPIST', 'WELCOME_PATIENT', 'INCOMPLETE_PROFILE'
+  status          String     // 'PENDING', 'SENDING', 'SUCCESS', 'FAILED'
+  recipientsCount Int        @default(0) @map("recipients_count")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  logs            EmailLog[]
+
+  @@map("email_campaigns")
+}
+
+model EmailLog {
+  id             String         @id @default(cuid())
+  campaignId     String?        @map("campaign_id")
+  campaign       EmailCampaign? @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  userId         String?        @map("user_id")
+  user           User?          @relation("UserEmailLogs", fields: [userId], references: [id], onDelete: SetNull)
+  recipientEmail String         @map("recipient_email")
+  recipientName  String?        @map("recipient_name")
+  status         String         // 'SUCCESS', 'FAILED', 'DELIVERED', 'BOUNCED'
+  errorMessage   String?        @map("error_message")
+  providerId     String?        @unique @map("provider_id") // ID do Resend
+  sentAt         DateTime       @default(now()) @map("sent_at")
+
+  @@map("email_logs")
+}
+
+model WhatsAppNotification {
+  id                String    @id @default(cuid())
+  appointmentId     String    @map("appointment_id")
+  event             String
+  recipientType     String    @map("recipient_type")
+  recipientPhone    String    @map("recipient_phone")
+  provider          String
+  templateName      String?   @map("template_name")
+  payload           Json
+  status            String
+  attempts          Int       @default(0)
+  providerMessageId String?   @map("provider_message_id")
+  errorMessage      String?   @map("error_message")
+  nextRetryAt       DateTime? @map("next_retry_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  sentAt            DateTime? @map("sent_at")
+  deliveredAt       DateTime? @map("delivered_at")
+  readAt            DateTime? @map("read_at")
+  failedAt          DateTime? @map("failed_at")
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+
+  @@unique([appointmentId, event, recipientType])
+  @@index([status, nextRetryAt])
+  @@index([providerMessageId])
+  @@map("whatsapp_notifications")
+}
