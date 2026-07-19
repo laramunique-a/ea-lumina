@@ -28,28 +28,115 @@ export async function POST(req: NextRequest) {
         
         const appointmentId = paymentIntent.metadata?.appointmentId
         
-        let updatedAppointment = null
-
+        let appointment = null
         if (appointmentId) {
-          updatedAppointment = await prisma.appointment.update({
+          appointment = await prisma.appointment.findUnique({
             where: { id: appointmentId },
-            data: { status: 'PENDENTE' },
+            include: { therapist: true, patient: { include: { user: true } } }
           })
-          console.log(`[Stripe Webhook] Agendamento ${appointmentId} pago com sucesso. Status: AGUARDANDO_PAGAMENTO → PENDENTE.`)
         } else {
-          // Fallback: buscar pelo stripePaymentIntentId
-          updatedAppointment = await prisma.appointment.update({
+          appointment = await prisma.appointment.findFirst({
             where: { stripePaymentIntentId: paymentIntent.id },
-            data: { status: 'PENDENTE' },
-          }).catch(() => null)
+            include: { therapist: true, patient: { include: { user: true } } }
+          })
         }
+
+        if (!appointment) {
+          console.error(`[Stripe Webhook] Agendamento não encontrado para o Payment Intent ${paymentIntent.id}`)
+          break
+        }
+
+        // Se já foi processado (status PENDENTE ou CONFIRMADO)
+        if (['PENDENTE', 'CONFIRMADO'].includes(appointment.status)) {
+          console.log(`[Stripe Webhook] Agendamento ${appointment.id} já estava processado. Status atual: ${appointment.status}`)
+          break
+        }
+
+        // Verificar conflitos de horário (double booking) com agendamentos já pagos/confirmados
+        const dateObj = new Date(appointment.date)
+        const durationMinutes = appointment.durationMinutes
+        const dateObjStartMs = dateObj.getTime()
+        const dateObjEndMs = dateObjStartMs + durationMinutes * 60 * 1000
+        const dateStr = dateObj.toISOString().split('T')[0]
+
+        const dayAppointments = await prisma.appointment.findMany({
+          where: {
+            therapistId: appointment.therapistId,
+            status: { in: ['PENDENTE', 'CONFIRMADO'] },
+            id: { not: appointment.id },
+            date: {
+              gte: new Date(`${dateStr}T00:00:00`),
+              lte: new Date(`${dateStr}T23:59:59`),
+            },
+          },
+          select: {
+            id: true,
+            date: true,
+            durationMinutes: true,
+          },
+        })
+
+        const hasConflict = dayAppointments.some((apt) => {
+          const bookedStartMs = apt.date.getTime()
+          const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+          return dateObjStartMs < bookedEndMs && bookedStartMs < dateObjEndMs
+        })
+
+        if (hasConflict) {
+          console.log(`[Stripe Webhook] Conflito de horário detectado para o agendamento ${appointment.id}. Realizando estorno automático.`)
+          
+          await prisma.$transaction(async (tx) => {
+            // Cancelar agendamento por conflito
+            await tx.appointment.update({
+              where: { id: appointment.id },
+              data: {
+                status: 'CANCELADO',
+                cancelReason: 'Conflito de horário: Outro cliente concluiu o pagamento primeiro. Estorno automático realizado.',
+              },
+            })
+
+            // Restaurar crédito do pacote se houver
+            if (appointment.patientPackageId) {
+              await tx.patientPackage.update({
+                where: { id: appointment.patientPackageId },
+                data: { remainingSessions: { increment: 1 } },
+              })
+            }
+          })
+
+          // Realizar estorno no Stripe
+          const stripePaymentIntentId = appointment.stripePaymentIntentId || paymentIntent.id
+          if (stripePaymentIntentId) {
+            const refundAmount = Number(appointment.price)
+            const amountInCents = Math.round(refundAmount * 100)
+            
+            await stripe.refunds.create({
+              payment_intent: stripePaymentIntentId,
+              amount: amountInCents,
+              reverse_transfer: true,
+              refund_application_fee: true,
+            })
+            
+            await prisma.appointment.update({
+              where: { id: appointment.id },
+              data: { refundAmount: refundAmount },
+            })
+          }
+          break
+        }
+
+        // Sem conflito -> Confirmar o pagamento
+        const updatedAppointment = await prisma.appointment.update({
+          where: { id: appointment.id },
+          data: { status: 'PENDENTE' },
+        })
+
+        console.log(`[Stripe Webhook] Agendamento ${appointment.id} pago com sucesso. Status: AGUARDANDO_PAGAMENTO → PENDENTE.`)
 
         // Notificar terapeuta e paciente via WhatsApp APENAS após pagamento confirmado
-        if (updatedAppointment?.id) {
-          void WhatsAppService.notifyNewAppointment(updatedAppointment.id).catch((err) => {
-            console.error('[WhatsApp Webhook Notification Error]', err)
-          })
-        }
+        void WhatsAppService.notifyNewAppointment(updatedAppointment.id).catch((err) => {
+          console.error('[WhatsApp Webhook Notification Error]', err)
+        })
         break;
 
       case 'payment_intent.payment_failed':

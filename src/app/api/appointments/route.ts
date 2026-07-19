@@ -377,8 +377,8 @@ export async function POST(request: NextRequest) {
     const dayAppointments = await prisma.appointment.findMany({
       where: {
         therapistId: therapist.id,
-        // AGUARDANDO_PAGAMENTO também bloqueia o horário (TTL 2h)
-        status: { in: ['AGUARDANDO_PAGAMENTO', 'PENDENTE', 'CONFIRMADO'] },
+        // Apenas agendamentos pagos ou confirmados de fato bloqueiam o horário
+        status: { in: ['PENDENTE', 'CONFIRMADO'] },
         date: {
           gte: new Date(`${date}T00:00:00`),
           lte: new Date(`${date}T23:59:59`),
