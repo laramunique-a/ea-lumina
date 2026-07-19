@@ -20,6 +20,14 @@ const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Liberar o endpoint de diagnóstico do WhatsApp se o token estiver correto
+  if (pathname === '/api/admin/whatsapp-status') {
+    const debugToken = request.nextUrl.searchParams.get('token')
+    if (debugToken === 'lumina_debug_987') {
+      return NextResponse.next()
+    }
+  }
+
   // Rotas públicas — sem verificação
   if (
     pathname.startsWith('/_next') ||
