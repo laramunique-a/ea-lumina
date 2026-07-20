@@ -12,6 +12,7 @@ interface OnboardingChecklistProps {
     documentComplete: boolean
     financialComplete: boolean
     agendaComplete: boolean
+    manifestoComplete?: boolean
     allComplete: boolean
   }
 }
@@ -58,18 +59,18 @@ export function OnboardingChecklist({ checklist }: OnboardingChecklistProps) {
       href: '/dashboard/terapeuta/terapias',
     },
     {
+      id: 'manifesto',
+      label: 'Assinar o Manifesto da Rede Lumina',
+      description: 'Conheça e aceite os 10 pilares éticos e profissionais da rede.',
+      completed: !!currentChecklist.manifestoComplete,
+      href: '/dashboard/terapeuta/manifesto',
+    },
+    {
       id: 'document',
       label: 'Enviar comprovante de identidade',
       description: 'Suba um documento válido (RG, CNH ou Passaporte) para análise.',
       completed: currentChecklist.documentComplete,
       href: '/dashboard/terapeuta/perfil',
-    },
-    {
-      id: 'financial',
-      label: 'Configurar dados bancários',
-      description: 'Vincule sua conta bancária via Stripe para receber pelos seus atendimentos.',
-      completed: currentChecklist.financialComplete,
-      href: '/dashboard/terapeuta/financeiro',
     },
     {
       id: 'agenda',
@@ -78,7 +79,7 @@ export function OnboardingChecklist({ checklist }: OnboardingChecklistProps) {
       completed: currentChecklist.agendaComplete,
       href: '/dashboard/terapeuta/agenda?tab=availability',
     },
-  ].filter(item => item.id !== 'financial')
+  ]
 
   const completedCount = items.filter(item => item.completed).length
   if (completedCount === items.length) return null

@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     const therapist = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
       include: {
-        paymentDetails: true
+        paymentDetails: true,
+        consent: true
       }
     })
 
@@ -39,7 +40,9 @@ export async function GET(request: NextRequest) {
     const documentComplete = !!therapist.documentUrl
     const financialComplete = !!therapist.paymentDetails?.stripeAccountId
     const agendaComplete = availabilityCount > 0
-    const allComplete = profileComplete && therapiesComplete && documentComplete && financialComplete && agendaComplete
+    const manifestoComplete = !!therapist.consent?.manifestoAccepted
+
+    const allComplete = profileComplete && therapiesComplete && documentComplete && financialComplete && agendaComplete && manifestoComplete
 
     return NextResponse.json({
       success: true,
@@ -49,6 +52,7 @@ export async function GET(request: NextRequest) {
         documentComplete,
         financialComplete,
         agendaComplete,
+        manifestoComplete,
         allComplete
       }
     })

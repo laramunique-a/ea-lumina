@@ -162,6 +162,8 @@ model PatientProfile {
   state            String?
   country          String?          @default("Brasil")
   stripeCustomerId String?          @unique
+  welcomeCompletedAt DateTime?
+  welcomeVersion   String?
   appointments     Appointment[]    @relation("PatientAppointments")
   packages         PatientPackage[]
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -278,6 +280,9 @@ model TherapistConsent {
   imageRightsAt       DateTime?
   automationConsent   Boolean          @default(false)
   automationConsentAt DateTime?
+  manifestoAccepted   Boolean          @default(false)
+  manifestoAcceptedAt DateTime?
+  manifestoVersion    String?
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   therapist           TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
@@ -612,4 +617,22 @@ model WhatsAppNotification {
   @@index([status, nextRetryAt])
   @@index([providerMessageId])
   @@map("whatsapp_notifications")
+}
+
+model CorporateLead {
+  id             String   @id @default(cuid())
+  companyName    String
+  contactName    String
+  email          String
+  phone          String?
+  employeeCount  String?
+  industry       String?
+  mainChallenges String?
+  desiredProgram String?
+  status         String   @default("NEW")
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("corporate_leads")
 }
