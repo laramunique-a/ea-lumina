@@ -26,14 +26,12 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Perfil de terapeuta não encontrado.' }, { status: 404 })
     }
 
-    // Se possui registro de paymentDetails, zera cirurgicamente apenas os dados da Stripe
+    // Se possui registro de paymentDetails, zera cirurgicamente apenas o id da Stripe
     if (therapistProfile.paymentDetails) {
       await prisma.therapistPaymentDetails.update({
         where: { therapistId: therapistProfile.id },
         data: {
           stripeAccountId: null,
-          chargesEnabled: false,
-          detailsSubmitted: false,
         },
       })
     }
