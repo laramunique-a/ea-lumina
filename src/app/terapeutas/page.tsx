@@ -196,7 +196,9 @@ export default function PublicTherapistsPage() {
                         <h3 className="text-base font-bold text-white truncate group-hover:text-[#0090FF] transition-colors">
                           {therapist.professionalName || 'Terapeuta Lumina'}
                         </h3>
-                        <CheckCircle2 className="w-4 h-4 text-[#0090FF] shrink-0" title="Perfil Verificado da Rede Lumina" />
+                        <span title="Perfil Verificado da Rede Lumina">
+                          <CheckCircle2 className="w-4 h-4 text-[#0090FF] shrink-0" />
+                        </span>
                       </div>
                       <p className="text-xs text-slate-400 flex items-center gap-1">
                         <MapPin className="w-3 h-3 text-slate-500" />
