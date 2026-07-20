@@ -1,0 +1,6 @@
+{
+  "deployHookUrl": "https://api.vercel.com/v1/integrations/deploy/prj_rFuSPWkwtE8wX2ssZOQEQxUUSotx/XR90yTrBWN",
+  "previewBranch": "develop",
+  "productionBranch": "main",
+  "previewBaseUrl": "https://ea-lumina-gkvxbo6zw-ealumina444-7461s-projects.vercel.app"
+}
