@@ -13,7 +13,7 @@ export interface TherapyTaxonomyItem {
   aliases?: string[]
 }
 
-export className TaxonomyRegistry {
+export class TaxonomyRegistry {
   static readonly THERAPIES: TherapyTaxonomyItem[] = [
     {
       id: 'thetahealing',
