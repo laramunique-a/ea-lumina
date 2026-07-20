@@ -23,10 +23,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Conta Stripe não encontrada' }, { status: 404 })
     }
 
-    // Cria link seguro para o dashboard da Stripe Express
-    const loginLink = await stripe.accounts.createLoginLink(stripeAccountId)
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://ea-lumina.com'
 
-    return NextResponse.json({ success: true, url: loginLink.url })
+    try {
+      // Tenta criar link seguro para o dashboard da Stripe Express
+      const loginLink = await stripe.accounts.createLoginLink(stripeAccountId)
+      return NextResponse.json({ success: true, url: loginLink.url })
+    } catch (linkError: any) {
+      console.warn('[STRIPE LOGIN LINK FALLBACK] Redirecionando para onboarding devido a cadastro incompleto:', linkError.message)
+      
+      // Fallback gracioso: Se o onboarding estiver incompleto, gera o link de conclusão de cadastro
+      const accountLink = await stripe.accountLinks.create({
+        account: stripeAccountId,
+        refresh_url: `${appUrl}/dashboard/terapeuta/financeiro?refresh=true`,
+        return_url: `${appUrl}/dashboard/terapeuta/financeiro?success=true`,
+        type: 'account_onboarding',
+      })
+
+      return NextResponse.json({
+        success: true,
+        url: accountLink.url,
+        notice: 'Redirecionando para conclusão de cadastro na Stripe'
+      })
+    }
   } catch (error: any) {
     console.error('[STRIPE LOGIN LINK ERROR]', error)
     return NextResponse.json(
