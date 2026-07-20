@@ -43,7 +43,7 @@ export class TaxonomyRegistry {
       aliases: ['TQA', 'Terapia Quântica'],
     },
     {
-            id: 'terapia-multidimensional',
+      id: 'terapia-multidimensional',
       name: 'Terapia Multidimensional',
       officialName: 'Terapia Multidimensional',
       slug: 'terapia-multidimensional',
@@ -102,10 +102,10 @@ export class TaxonomyRegistry {
       officialName: 'Constelação Sistêmica Familiar',
       slug: 'constelacao-familiar',
       shortDescription: 'Libere padrões sistêmicos e emaranhamentos ancestrais.',
-      fullDescription: 'Abordagem terapêutica sistêmica desenvolvida por Bert Hellinger para trazer à luz dinâmicas ocultas e emaranhamentos familiares.',
+      fullDescription: 'Abordagem terapêutica sistêmica desenvolvida por Bert Hellinger para trazer à luz dinâmicas occultas e emaranhamentos familiares.',
       category: 'SISTEMICA',
       status: 'ACTIVE',
-      isPics: true, // PICS no SUS
+      isPics: true,
       highlightOrder: 7,
       iconName: 'Brain',
     },
@@ -118,7 +118,7 @@ export class TaxonomyRegistry {
       fullDescription: 'Técnicas de atenção plena e relaxamento profundo para redução do estresse, ansiedade e expansão do autoconhecimento.',
       category: 'INTEGRATIVA',
       status: 'ACTIVE',
-      isPics: true, // PICS no SUS
+      isPics: true,
       highlightOrder: 8,
       iconName: 'Moon',
     },
@@ -140,4 +140,34 @@ export class TaxonomyRegistry {
       t.aliases?.some(a => a.toLowerCase() === search)
     )
   }
+}
+
+// Compatibilidade e exportações legadas
+export const SEED_THERAPY_TYPE_NAMES = [
+  'ThetaHealing',
+  'TQA — Terapia Quântica Atlante',
+  'Terapia Multidimensional',
+  'Mesa Metatrônica MAC',
+  'EMF Balancing Technique',
+  'Mesa Arturiana Multidimensional',
+  'Constelação Familiar',
+  'Meditação Guiada',
+] as const
+
+export const THERAPIST_THERAPY_MODAL_OPTIONS = [
+  'ThetaHealing',
+  'TQA — Terapia Quântica Atlante',
+  'Terapia Multidimensional',
+  'Mesa Metatrônica MAC',
+  'EMF Balancing Technique',
+  'Mesa Arturiana Multidimensional',
+  'Constelação Familiar',
+  'Meditação Guiada',
+  'Outras',
+] as const
+
+export type TherapistTherapyModalOption = (typeof THERAPIST_THERAPY_MODAL_OPTIONS)[number]
+
+export function isTherapistTherapyPresetName(name: string): boolean {
+  return THERAPIST_THERAPY_MODAL_OPTIONS.includes(name as TherapistTherapyModalOption) && name !== 'Outras'
 }
