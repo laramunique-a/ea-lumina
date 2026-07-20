@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getProfileCompleteness } from '@/lib/profile-completeness'
 import { resend } from '@/lib/mail.service'
+import { getIncompleteProfileEmail } from '@/lib/email-templates'
 
 // GET /api/cron/emails
 export async function GET(request: NextRequest) {
@@ -85,9 +86,15 @@ export async function GET(request: NextRequest) {
         }
       })
 
-      // Substituir placeholders
-      const personalizedSubject = automation.subject.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
-      const personalizedContent = automation.content.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
+      const tpl = getIncompleteProfileEmail(user.name, user.role)
+
+      // Substituir placeholders se a automação for personalizada, senão usar o template padrão
+      const personalizedSubject = automation.subject.includes('{{nome}}')
+        ? automation.subject.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
+        : tpl.subject
+      const personalizedContent = automation.content.includes('{{nome}}')
+        ? automation.content.replace(/\{\{nome\}\}/g, user.name || 'Usuário')
+        : tpl.html
 
       try {
         const resendRes = await resend.emails.send({
