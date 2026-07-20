@@ -28,7 +28,37 @@ export function UserProfileViewModal({
   onToggleActive,
 }: UserProfileViewModalProps) {
   const [docLoading, setDocLoading] = useState(false)
+  const [resetStripeLoading, setResetStripeLoading] = useState(false)
   const [isPhotoZoomed, setIsPhotoZoomed] = useState(false)
+
+  const handleResetStripe = async () => {
+    if (!user?.id) return
+    const confirmed = window.confirm(
+      `ATENÇÃO: Deseja resetar a integração com a Stripe do terapeuta "${user.name}"?\n\n` +
+      `Esta ação vai desvincular a conta Stripe atual para que o terapeuta possa iniciar um novo cadastro na Stripe do zero.\n\n` +
+      `NENHUM outro dado do perfil (nome, biografia, terapias, valores, agendamentos) será alterado.`
+    )
+    if (!confirmed) return
+
+    setResetStripeLoading(true)
+    try {
+      const res = await fetch(`/api/admin/therapists/${user.id}/reset-stripe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Integração Stripe resetada com sucesso! O terapeuta já pode refazer a conexão.')
+        onClose()
+      } else {
+        toast.error(data.error || 'Erro ao resetar Stripe')
+      }
+    } catch {
+      toast.error('Erro de conexão ao resetar Stripe')
+    } finally {
+      setResetStripeLoading(false)
+    }
+  }
 
   // Escuta tecla ESC para fechar o zoom da foto
   useEffect(() => {
@@ -581,6 +611,19 @@ export function UserProfileViewModal({
           <Button type="button" variant="outline" onClick={onClose} className="rounded-xl">
             Fechar
           </Button>
+
+          {role === 'TERAPEUTA' && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleResetStripe}
+              loading={resetStripeLoading}
+              className="text-amber-700 border-amber-200 hover:bg-amber-50 rounded-xl"
+              title="Permite que o terapeuta refaça o vínculo com a Stripe do zero"
+            >
+              Resetar Integração Stripe
+            </Button>
+          )}
 
           {onToggleActive && (
             <Button
