@@ -185,7 +185,8 @@ export class WhatsAppService {
       where: { id: appointmentId },
       include: {
         therapist: { include: { user: true } },
-        patient: { include: { user: true } }
+        patient: { include: { user: true } },
+        service: true
       }
     });
 
@@ -193,6 +194,8 @@ export class WhatsAppService {
 
     const patientName = apt.patient.socialName || apt.patient.user?.name || 'Paciente';
     const therapistName = apt.therapist.professionalName || apt.therapist.user?.name || 'Terapeuta';
+    const patientPhone = apt.patient.user?.phone || undefined;
+    const therapyName = apt.service?.name || undefined;
     
     // Fuso brasileiro
     const dateObj = new Date(apt.date);
@@ -210,6 +213,8 @@ export class WhatsAppService {
       apt.therapist.whatsapp,
       {
         patientName,
+        patientPhone,
+        therapyName,
         therapistName,
         date: dateStr,
         time: timeStr,

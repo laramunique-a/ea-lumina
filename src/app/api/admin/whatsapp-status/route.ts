@@ -26,18 +26,57 @@ export async function GET(req: NextRequest) {
       NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'Missing'
     }
 
-    // 2. Fetch last 15 WhatsApp logs
+    // 2. Fetch Evolution API Health/Connection State directly
+    let evolutionHealth: any = null
+    if (provider === 'evolution') {
+      try {
+        const baseUrl = (process.env.EVOLUTION_API_URL || '').replace(/\/$/, '')
+        const instance = process.env.EVOLUTION_API_INSTANCE || ''
+        const apiKey = process.env.EVOLUTION_API_KEY || ''
+        const targetUrl = `${baseUrl}/instance/connectionState/${instance}`
+        
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 8000)
+        
+        const res = await fetch(targetUrl, {
+          method: 'GET',
+          headers: { 'apikey': apiKey },
+          signal: controller.signal
+        })
+        clearTimeout(timeoutId)
+        
+        const bodyText = await res.text()
+        let parsed = bodyText
+        try { parsed = JSON.parse(bodyText) } catch {}
+        
+        evolutionHealth = {
+          targetUrl,
+          httpStatus: res.status,
+          ok: res.ok,
+          response: parsed
+        }
+      } catch (err: any) {
+        evolutionHealth = {
+          targetUrl: `${process.env.EVOLUTION_API_URL}/instance/connectionState/${process.env.EVOLUTION_API_INSTANCE}`,
+          error: err.message,
+          cause: err.cause ? String(err.cause) : null,
+          code: err.code || err.cause?.code || null
+        }
+      }
+    }
+
+    // 3. Fetch last 15 WhatsApp logs
     const logs = await prisma.whatsAppNotification.findMany({
       orderBy: { createdAt: 'desc' },
       take: 15,
     })
 
-    // 3. Optional: Trigger a test message if phone is provided
+    // 4. Optional: Trigger a test message if phone is provided
     const testPhone = searchParams.get('testPhone')
     let testResult = null
     if (testPhone) {
-      // Find a mock or real appointment to use as reference
       const someAppointment = await prisma.appointment.findFirst({
+        orderBy: { createdAt: 'desc' },
         include: {
           therapist: { include: { user: true } },
           patient: { include: { user: true } }
@@ -45,6 +84,15 @@ export async function GET(req: NextRequest) {
       })
 
       if (someAppointment) {
+        // Delete any existing log for this test to force fresh execution
+        await prisma.whatsAppNotification.deleteMany({
+          where: {
+            appointmentId: someAppointment.id,
+            event: WA_EVENTS.BOOKING_REQUESTED_THERAPIST,
+            recipientType: 'THERAPIST'
+          }
+        })
+
         testResult = await WhatsAppService.notify(
           someAppointment.id,
           WA_EVENTS.BOOKING_REQUESTED_THERAPIST,
@@ -66,6 +114,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       configs,
+      evolutionHealth,
       testResult,
       logs
     })

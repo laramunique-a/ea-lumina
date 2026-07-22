@@ -2,6 +2,8 @@ import { WaEvent, WA_EVENTS } from './types';
 
 interface TemplateParams {
   patientName: string;
+  patientPhone?: string;
+  therapyName?: string;
   therapistName: string;
   date: string;
   time: string;
@@ -14,7 +16,7 @@ interface TemplateParams {
 export function getEvolutionText(event: WaEvent, params: TemplateParams): string {
   switch (event) {
     case WA_EVENTS.BOOKING_REQUESTED_THERAPIST:
-      return `📅 Nova solicitação de agendamento\n\nPaciente: ${params.patientName}\nData: ${params.date}\nHorário: ${params.time}\n\nAcesse a plataforma para confirmar ou recusar:\n${params.dashboardUrl}`;
+      return `📅 Nova solicitação de agendamento\n\nPaciente: ${params.patientName}${params.patientPhone ? `\nContato: ${params.patientPhone}` : ''}${params.therapyName ? `\nTerapia: ${params.therapyName}` : ''}\nData: ${params.date}\nHorário: ${params.time}\n\n⚠️ Acesse a plataforma para aceitar ou recusar o agendamento:\n${params.dashboardUrl}`;
     
     case WA_EVENTS.BOOKING_RECEIVED_PATIENT:
       return `Olá, ${params.patientName}.\n\nRecebemos sua solicitação de consulta com ${params.therapistName} para ${params.date} às ${params.time}.\n\nVocê receberá uma nova mensagem assim que o terapeuta confirmar.`;
