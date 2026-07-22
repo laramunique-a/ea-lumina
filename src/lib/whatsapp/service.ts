@@ -17,6 +17,8 @@ export class WhatsAppService {
     rawPhone: string | null | undefined,
     templateParams: {
       patientName: string;
+      patientPhone?: string;
+      therapyName?: string;
       therapistName: string;
       date: string;
       time: string;
