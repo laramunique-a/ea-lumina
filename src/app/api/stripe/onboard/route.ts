@@ -5,6 +5,8 @@ import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
 
+import { getStripeAccountType, normalizeCountryCode } from '@/lib/stripe-account-type'
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getSessionFromRequest(request)
@@ -24,44 +26,40 @@ export async function POST(request: NextRequest) {
 
     let stripeAccountId = therapistProfile.paymentDetails?.stripeAccountId
 
-    // Se o terapeuta ainda não tem uma conta Stripe vinculada, criar uma conta Express
+    // Se o terapeuta ainda não tem uma conta Stripe vinculada, criar uma conta Express ou Standard
     if (!stripeAccountId) {
       const user = await prisma.user.findUnique({ where: { id: session.sub } })
       
-      let countryCode = 'BR'
-      if (therapistProfile.country) {
-        const rawCountry = therapistProfile.country.trim().toLowerCase()
-        if (rawCountry === 'portugal' || rawCountry === 'pt') {
-          countryCode = 'PT'
-        } else if (rawCountry === 'uruguai' || rawCountry === 'uy' || rawCountry === 'uruguay') {
-          countryCode = 'UY'
-        } else if (rawCountry === 'brasil' || rawCountry === 'br' || rawCountry === 'brazil') {
-          countryCode = 'BR'
-        } else if (rawCountry.length === 2) {
-          countryCode = rawCountry.toUpperCase()
+      const accountType = getStripeAccountType(therapistProfile.country)
+      const countryCode = normalizeCountryCode(therapistProfile.country)
+
+      const accountCreateParams: any = {
+        type: accountType,
+        country: countryCode,
+        email: user?.email,
+      }
+
+      if (accountType === 'express') {
+        accountCreateParams.capabilities = {
+          card_payments: { requested: true },
+          transfers: { requested: true },
         }
       }
 
-      const account = await stripe.accounts.create({
-        type: 'express',
-        country: countryCode,
-        email: user?.email,
-        capabilities: {
-          card_payments: { requested: true },
-          transfers: { requested: true },
-        },
-      })
+      const account = await stripe.accounts.create(accountCreateParams)
       stripeAccountId = account.id
 
-      // Salva o ID no banco, criando o registro de paymentDetails se não existir
+      // Salva o ID e tipo no banco, criando o registro de paymentDetails se não existir
       await prisma.therapistPaymentDetails.upsert({
         where: { therapistId: therapistProfile.id },
         create: {
           therapistId: therapistProfile.id,
           stripeAccountId: stripeAccountId,
+          stripeAccountType: accountType,
         },
         update: {
           stripeAccountId: stripeAccountId,
+          stripeAccountType: accountType,
         },
       })
     }

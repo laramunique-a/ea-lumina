@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma'
@@ -40,6 +42,8 @@ export async function POST(req: NextRequest) {
     ])
 
     const stripeAccountId = therapist?.paymentDetails?.stripeAccountId
+    const stripeAccountType = therapist?.paymentDetails?.stripeAccountType ?? 'express'
+
     if (!stripeAccountId) {
       return NextResponse.json({ 
         success: false, 
@@ -52,10 +56,9 @@ export async function POST(req: NextRequest) {
     const platformCommission = (amount * commissionRate) / 100
     const applicationFeeInCents = Math.round(platformCommission * 100)
 
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntentParams: any = {
       amount: Math.round(amount * 100), // convert to cents
-      currency: currency || 'brl',
+      currency: (currency || 'brl').toLowerCase(),
       automatic_payment_methods: {
         enabled: true,
       },
@@ -64,7 +67,14 @@ export async function POST(req: NextRequest) {
       },
       application_fee_amount: applicationFeeInCents,
       metadata: metadata || {},
-    })
+    }
+
+    if (stripeAccountType === 'standard') {
+      paymentIntentParams.on_behalf_of = stripeAccountId
+    }
+
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create(paymentIntentParams)
 
     return NextResponse.json({
       success: true,

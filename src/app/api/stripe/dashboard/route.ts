@@ -18,9 +18,14 @@ export async function POST(request: NextRequest) {
     })
 
     const stripeAccountId = therapistProfile?.paymentDetails?.stripeAccountId
+    const stripeAccountType = therapistProfile?.paymentDetails?.stripeAccountType ?? 'express'
 
     if (!stripeAccountId) {
       return NextResponse.json({ success: false, error: 'Conta Stripe não encontrada' }, { status: 404 })
+    }
+
+    if (stripeAccountType === 'standard') {
+      return NextResponse.json({ success: true, url: 'https://dashboard.stripe.com' })
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://ea-lumina.com'

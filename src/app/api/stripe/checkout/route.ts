@@ -65,6 +65,8 @@ export async function POST(request: NextRequest) {
 
 
     const stripeAccountId = appointment.therapist.paymentDetails?.stripeAccountId
+    const stripeAccountType = appointment.therapist.paymentDetails?.stripeAccountType ?? 'express'
+
     if (!stripeAccountId) {
       return NextResponse.json({ 
         success: false, 
@@ -76,7 +78,7 @@ export async function POST(request: NextRequest) {
     const priceNumber = Number(appointment.price)
     
     // Stripe exige mínimo de 50 centavos de Dólar/Euro e 2.00 BRL
-    const currencyUpper = appointment.currency.toUpperCase()
+    const currencyUpper = appointment.currency ? appointment.currency.toUpperCase() : 'BRL'
     const minLimit = currencyUpper === 'BRL' ? 2 : 0.5
     if (priceNumber < minLimit) {
       return NextResponse.json({ 
@@ -114,19 +116,20 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Verifica se a conta do terapeuta está totalmente configurada e ativa na Stripe
+    // Verifica se a conta do terapeuta está ativa na Stripe
     const account = await stripe.accounts.retrieve(stripeAccountId)
-    if (account.capabilities?.transfers !== 'active') {
+    if (stripeAccountType === 'express' && account.capabilities?.transfers !== 'active') {
       return NextResponse.json({ 
         success: false, 
         error: 'Este terapeuta ainda não concluiu a configuração bancária para receber pagamentos. Por favor, tente novamente mais tarde ou entre em contato com o suporte.' 
       }, { status: 400 })
     }
 
-    // Gera o PaymentIntent com split usando transfer_data
-    const paymentIntent = await stripe.paymentIntents.create({
+    const rawCurrency = (appointment.currency || 'brl').toLowerCase()
+
+    const paymentIntentParams: any = {
       amount: amountInCents,
-      currency: appointment.currency.toLowerCase(),
+      currency: rawCurrency,
       customer: stripeCustomerId,
       automatic_payment_methods: {
         enabled: true,
@@ -138,7 +141,13 @@ export async function POST(request: NextRequest) {
       metadata: {
         appointmentId: appointment.id,
       },
-    })
+    }
+
+    if (stripeAccountType === 'standard') {
+      paymentIntentParams.on_behalf_of = stripeAccountId
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create(paymentIntentParams)
 
     // Salvar IntentID no bd para rastreio
     await prisma.appointment.update({

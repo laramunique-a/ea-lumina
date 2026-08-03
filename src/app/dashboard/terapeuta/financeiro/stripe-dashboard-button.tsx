@@ -5,7 +5,12 @@ import { Button } from '@/components/ui/Button'
 import { Loader2, ExternalLink } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
-export default function StripeDashboardButton() {
+interface StripeDashboardButtonProps {
+  stripeAccountId?: string | null
+  accountType?: 'express' | 'standard'
+}
+
+export default function StripeDashboardButton({ stripeAccountId, accountType = 'express' }: StripeDashboardButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleDashboard = async () => {
@@ -35,10 +40,10 @@ export default function StripeDashboardButton() {
       onClick={handleDashboard} 
       disabled={isLoading}
       variant="outline"
-      className="bg-white hover:bg-teal-50 text-teal-800 border-teal-200 rounded-full px-6 py-2 transition-all shadow-sm"
+      className="bg-white hover:bg-teal-50 text-teal-800 border-teal-200 rounded-full px-6 py-2 transition-all shadow-sm font-bold"
     >
       {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ExternalLink className="mr-2 h-4 w-4" />}
-      Acessar Painel Stripe Express
+      {accountType === 'express' ? 'Acessar Painel Stripe Express' : 'Acessar Meu Painel Stripe'}
     </Button>
   )
 }

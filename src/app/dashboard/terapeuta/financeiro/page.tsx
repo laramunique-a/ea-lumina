@@ -44,6 +44,7 @@ export default async function FinanceiroPage() {
   })
 
   const stripeAccountId = therapist?.paymentDetails?.stripeAccountId
+  const stripeAccountType = (therapist?.paymentDetails?.stripeAccountType ?? 'express') as 'express' | 'standard'
 
   // Calcular ganhos do mês (meramente ilustrativo para o painel)
   const today = new Date()
@@ -273,7 +274,7 @@ export default async function FinanceiroPage() {
               </div>
 
               <div className="flex-shrink-0 w-full lg:w-auto">
-                <StripeDashboardButton />
+                <StripeDashboardButton stripeAccountId={stripeAccountId} accountType={stripeAccountType} />
               </div>
             </div>
           </div>
