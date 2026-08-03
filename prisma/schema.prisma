@@ -72,7 +72,7 @@ model TherapistProfile {
   userId               String                       @unique
   bio                  String?
   therapies            String[]
-  price                Decimal                      @db.Decimal(10, 2)
+  price                Decimal?                     @db.Decimal(10, 2)
   modality             Modality                     @default(AMBOS)
   location             String?
   city                 String?
