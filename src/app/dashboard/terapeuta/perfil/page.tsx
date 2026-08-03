@@ -790,7 +790,25 @@ export default function TerapeutaPerfilPage() {
               tooltip="Nome que será exibido publicamente no seu perfil para os pacientes (ex: Dra. Ana Silva). Pode ser seu nome social, abreviado ou artístico."
             />
             <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Data de nascimento" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-            <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="País" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Ex.: Brasil" />
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700 tracking-wide">
+                País de Atuação / Residência <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              >
+                <option value="Brasil">🇧🇷 Brasil</option>
+                <option value="Portugal">🇵🇹 Portugal</option>
+                <option value="Uruguai">🇺🇾 Uruguai</option>
+                <option value="Espanha">🇪🇸 Espanha</option>
+                <option value="Estados Unidos">🇺🇸 Estados Unidos</option>
+                <option value="Argentina">🇦🇷 Argentina</option>
+                <option value="Chile">🇨🇱 Chile</option>
+                <option value="Outro">🌐 Outro País Internacional</option>
+              </select>
+            </div>
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Cidade" value={city} onChange={(e) => setCity(e.target.value)} />
             <Input required className="bg-slate-50 border-slate-100/50 rounded-xl" label="Estado (UF)" value={state} onChange={(e) => setState(e.target.value)} placeholder="Ex.: SP ou Estado" maxLength={100} />
             <Input className="bg-slate-50 border-slate-100/50 rounded-xl" label="Nacionalidade" value={nationality} onChange={(e) => setNationality(e.target.value)} placeholder="Ex.: Brasileira" />

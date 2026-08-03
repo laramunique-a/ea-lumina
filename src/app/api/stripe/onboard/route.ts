@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
 
 import { getStripeAccountType, normalizeCountryCode } from '@/lib/stripe-account-type'
+import { getCountryFromRequest } from '@/lib/geo'
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,23 +41,49 @@ export async function POST(request: NextRequest) {
     if (!stripeAccountId) {
       const user = await prisma.user.findUnique({ where: { id: session.sub } })
       
-      const accountType = getStripeAccountType(therapistProfile.country)
-      const countryCode = normalizeCountryCode(therapistProfile.country)
+      let finalAccountType = getStripeAccountType(therapistProfile.country)
+      let countryCode = normalizeCountryCode(therapistProfile.country)
 
-      const accountCreateParams: any = {
-        type: accountType,
-        country: countryCode,
-        email: user?.email,
-      }
-
-      if (accountType === 'express') {
-        accountCreateParams.capabilities = {
-          card_payments: { requested: true },
-          transfers: { requested: true },
+      // Fallback por IP se o perfil não tiver país definido
+      if (!therapistProfile.country) {
+        const ipCountry = getCountryFromRequest(request)
+        if (ipCountry) {
+          countryCode = ipCountry
+          finalAccountType = getStripeAccountType(ipCountry)
         }
       }
 
-      const account = await stripe.accounts.create(accountCreateParams)
+      let account: any
+      try {
+        const accountCreateParams: any = {
+          type: finalAccountType,
+          country: countryCode,
+          email: user?.email,
+        }
+
+        if (finalAccountType === 'express') {
+          accountCreateParams.capabilities = {
+            card_payments: { requested: true },
+            transfers: { requested: true },
+          }
+        }
+
+        account = await stripe.accounts.create(accountCreateParams)
+      } catch (stripeErr: any) {
+        // Se Express falhar devido a restrição territorial, tenta criar Standard como fallback automático
+        if (finalAccountType === 'express') {
+          console.warn('[STRIPE ONBOARD FALLBACK] Express falhou na Stripe, realizando fallback para Standard:', stripeErr.message)
+          finalAccountType = 'standard'
+          account = await stripe.accounts.create({
+            type: 'standard',
+            country: countryCode,
+            email: user?.email,
+          })
+        } else {
+          throw stripeErr
+        }
+      }
+
       stripeAccountId = account.id
 
       // Salva o ID e tipo no banco, criando o registro de paymentDetails se não existir
@@ -65,11 +92,11 @@ export async function POST(request: NextRequest) {
         create: {
           therapistId: therapistProfile.id,
           stripeAccountId: stripeAccountId,
-          stripeAccountType: accountType,
+          stripeAccountType: finalAccountType,
         },
         update: {
           stripeAccountId: stripeAccountId,
-          stripeAccountType: accountType,
+          stripeAccountType: finalAccountType,
         },
       })
     }
