@@ -101,6 +101,10 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    if (!stripeAccountId) {
+      return NextResponse.json({ success: false, error: 'Falha ao obter ID da conta Stripe' }, { status: 500 })
+    }
+
     // Gera o link de onboarding da Stripe
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
     const accountLink = await stripe.accountLinks.create({
