@@ -32,6 +32,7 @@ export async function POST(
         where: { therapistId: therapistProfile.id },
         data: {
           stripeAccountId: null,
+          stripeAccountType: null,
         },
       })
     }
