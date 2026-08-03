@@ -16,6 +16,16 @@ export async function POST(
 
     const userId = params.id
 
+    // Garante que a coluna stripeAccountType existe na tabela do banco de dados (Supabase)
+    try {
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE therapist_payment_details 
+        ADD COLUMN IF NOT EXISTS "stripeAccountType" TEXT DEFAULT 'express';
+      `)
+    } catch (dbErr) {
+      console.warn('[MIGRATE DB COLUMN NOTICE]', dbErr)
+    }
+
     // Buscar o perfil do terapeuta vinculado ao usuário
     const therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId },

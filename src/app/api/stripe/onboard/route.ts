@@ -14,6 +14,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Acesso negado' }, { status: 401 })
     }
 
+    // Garante que a coluna stripeAccountType existe no banco de dados
+    try {
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE therapist_payment_details 
+        ADD COLUMN IF NOT EXISTS "stripeAccountType" TEXT DEFAULT 'express';
+      `)
+    } catch (dbErr) {
+      console.warn('[MIGRATE DB COLUMN NOTICE]', dbErr)
+    }
+
     // Buscar o perfil do terapeuta vinculado a este usuário
     const therapistProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.sub },
