@@ -2,63 +2,131 @@
 
 import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
-import { LANDING_THEME } from '@/constants/theme'
+import {
+  ArrowRight, ChevronLeft, Youtube, Instagram,
+  Heart, Sparkles, Brain, Compass,
+  Atom, Zap, Waves, Users, Flower2, Moon
+} from 'lucide-react'
 import { Footer } from '@/components/Footer'
 
-// --- DADOS DAS TERAPIAS (Pacientes) ---
+// ─── Ícone de Estrela Decorativa ───────────────────────────────────────────
+const StarIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M30 0 L32.5 27.5 L60 30 L32.5 32.5 L30 60 L27.5 32.5 L0 30 L27.5 27.5 Z" fill="white" fillOpacity="0.85" />
+  </svg>
+)
+
+// ─── Dados das terapias para a seção Pacientes ─────────────────────────────
 const TERAPIAS = [
   {
-    nome: "ThetaHealing",
-    desc: "Identifique e transforme crenças limitantes no nível subconsciente para criar uma realidade mais leve e abundante.",
-    icon: <Sparkles className="text-[#C5A03F]" />
+    nome: 'ThetaHealing',
+    desc: 'Técnica quântica que atua na raiz das crenças limitantes e promove cura profunda no nível da alma.',
+    icon: <Atom className="w-7 h-7 text-[#C5A03F]" />,
+    color: '#C5A03F',
   },
   {
-    nome: "TQA — Terapia Quântica",
-    desc: "Reequilíbrio vibracional profundo, atuando nos campos sutis para restaurar a harmonia física e emocional.",
-    icon: <Zap className="text-[#0090FF]" />
+    nome: 'TQA — Terapia Quântica Atlante',
+    desc: 'Terapia ancestral que acessa memórias profundas e harmoniza o campo energético.',
+    icon: <Sparkles className="w-7 h-7 text-[#0090FF]" />,
+    color: '#0090FF',
   },
   {
-    nome: "Terapia Multidimensional",
-    desc: "Cura através do coração, trabalhando com seres de luz para limpar energias estagnadas de vidas passadas e do presente.",
-    icon: <Heart className="text-[#C5A03F]" />
+    nome: 'EFT',
+    desc: 'Técnica de liberação emocional que remove bloqueios e reduz ansiedade e estresse.',
+    icon: <Waves className="w-7 h-7 text-[#7B61FF]" />,
+    color: '#7B61FF',
   },
   {
-    nome: "Mesa Metrônica MAQ",
-    desc: "Ferramenta quântica de realinhamento energético que harmoniza todas as áreas da vida com geometrias sagradas.",
-    icon: <Compass className="text-[#0090FF]" />
+    nome: 'Terapia Multidimensional',
+    desc: 'Atua em múltiplos níveis do ser para promover equilíbrio físico, emocional, mental e espiritual.',
+    icon: <Atom className="w-7 h-7 text-[#C5A03F]" />,
+    color: '#C5A03F',
   },
   {
-    nome: "Constelação Familiar",
-    desc: "Libere emaranhamentos sistêmicos e padrões familiares repetitivos, trazendo paz e fluxo para sua ancestralidade.",
-    icon: <Brain className="text-[#C5A03F]" />
+    nome: 'Mesa Arcturiana',
+    desc: 'Ferramenta de alta frequência que conecta com energias dos Arcturianos para alinhamento e expansão da consciência.',
+    icon: <Brain className="w-7 h-7 text-[#C5A03F]" />,
+    color: '#C5A03F',
   },
   {
-    nome: "Meditação",
-    desc: "Práticas guiadas para acalmar a mente, reduzir a ansiedade e reconectar-se com a sua essência interior.",
-    icon: <Moon className="text-[#0090FF]" />
+    nome: 'Mesa Metatrônica',
+    desc: 'Tecnologia energética que restaura o equilíbrio dos corpos sutis e identifica padrões energéticos.',
+    icon: <Compass className="w-7 h-7 text-[#0090FF]" />,
+    color: '#0090FF',
   },
   {
-    nome: "Mesa Arcturiana Multidimensional",
-    desc: "Sistema de cura baseado na tecnologia de luz arcturiana, focado na elevação de frequência e limpeza espiritual.",
-    icon: <Sun className="text-[#C5A03F]" />
+    nome: 'Meditação',
+    desc: 'Práticas que acalmam a mente, equilibram as emoções e fortalecem o autoconhecimento.',
+    icon: <Flower2 className="w-7 h-7 text-[#7B61FF]" />,
+    color: '#7B61FF',
   },
   {
-    nome: "EMF Balancing Technique",
-    desc: "Harmonização da malha de calibração universal. Fortaleça sua energia e alinhe-se com seu propósito mais elevado.",
-    icon: <Wind className="text-[#0090FF]" />
-  }
+    nome: 'Constelação Familiar',
+    desc: 'Técnica que revela dinâmicas familiares inconscientes e promove cura nas relações e padrões do sistema.',
+    icon: <Users className="w-7 h-7 text-[#0090FF]" />,
+    color: '#0090FF',
+  },
 ]
 
+// ─── Social Header ──────────────────────────────────────────────────────────
+const SocialIcons = () => (
+  <div className="flex items-center gap-4">
+    <a
+      href="https://www.youtube.com/@ealumina4444"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-white hover:text-white/70 transition-colors group"
+    >
+      <Youtube className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+    </a>
+    <a
+      href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-white hover:text-white/70 transition-colors group"
+    >
+      <Instagram className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+    </a>
+  </div>
+)
+
+// ─── Logo small (canto superior direito das sub-seções) ─────────────────────
+const LogoSmall = () => (
+  <div className="hidden md:block absolute top-4 right-8 z-30">
+    <img
+      src="/logo-dark.jpg"
+      alt="EA Lumina"
+      className="w-[100px] h-[100px] object-contain"
+      style={{
+        WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+        maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+      }}
+    />
+  </div>
+)
+
+// ─── Botão Voltar ────────────────────────────────────────────────────────────
+const BackButton = ({ label = 'Voltar', onClick }: { label?: string; onClick: () => void }) => (
+  <div className="w-full px-5 md:px-10 pt-5 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto z-40">
+    <button
+      onClick={onClick}
+      className="text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
+    >
+      <ChevronLeft size={14} /> {label}
+    </button>
+  </div>
+)
+
+// ─── Estrela decorativa ──────────────────────────────────────────────────────
+const DecoStar = () => (
+  <div className="absolute bottom-10 right-8 w-8 h-8 md:w-12 md:h-12 opacity-60 animate-twinkle pointer-events-none z-10">
+    <StarIcon className="w-full h-full" />
+  </div>
+)
+
+// ════════════════════════════════════════════════════════════════════════════
 export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-
-  // Logo decorativo visível apenas no desktop
-  const HeaderLogo = () => (
-    <div className="hidden md:block absolute top-8 right-8 w-[180px] h-[180px] z-30 opacity-80 pointer-events-none">
-      <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
-    </div>
-  )
 
   // Scroll suave: sempre horizontal para todas as seções
   const scrollToSection = (id: string) => {
@@ -68,7 +136,7 @@ export default function LandingPage() {
       container.scrollTo({
         left: element.offsetLeft,
         top: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       })
     }
   }
@@ -79,12 +147,12 @@ export default function LandingPage() {
     if (!container) return
 
     const handleWheel = (e: WheelEvent) => {
-      if (window.innerWidth < 768) return // ignora no mobile
+      if (window.innerWidth < 768) return
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
         container.scrollBy({
           left: e.deltaY > 0 ? window.innerWidth : -window.innerWidth,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
     }
@@ -104,321 +172,528 @@ export default function LandingPage() {
       style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
     >
 
-      {/* ──────────────────────────────────────────────────────────
-          TELA 1: HOME (LOGO + BOXES)
-      ────────────────────────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════════
+          TELA 1: HOME
+      ════════════════════════════════════════════════════════════════ */}
       <section
         id="home"
-        className="w-full min-w-full h-[100dvh] snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center relative flex flex-col bg-[#010814] overflow-y-auto shrink-0"
       >
+        {/* Imagem de herói (fundo) */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/img/hero-home.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center opacity-60"
+          />
+          {/* Overlay gradiente para legibilidade */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#010814]/95 via-[#010814]/60 to-[#010814]/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010814]/80 via-transparent to-[#010814]/20" />
+        </div>
 
-        {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
-        <div className="flex md:hidden w-full items-center justify-between px-4 pt-4 pb-2 z-30 shrink-0">
-          {/* Redes sociais */}
-          <div className="flex items-center gap-4">
-            <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
-              <Youtube className="w-5 h-5" />
-            </a>
-            <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
-              <Instagram className="w-5 h-5" />
-            </a>
-          </div>
-          {/* Auth */}
+        {/* Header Mobile */}
+        <div className="flex md:hidden w-full items-center justify-between px-5 pt-5 pb-2 z-30 shrink-0 relative">
+          <SocialIcons />
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
               Entrar
             </Link>
             <Link href="/register">
-              <button className={LANDING_THEME.button.ghost}>Criar conta</button>
+              <button className="bg-[#C5A03F] text-black px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-all">
+                Criar conta
+              </button>
             </Link>
           </div>
         </div>
 
-        {/* ── HEADER DESKTOP: absoluto, apenas visível em telas grandes ── */}
+        {/* Header Desktop */}
         <div className="hidden md:flex absolute top-8 left-8 items-center gap-4 z-30">
-          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
-            <Youtube className="w-6 h-6 group-hover:scale-110 transition-transform" />
-          </a>
-          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
-            <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
-          </a>
+          <SocialIcons />
         </div>
-        <div className="hidden md:flex absolute top-8 right-8 items-center gap-4 z-30">
-          <Link href="/login" className="text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
+        <div className="hidden md:flex absolute top-6 right-8 items-center gap-4 z-30">
+          <Link href="/login" className="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
             Entrar
           </Link>
           <Link href="/register">
-            <button className={LANDING_THEME.button.ghost}>Criar conta</button>
+            <button className="bg-[#C5A03F] text-black px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-all shadow-[0_0_20px_rgba(197,160,63,0.3)]">
+              Criar conta
+            </button>
           </Link>
         </div>
 
-        {/* CONTEÚDO PRINCIPAL */}
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-6 pb-12 md:p-12 lg:p-20 gap-8 md:gap-0 relative z-10 md:h-full shrink-0">
+        {/* Conteúdo principal */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-4 pb-12 md:p-12 lg:p-20 gap-8 md:gap-4 md:h-full shrink-0">
 
-          {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:h-full md:-mt-8 shrink-0">
-            <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[55vh] md:h-[55vh] max-w-[600px] max-h-[600px]">
+          {/* ESQUERDA: Logo + Título + Subtítulo */}
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-start gap-4 md:gap-6">
+            {/* Logo */}
+            <div className="w-[130px] h-[130px] md:w-[160px] md:h-[160px] shrink-0">
               <img
                 src="/logo-dark.jpg"
                 alt="EA Lumina"
                 className="w-full h-full object-contain"
                 style={{
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
-                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
-                }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)',
+                  maskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)',
                 }}
               />
             </div>
 
-            <div className="text-center max-w-[480px] px-2 md:px-0 mt-1">
-              <h1
-                className={LANDING_THEME.typography.titleGradient}
-                style={LANDING_THEME.typography.titleGradientStyle}
+            {/* Marca textual */}
+            <p className="text-2xl md:text-3xl font-black tracking-[0.15em] text-white uppercase -mt-4">
+              EALUMINA
+            </p>
+
+            {/* Título */}
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight text-center md:text-left max-w-[520px]">
+              <span className="text-white">Conectar </span>
+              <span className="text-white">quem busca </span>
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
               >
-                Conectando você ao<br className="hidden md:block" /> Equilíbrio e Luz.
-              </h1>
-              <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
-                O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
-              </p>
-            </div>
+                transformar
+              </span>
+              <br />
+              <span className="text-white">sua vida </span>
+              <span className="text-white">com quem já </span>
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(90deg, #0090FF 0%, #55c0ff 100%)' }}
+              >
+                percorreu
+              </span>
+              <br />
+              <span className="text-white">esse caminho.</span>
+            </h1>
+
+            {/* Subtítulo */}
+            <p className="text-xs md:text-sm text-slate-300 leading-relaxed max-w-[440px] text-center md:text-left">
+              A EALUMINA é o encontro entre quem precisa e quem já transformou.
+              Um ecossistema de terapias, conhecimento e propósito para uma vida
+              mais equilibrada, consciente e com sentido.
+            </p>
           </div>
 
-          {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
-            <div className="flex flex-col gap-3 md:gap-5 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
-              <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[11px] md:text-[13px] mb-1 md:mb-2 text-center md:text-left pl-2 opacity-80">
+          {/* DIREITA: Painel de seleção */}
+          <div className="w-full md:w-auto flex flex-col items-center md:items-end">
+            <div className="flex flex-col gap-3 w-full max-w-[360px]">
+              <h3 className="text-slate-400 font-bold uppercase tracking-[0.22em] text-[10px] md:text-[11px] mb-1 text-center md:text-left">
                 Qual é o seu objetivo hoje?
               </h3>
 
               {[
-                { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
-                { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
-                { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
-                { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> }
+                { id: 'pacientes',   label: 'Sou Paciente',   icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#4A9EFF]" /> },
+                { id: 'terapeutas', label: 'Sou Terapeuta',  icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#4A9EFF]" /> },
+                { id: 'empresas',   label: 'Para Empresas',  icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#4A9EFF]" /> },
+                { id: 'cursos',     label: 'Ver Cursos',     icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#4A9EFF]" /> },
               ].map((box) => (
                 <button
                   key={box.id}
                   onClick={() => scrollToSection(box.id)}
-                  className="group flex items-center justify-between px-6 py-4 md:py-6 rounded-2xl md:rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-1 backdrop-blur-md"
+                  className="group flex items-center justify-between px-5 py-4 md:py-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-0.5 backdrop-blur-md"
                 >
-                  <div className="flex items-center gap-4 md:gap-5">
-                    <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                  <div className="flex items-center gap-4">
+                    <div className="group-hover:scale-110 transition-transform duration-300">
                       {box.icon}
                     </div>
-                    <span className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] text-white transition-colors">
+                    <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.22em] text-white">
                       {box.label}
                     </span>
                   </div>
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-slate-500 group-hover:text-[#0066CC] transition-colors group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-[#4A9EFF] transition-colors group-hover:translate-x-1" />
                 </button>
               ))}
             </div>
           </div>
-
         </div>
+
+        {/* Estrela decorativa */}
+        <DecoStar />
       </section>
 
 
-      {/* ──────────────────────────────────────────────────────────
+      {/* ════════════════════════════════════════════════════════════════
           TELA 2: PACIENTES
-      ────────────────────────────────────────────────────────── */}
+      ════════════════════════════════════════════════════════════════ */}
       <section
         id="pacientes"
-        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col relative overflow-y-auto shrink-0"
+        style={{ background: 'radial-gradient(ellipse at 30% 40%, #12203a 0%, #050d1a 60%, #010409 100%)' }}
       >
-        <HeaderLogo />
+        {/* Logo canto superior direito */}
+        <LogoSmall />
 
-        {/* Botão Voltar: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Voltar
-          </button>
-        </div>
+        {/* Botão Voltar */}
+        <BackButton onClick={() => scrollToSection('home')} label="Voltar" />
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex flex-col pb-12 md:justify-center md:h-full shrink-0">
+        <div className="max-w-[1300px] mx-auto px-5 md:px-10 w-full flex flex-col pb-10 md:justify-center md:h-full mt-2 md:mt-0 shrink-0">
 
-          <div className="mb-6 md:mb-10 text-center shrink-0 mt-4 md:mt-0">
-            <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Sua jornada de<br />Luz e Equilíbrio.
-            </h2>
-          </div>
+          {/* Herói: Esquerda = texto | Direita = imagem */}
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 mb-8 md:mb-10">
+            {/* Esquerda */}
+            <div className="w-full md:w-1/2 flex flex-col items-start text-left mt-6 md:mt-0">
+              <p className="text-[10px] md:text-xs font-black text-[#C5A03F] uppercase tracking-[0.3em] mb-3">
+                Para Pacientes
+              </p>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-4 text-white">
+                Toda transformação<br />começa{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
+                >
+                  dentro.
+                </span>
+              </h2>
+              <p className="text-slate-300 text-xs md:text-sm leading-relaxed mb-2 max-w-[420px]">
+                Encontre terapeutas preparados para ajudar você a compreender e transformar a origem emocional do seu sofrimento.
+              </p>
+              <p className="text-slate-400 text-[11px] md:text-xs leading-relaxed max-w-[420px]">
+                Conectamos pessoas que buscam compreender sua dor com terapeutas preparados para caminhar ao seu lado.
+              </p>
+            </div>
 
-          <div className="relative w-full overflow-hidden group">
-            {/* CAROUSEL TRACK (MARQUEE) */}
-            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] py-4">
-              {[...TERAPIAS, ...TERAPIAS].map((terapia, i) => (
-                <div key={i} className="w-[75vw] max-w-[300px] md:w-[350px] lg:w-[380px] flex-shrink-0 px-2 md:px-4">
-                  <div className="bg-black/40 backdrop-blur-sm border border-slate-800 rounded-3xl p-6 md:p-8 hover:border-slate-600 transition-colors flex flex-col items-center text-center h-full min-h-[220px] md:min-h-[280px] justify-center">
-                    <div className="mb-4 bg-slate-900 w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-6 [&>svg]:h-6 md:[&>svg]:w-8 md:[&>svg]:h-8 shadow-lg">
-                      {terapia.icon}
-                    </div>
-                    <h3 className="text-sm md:text-lg lg:text-xl font-black text-white uppercase tracking-widest mb-3 line-clamp-2">{terapia.nome}</h3>
-                    <p className="text-[10px] md:text-xs lg:text-sm text-slate-400 leading-relaxed font-medium line-clamp-4">{terapia.desc}</p>
-                  </div>
-                </div>
-              ))}
+            {/* Direita: Imagem */}
+            <div className="w-full md:w-1/2 h-[220px] md:h-[280px] rounded-3xl overflow-hidden relative shrink-0">
+              <img
+                src="/img/hero-paciente.png"
+                alt="Meditação em grupo"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050d1a]/40" />
             </div>
           </div>
 
-          <div className="mt-6 md:mt-10 flex flex-col md:flex-row items-center justify-center px-4 gap-6 shrink-0">
+          {/* Grid de 8 terapias */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
+            {TERAPIAS.map((t, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center text-center bg-white/[0.04] border border-white/10 rounded-2xl p-4 md:p-5 hover:bg-white/[0.07] hover:border-white/20 transition-all group"
+              >
+                <div
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
+                  style={{ background: `radial-gradient(circle, ${t.color}22 0%, ${t.color}08 100%)`, border: `1px solid ${t.color}33` }}
+                >
+                  {t.icon}
+                </div>
+                <h4 className="text-[10px] md:text-xs font-black uppercase tracking-wider text-white mb-1.5 leading-tight">
+                  {t.nome}
+                </h4>
+                <p className="text-[9px] md:text-[10px] text-slate-400 leading-relaxed line-clamp-3">
+                  {t.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-col items-center gap-3 shrink-0">
             <Link href="/register?role=PACIENTE">
-              <button className={LANDING_THEME.button.gold}>
-                Começar agora
+              <button className="bg-[#C5A03F] text-black px-8 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-all hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)] inline-flex items-center gap-2">
+                Conheça Mais <ArrowRight size={13} />
               </button>
             </Link>
+            <p className="text-[10px] text-slate-500">Saiba mais sobre cada terapia e como pode te ajudar.</p>
+            <div className="glow-line w-40" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#C5A03F] opacity-80" />
           </div>
-
         </div>
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
+
+      {/* ════════════════════════════════════════════════════════════════
           TELA 3: TERAPEUTAS
-      ────────────────────────────────────────────────────────── */}
+      ════════════════════════════════════════════════════════════════ */}
       <section
         id="terapeutas"
-        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col relative overflow-y-auto shrink-0"
+        style={{ background: 'radial-gradient(ellipse at 70% 30%, #12203a 0%, #050d1a 60%, #010409 100%)' }}
       >
-        <HeaderLogo />
-
-        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Início
-          </button>
+        {/* Social topo esquerdo */}
+        <div className="absolute top-8 left-8 z-30 hidden md:flex">
+          <SocialIcons />
+        </div>
+        {/* Mobile social */}
+        <div className="flex md:hidden w-full px-5 pt-5 pb-2 shrink-0">
+          <SocialIcons />
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-12 md:justify-center md:h-full mt-4 md:mt-0 shrink-0">
+        <div className="max-w-[1300px] mx-auto px-5 md:px-10 w-full flex flex-col pb-10 md:justify-center md:h-full mt-2 md:mt-0 shrink-0">
 
-          <div className="w-full mb-6 md:mb-10 text-center">
-            <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Expanda sua Luz.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12 text-left w-full">
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="bg-[#C5A03F]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
-                  <UserCircle className="w-5 h-5 md:w-6 md:h-6 text-[#C5A03F]" />
-                </div>
-                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Vitrine Premium</h3>
-              </div>
-              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
+          {/* Herói: Esquerda = texto | Direita = imagem */}
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 mb-8 md:mb-10 mt-6 md:mt-0">
+            {/* Esquerda */}
+            <div className="w-full md:w-1/2 flex flex-col items-start text-left">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-4 text-white">
+                Você nasceu para{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 50%, #0090FF 100%)' }}
+                >
+                  cuidar de pessoas.
+                </span>
+              </h2>
+              <p className="text-white text-sm md:text-base font-semibold mb-3">
+                Nós ajudamos o mundo a encontrar você.
+              </p>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed max-w-[440px]">
+                Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis.
+                Na EALUMINA você faz parte de uma comunidade que cresce unida, compartilha propósito
+                e utiliza tecnologia para ampliar seu alcance sem perder sua essência.
+              </p>
             </div>
 
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="bg-[#0090FF]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
-                  <Calendar className="w-5 h-5 md:w-6 md:h-6 text-[#0090FF]" />
-                </div>
-                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Gestão Inteligente</h3>
-              </div>
-              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
-            </div>
-
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="bg-white/10 p-3 rounded-xl group-hover:scale-110 transition-transform">
-                  <FileText className="w-5 h-5 md:w-6 md:h-6 text-slate-300" />
-                </div>
-                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Prontuários e Segurança</h3>
-              </div>
-              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
-            </div>
-
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 hover:bg-white/5 transition-colors group">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="bg-[#8A2BE2]/20 p-3 rounded-xl group-hover:scale-110 transition-transform">
-                  <Brain className="w-5 h-5 md:w-6 md:h-6 text-[#8A2BE2]" />
-                </div>
-                <h3 className="text-white font-bold text-base md:text-lg tracking-wide uppercase">Lumina IA</h3>
-              </div>
-              <p className="text-slate-400 text-xs md:text-base leading-relaxed">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
+            {/* Direita: Imagem */}
+            <div className="w-full md:w-1/2 h-[220px] md:h-[280px] rounded-3xl overflow-hidden relative shrink-0">
+              <img
+                src="/img/hero-terapeuta.png"
+                alt="Comunidade de terapeutas"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050d1a]/40" />
             </div>
           </div>
 
-          <Link href="/register?role=TERAPEUTA" className="shrink-0">
-            <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-2 whitespace-nowrap justify-center`}>
-              Quero Atender <ArrowRight size={14} />
-            </button>
-          </Link>
+          {/* Card "Você não está sozinho" */}
+          <div className="relative border border-white/10 rounded-2xl p-6 md:p-8 bg-white/[0.03] backdrop-blur-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="max-w-[520px]">
+              <h3 className="text-xl md:text-3xl font-black text-white mb-2">
+                Você não está{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
+                >
+                  sozinho.
+                </span>
+              </h3>
+              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">
+                Na EALUMINA acreditamos que terapeutas unidos criam uma força maior do que qualquer competição.
+                Quando uma comunidade cresce em propósito, todos crescem juntos.
+              </p>
+            </div>
+            {/* Texto cursivo decorativo */}
+            <div className="shrink-0 text-right">
+              <p className="font-cursive text-[#C5A03F] text-xl md:text-2xl leading-tight italic">
+                Juntos somos<br />mais fortes
+              </p>
+            </div>
+          </div>
+
+          {/* CTA + rodapé */}
+          <div className="flex flex-col items-center gap-4 shrink-0">
+            <Link href="/register?role=TERAPEUTA">
+              <button className="bg-[#C5A03F] text-black px-8 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-all hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)] inline-flex items-center gap-2">
+                Conheça Nossa Missão <ArrowRight size={13} />
+              </button>
+            </Link>
+
+            <div className="flex items-center gap-3 w-full max-w-[440px]">
+              <div className="glow-line flex-1" />
+              <p className="text-[10px] text-slate-500 text-center whitespace-nowrap">
+                Uma comunidade. Um propósito. Um mundo mais leve.
+              </p>
+              <div className="glow-line flex-1" />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C5A03F] opacity-80" />
+            </div>
+
+            <p className="text-lg md:text-2xl font-black tracking-[0.18em] text-white uppercase opacity-60">
+              EALUMINA
+            </p>
+          </div>
         </div>
+
+        <DecoStar />
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
+
+      {/* ════════════════════════════════════════════════════════════════
           TELA 4: EMPRESAS
-      ────────────────────────────────────────────────────────── */}
+      ════════════════════════════════════════════════════════════════ */}
       <section
         id="empresas"
-        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center flex flex-col relative overflow-y-auto shrink-0"
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, #0d1a2e 0%, #050d1a 60%, #010409 100%)' }}
       >
-        <HeaderLogo />
-
-        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Início
-          </button>
+        {/* Social topo esquerdo */}
+        <div className="absolute top-8 left-8 z-30 hidden md:flex">
+          <SocialIcons />
+        </div>
+        {/* Mobile social */}
+        <div className="flex md:hidden w-full px-5 pt-5 pb-2 shrink-0">
+          <SocialIcons />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 md:px-12 w-full grid md:grid-cols-2 gap-8 md:gap-16 items-start md:items-center pb-12 md:h-full mt-4 md:mt-0 shrink-0">
-          <div className="text-center md:text-left">
-            <h5 className={LANDING_THEME.tag.blue}>Soluções Corporativas</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Bem-estar elevado.
-            </h2>
-            <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[500px]"}>
-              Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
+        {/* Logo canto superior direito */}
+        <LogoSmall />
+
+        <div className="max-w-[1300px] mx-auto px-5 md:px-10 w-full flex flex-col pb-10 md:justify-center md:h-full mt-2 md:mt-0 shrink-0">
+
+          {/* Herói: Esquerda = texto | Direita = imagem */}
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 mb-8 md:mb-10 mt-6 md:mt-0">
+            {/* Esquerda */}
+            <div className="w-full md:w-1/2 flex flex-col items-start text-left">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-5 text-white">
+                Empresas{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
+                >
+                  saudáveis
+                </span>
+                <br />
+                começam por{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #0090FF 0%, #55c0ff 100%)' }}
+                >
+                  pessoas
+                </span>
+                <br />
+                emocionalmente{' '}
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'linear-gradient(90deg, #0090FF 0%, #55c0ff 100%)' }}
+                >
+                  saudáveis.
+                </span>
+              </h2>
+              <p className="text-slate-300 text-[11px] md:text-sm leading-relaxed mb-3 max-w-[420px]">
+                Equipes emocionalmente equilibradas comunicam melhor, cooperam mais e desenvolvem ambientes de trabalho mais produtivos.
+              </p>
+              <p className="text-slate-400 text-[11px] md:text-xs leading-relaxed max-w-[420px]">
+                A EALUMINA conecta sua empresa a profissionais especializados em programas de bem-estar emocional, desenvolvimento humano e fortalecimento da cultura organizacional.
+              </p>
+            </div>
+
+            {/* Direita: Imagem */}
+            <div className="w-full md:w-1/2 h-[220px] md:h-[300px] rounded-3xl overflow-hidden relative shrink-0">
+              <img
+                src="/img/hero-empresas.png"
+                alt="Equipe corporativa"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050d1a]/30" />
+            </div>
+          </div>
+
+          {/* Card motivacional */}
+          <div className="border border-white/10 rounded-2xl p-6 md:p-10 bg-white/[0.03] backdrop-blur-sm mb-6 text-center relative">
+            <h3 className="text-xl md:text-3xl font-black text-white mb-2">
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
+              >
+                Grandes mudanças
+              </span>{' '}
+              começam
+              <br className="hidden md:block" /> por uma decisão correta.
+            </h3>
+            <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed mb-1">
+              Na harmonia e na paz, a vida floresce.
             </p>
-            <button className={LANDING_THEME.button.gold}>
-              Falar com Consultor
+            <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed mb-5">
+              Viva mais leve. Viva mais feliz.
+            </p>
+            <p className="font-cursive text-[#C5A03F] text-lg md:text-xl italic mb-5">
+              Vive a felicidade. Vive a alegria.
+            </p>
+            <div className="glow-line w-48 mx-auto" />
+            <div className="flex justify-center mt-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C5A03F] opacity-80" />
+            </div>
+
+            {/* Estrela decorativa interna */}
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 opacity-30 animate-twinkle">
+              <StarIcon className="w-full h-full" />
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex justify-center shrink-0">
+            <button className="bg-transparent border border-[#C5A03F]/60 text-[#C5A03F] px-8 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#C5A03F]/10 transition-all hover:scale-105 inline-flex items-center gap-2">
+              Falar com Consultor <ArrowRight size={13} />
             </button>
           </div>
-          <div className="hidden md:flex h-60 lg:h-80 rounded-3xl border border-slate-800 bg-black/50 items-center justify-center p-8 relative overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-tr from-[#0090FF]/10 to-transparent" />
-             <div className="text-center relative z-10">
-                <Wind className="w-14 h-14 lg:w-20 lg:h-20 text-[#0090FF] mx-auto mb-4 opacity-80" />
-                <h4 className="text-lg lg:text-2xl font-black text-white uppercase tracking-widest">Corporativo</h4>
-             </div>
-          </div>
         </div>
+
+        <DecoStar />
       </section>
 
-      {/* ──────────────────────────────────────────────────────────
+
+      {/* ════════════════════════════════════════════════════════════════
           TELA 5: CURSOS
-      ────────────────────────────────────────────────────────── */}
+      ════════════════════════════════════════════════════════════════ */}
       <section
         id="cursos"
-        className="w-full min-w-full h-[100dvh] snap-center flex flex-col items-center justify-start relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center relative flex flex-col overflow-y-auto shrink-0"
       >
-        <HeaderLogo />
-
-        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Início
-          </button>
+        {/* Imagem de herói full-background */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/img/hero-cursos.png"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#010814]/90 via-[#010814]/60 to-[#010814]/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010814]/70 via-transparent to-[#010814]/30" />
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex flex-col items-center text-center pb-12 md:justify-center md:h-full mt-4 md:mt-0 shrink-0">
-          <div className="w-full mb-6 md:mb-10 text-center">
-            <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Jornada de <br className="hidden md:block"/>Aprendizado.
-            </h2>
+        {/* Social + Logo topo esquerdo */}
+        <div className="relative z-30 flex items-center gap-4 px-5 md:px-10 pt-6 md:pt-8 shrink-0">
+          <SocialIcons />
+          <div className="ml-2">
+            <img
+              src="/logo-dark.jpg"
+              alt="EA Lumina"
+              className="w-10 h-10 md:w-12 md:h-12 object-contain"
+              style={{
+                WebkitMaskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)',
+                maskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)',
+              }}
+            />
           </div>
-          <p className={LANDING_THEME.typography.paragraph + " mb-8 md:mb-10 max-w-[800px] px-2 md:px-4"}>
-            Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
-          </p>
-          <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-3 justify-center whitespace-nowrap mx-auto`}>
-            Explorar Catálogo <ArrowRight size={14} />
-          </button>
         </div>
+
+        {/* Conteúdo esquerdo */}
+        <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-16 lg:px-20 pb-16 md:pb-0">
+          <div className="max-w-[520px]">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 text-white">
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(90deg, #C5A03F 0%, #e8d08a 100%)' }}
+              >
+                Educação
+              </span>{' '}
+              para
+              <br />
+              transformar{' '}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'linear-gradient(90deg, #0090FF 0%, #55c0ff 100%)' }}
+              >
+                vidas.
+              </span>
+            </h1>
+            <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+              Conhecimento que expande.<br />
+              Comunidade que compartilha.
+            </p>
+            <button className="bg-[#C5A03F] text-black px-8 py-3.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#d6af4b] transition-all hover:scale-105 shadow-[0_0_20px_rgba(197,160,63,0.3)] inline-flex items-center gap-2">
+              Conheça Nossos Benefícios
+            </button>
+          </div>
+        </div>
+
+        {/* Estrela decorativa */}
+        <DecoStar />
+
         <Footer />
       </section>
 
