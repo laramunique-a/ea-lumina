@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
           countryCode = ipCountry
           finalAccountType = getStripeAccountType(ipCountry)
         }
+      }
       if (!isStripeSupportedAccountCountry(countryCode)) {
         return NextResponse.json({
           success: false,
