@@ -5,7 +5,7 @@ import { stripe } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma'
 import { getSessionFromRequest } from '@/lib/auth'
 
-import { getStripeAccountType, normalizeCountryCode } from '@/lib/stripe-account-type'
+import { getStripeAccountType, normalizeCountryCode, isStripeSupportedAccountCountry } from '@/lib/stripe-account-type'
 import { getCountryFromRequest } from '@/lib/geo'
 
 export async function POST(request: NextRequest) {
@@ -51,6 +51,11 @@ export async function POST(request: NextRequest) {
           countryCode = ipCountry
           finalAccountType = getStripeAccountType(ipCountry)
         }
+      if (!isStripeSupportedAccountCountry(countryCode)) {
+        return NextResponse.json({
+          success: false,
+          error: `A Stripe ainda não suporta a criação de contas de recebimento no país (${countryCode}). Para receber via Stripe, conecte uma conta registrada em um país suportado (como Brasil, Portugal, Espanha ou EUA) ou utilize os outros meios de recebimento (PIX/Transferência).`
+        }, { status: 400 })
       }
 
       let account: any

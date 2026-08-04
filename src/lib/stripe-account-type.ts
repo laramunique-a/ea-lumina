@@ -57,3 +57,20 @@ export function getDefaultCurrencyForCountry(
   }
   return currencyMap[code] ?? 'brl'
 }
+
+/**
+ * Países onde a Stripe permite a criação nativa de contas de usuário/terapeuta.
+ * A Stripe opera em ~46 países (Brasil, Portugal, Espanha, EUA, Reino Unido, Canadá, México, França, Alemanha, Itália, etc.).
+ * Países como Uruguai (UY), Argentina (AR) e Colômbia (CO) NÃO são suportados pela Stripe para abertura de contas.
+ */
+export function isStripeSupportedAccountCountry(
+  country: string | null | undefined
+): boolean {
+  const code = normalizeCountryCode(country)
+  const supported = new Set([
+    'BR', 'PT', 'ES', 'US', 'GB', 'CA', 'MX', 'DE', 'FR', 'IT', 'NL', 'IE', 'BE', 'AT',
+    'CH', 'DK', 'FI', 'NO', 'SE', 'AU', 'NZ', 'SG', 'HK', 'JP', 'LU', 'PL', 'CZ', 'GR',
+    'RO', 'BG', 'HR', 'CY', 'EE', 'HU', 'LV', 'LT', 'MT', 'SK', 'SI'
+  ])
+  return supported.has(code)
+}
