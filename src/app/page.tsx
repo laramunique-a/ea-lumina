@@ -175,12 +175,15 @@ export default function LandingPage() {
 
           {/* ESQUERDA — Logo + Título + Subtítulo (centralizado) */}
           <div className="w-full md:w-1/2 flex flex-col items-center gap-4 md:gap-5">
-            <div className="w-[130px] h-[130px] md:w-[155px] md:h-[155px] shrink-0">
+            <div className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] shrink-0">
               <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain"
-                style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)', maskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)' }}
+                style={{
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 62%, transparent 82%)',
+                  maskImage: 'radial-gradient(circle at center, black 62%, transparent 82%)',
+                  filter: 'drop-shadow(0 0 16px rgba(197,160,63,0.5))',
+                }}
               />
             </div>
-            <p className="text-2xl md:text-3xl font-black tracking-[0.15em] text-white uppercase -mt-2">EALUMINA</p>
 
             <h1 className={S.heading}>
               Conectar quem busca{' '}
