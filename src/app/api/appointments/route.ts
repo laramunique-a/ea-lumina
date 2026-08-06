@@ -490,12 +490,15 @@ export async function POST(request: NextRequest) {
       })
     })
 
-    // Notificação WhatsApp só é enviada após confirmação do pagamento (webhook Stripe)
-    // Para agendamentos via pacote (sem pagamento), notifica imediatamente
+    // Notificação WhatsApp:
+    // - Agendamentos via pacote: notifica terapeuta imediatamente (sem pagamento pendente)
+    // - Agendamentos com Stripe: notifica somente após payment_intent.succeeded (webhook)
     if (usedPackageId) {
-      void WhatsAppService.notifyNewAppointment(appointment.id).catch((err) => {
-        console.error('[WhatsApp Notification Error] Erro ao disparar notificação:', err)
-      })
+      try {
+        await WhatsAppService.notifyNewAppointment(appointment.id)
+      } catch (err) {
+        console.error('[WhatsApp Notification Error] Erro ao disparar notificação por pacote:', err)
+      }
     }
 
     return NextResponse.json({

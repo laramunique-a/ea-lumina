@@ -1,0 +1,514 @@
+export const dynamic = 'force-dynamic'
+
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getSessionFromRequest } from '@/lib/auth'
+import { z } from 'zod'
+import { calculateCommission } from '@/lib/utils'
+import { effectiveServiceCharge } from '@/lib/therapist-pricing'
+import { WhatsAppService } from '@/lib/whatsapp/service'
+
+/** Converte "HH:MM" para minutos totais desde meia-noite */
+const timeToMinutes = (t: string): number => {
+  const [h, m] = t.split(':').map(Number)
+  return h * 60 + m
+}
+
+const createSchema = z.object({
+  therapistProfileId: z.string().min(1),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  time: z.string().regex(/^\d{2}:\d{2}$/),
+  notes: z.string().max(1000).optional(),
+  serviceId: z.string().optional(),
+  buyPackageId: z.string().optional(),
+  usePackageId: z.string().optional(),
+  paymentIntentId: z.string().optional(),
+  currency: z.string().optional(),
+})
+
+// GET — listar agendamentos (por role: terapeuta ou paciente)
+export async function GET(request: NextRequest) {
+  try {
+    const session = await getSessionFromRequest(request)
+    if (!session) {
+      return NextResponse.json({ success: false, error: 'Não autenticado' }, { status: 401 })
+    }
+
+    const { searchParams } = new URL(request.url)
+    const status = searchParams.get('status') || ''
+    const perPage = Math.min(Number(searchParams.get('perPage') || '20'), 50)
+    const page = Number(searchParams.get('page') || '1')
+
+    const where: Record<string, unknown> = {}
+    if (status && ['AGUARDANDO_PAGAMENTO', 'PENDENTE', 'CONFIRMADO', 'CONCLUIDO', 'CANCELADO'].includes(status)) {
+      where.status = status
+    }
+
+    if (session.role === 'TERAPEUTA') {
+      const profile = await prisma.therapistProfile.findUnique({
+        where: { userId: session.sub },
+        select: { id: true },
+      })
+      if (!profile) {
+        return NextResponse.json({ success: false, error: 'Perfil não encontrado' }, { status: 404 })
+      }
+      where.therapistId = profile.id
+      // Terapeuta nunca vê pré-reservas aguardando pagamento
+      if (!status) {
+        where.status = { not: 'AGUARDANDO_PAGAMENTO' }
+      }
+    } else if (session.role === 'PACIENTE') {
+      const profile = await prisma.patientProfile.findUnique({
+        where: { userId: session.sub },
+        select: { id: true },
+      })
+      if (!profile) {
+        return NextResponse.json({ success: false, error: 'Perfil não encontrado' }, { status: 404 })
+      }
+      where.patientId = profile.id
+      // Paciente vê todos exceto cancelados automaticamente
+    } else {
+      return NextResponse.json({ success: false, error: 'Acesso negado' }, { status: 403 })
+    }
+
+    const [items, total] = await Promise.all([
+      prisma.appointment.findMany({
+        where,
+        include: {
+          therapist: {
+            select: {
+              id: true,
+              therapies: true,
+              professionalName: true,
+              user: { select: { name: true, avatarUrl: true } },
+            },
+          },
+          patient: {
+            select: {
+              id: true,
+              socialName: true,
+              user: { select: { name: true, avatarUrl: true } },
+            },
+          },
+          service: {
+            select: { id: true, name: true, durationMinutes: true },
+          },
+        },
+        orderBy: { date: 'desc' },
+        skip: (page - 1) * perPage,
+        take: perPage,
+      }),
+      prisma.appointment.count({ where }),
+    ])
+
+    // TTL de 2h para pré-reservas aguardando pagamento
+    const PAYMENT_TTL_MS = 2 * 60 * 60 * 1000
+
+    const data = items.map((a) => {
+      const expiresAt = a.status === 'AGUARDANDO_PAGAMENTO'
+        ? new Date(a.createdAt.getTime() + PAYMENT_TTL_MS).toISOString()
+        : null
+      return {
+        id: a.id,
+        date: a.date.toISOString(),
+        status: a.status,
+        price: Number(a.price),
+        currency: a.currency,
+        therapistNet: a.therapistNet ? Number(a.therapistNet) : null,
+        notes: a.notes,
+        cancelReason: a.cancelReason,
+        durationMinutes: a.durationMinutes,
+        therapist: a.therapist,
+        patient: a.patient,
+        patientId: a.patientId,
+        service: a.service,
+        stripePaymentIntentId: a.stripePaymentIntentId,
+        expiresAt,
+      }
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: { items: data, total, page, perPage, totalPages: Math.ceil(total / perPage) },
+    })
+  } catch (error) {
+    console.error('[GET APPOINTMENTS]', error)
+    return NextResponse.json({ success: false, error: 'Erro ao listar agendamentos' }, { status: 500 })
+  }
+}
+
+// POST — criar agendamento (paciente)
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getSessionFromRequest(request)
+    if (!session || session.role !== 'PACIENTE') {
+      return NextResponse.json({ success: false, error: 'Acesso negado' }, { status: 403 })
+    }
+
+    const patientProfile = await prisma.patientProfile.findUnique({
+      where: { userId: session.sub },
+      select: { id: true, socialName: true, user: { select: { name: true } } },
+    })
+    if (!patientProfile) {
+      return NextResponse.json({ success: false, error: 'Perfil de paciente não encontrado' }, { status: 404 })
+    }
+
+    const body = await request.json()
+    const validated = createSchema.safeParse(body)
+    if (!validated.success) {
+      return NextResponse.json(
+        { success: false, error: validated.error.errors[0]?.message || 'Dados inválidos' },
+        { status: 400 }
+      )
+    }
+
+    const { therapistProfileId, date, time, notes, serviceId, buyPackageId, usePackageId, paymentIntentId, currency: reqCurrencyParam } = validated.data
+    const reqCurrency = (reqCurrencyParam || 'BRL').toUpperCase()
+    let finalCurrency = 'BRL'
+
+    const therapist = await prisma.therapistProfile.findFirst({
+      where: { id: therapistProfileId, approved: true, user: { active: true } },
+      include: {
+        availability: true,
+        services: { 
+          where: { active: true }, 
+          include: { 
+            packages: { where: { active: true } } 
+          } 
+        },
+      },
+    })
+
+    if (!therapist) {
+      return NextResponse.json({ success: false, error: 'Terapeuta não encontrado ou não aprovado' }, { status: 404 })
+    }
+
+    const activeServices = therapist.services.filter((s) => s.active)
+    if (activeServices.length > 0 && !serviceId) {
+      return NextResponse.json(
+        { success: false, error: 'Selecione o tipo de sessão (serviço) para agendar com este terapeuta.' },
+        { status: 400 }
+      )
+    }
+
+    let price: number = 0
+    let durationMinutes: number = 60
+    let finalServiceId: string | null = null
+    let boughtPackageId: string | null = null
+    let usedPackageId: string | null = null
+
+    // 1. Lógica de USO de pacote existente
+    if (usePackageId) {
+      const patientPkg = await prisma.patientPackage.findFirst({
+        where: {
+          id: usePackageId,
+          patientId: patientProfile.id,
+          remainingSessions: { gt: 0 },
+          OR: [
+            { expiresAt: null },
+            { expiresAt: { gt: new Date() } }
+          ]
+        },
+        include: { package: true }
+      })
+
+      if (!patientPkg) {
+        return NextResponse.json({ success: false, error: 'Pacote não encontrado, sem saldo ou expirado.' }, { status: 400 })
+      }
+
+      // Validar se o pacote serve para esta terapia
+      const pkg = patientPkg.package
+      let allowed = false
+      if (!pkg.isMultiTherapy) {
+        allowed = pkg.serviceId === serviceId
+      } else {
+        if (pkg.allowedServices.length === 0) {
+          allowed = true // Permite todas as terapias
+        } else {
+          allowed = pkg.allowedServices.includes(serviceId || '')
+        }
+      }
+
+      if (!allowed) {
+         return NextResponse.json({ success: false, error: 'Este pacote não pode ser usado para esta terapia.' }, { status: 400 })
+      }
+
+      price = 0 // Sessão já paga
+      durationMinutes = 60 // Padrão ou do serviço
+      const svc = serviceId ? activeServices.find(s => s.id === serviceId) : null
+      if (svc) {
+        durationMinutes = svc.durationMinutes
+        finalServiceId = svc.id
+        finalCurrency = svc.currency || 'BRL'
+      }
+      usedPackageId = patientPkg.id
+    } 
+    // 2. Lógica de COMPRA de novo pacote
+    else if (buyPackageId) {
+      const availablePackages = activeServices.flatMap(s => s.packages)
+      const pkgToBuy = availablePackages.find(p => p.id === buyPackageId)
+      
+      if (!pkgToBuy) {
+        return NextResponse.json({ success: false, error: 'Pacote não disponível ou inválido.' }, { status: 400 })
+      }
+
+      let packagePrice = Number(pkgToBuy.price)
+      if (reqCurrency === 'USD') {
+        if (pkgToBuy.priceUsd == null) {
+          return NextResponse.json({ success: false, error: 'Este pacote não está disponível em Dólar.' }, { status: 400 })
+        }
+        packagePrice = Number(pkgToBuy.priceUsd)
+        finalCurrency = 'USD'
+      } else if (reqCurrency === 'EUR') {
+        if (pkgToBuy.priceEur == null) {
+          return NextResponse.json({ success: false, error: 'Este pacote não está disponível em Euro.' }, { status: 400 })
+        }
+        packagePrice = Number(pkgToBuy.priceEur)
+        finalCurrency = 'EUR'
+      } else {
+        finalCurrency = 'BRL'
+      }
+
+      price = packagePrice
+      const parentSvc = activeServices.find(s => s.id === pkgToBuy.serviceId)
+      durationMinutes = parentSvc?.durationMinutes || 60
+      finalServiceId = parentSvc?.id || null
+      boughtPackageId = pkgToBuy.id
+    }
+    // 3. Lógica de Sessão AVULSA
+    else {
+      const svc = serviceId ? activeServices.find((s) => s.id === serviceId) : null
+      if (activeServices.length > 0) {
+        if (!svc) {
+          return NextResponse.json(
+            { success: false, error: 'Serviço inválido ou não disponível para este terapeuta.' },
+            { status: 400 }
+          )
+        }
+
+        let baseVal = Number(svc.price)
+        let promoVal = svc.promoPrice != null ? Number(svc.promoPrice) : null
+
+        if (reqCurrency === 'USD') {
+          if (svc.priceUsd == null) {
+            return NextResponse.json({ success: false, error: 'Este serviço não está disponível em Dólar.' }, { status: 400 })
+          }
+          baseVal = Number(svc.priceUsd)
+          promoVal = svc.promoPriceUsd != null ? Number(svc.promoPriceUsd) : null
+          finalCurrency = 'USD'
+        } else if (reqCurrency === 'EUR') {
+          if (svc.priceEur == null) {
+            return NextResponse.json({ success: false, error: 'Este serviço não está disponível em Euro.' }, { status: 400 })
+          }
+          baseVal = Number(svc.priceEur)
+          promoVal = svc.promoPriceEur != null ? Number(svc.promoPriceEur) : null
+          finalCurrency = 'EUR'
+        } else {
+          finalCurrency = 'BRL'
+        }
+
+        price = effectiveServiceCharge({
+          price: baseVal,
+          promoPrice: promoVal,
+        })
+        durationMinutes = svc.durationMinutes
+        finalServiceId = svc.id
+      } else {
+        price = Number(therapist.price)
+        durationMinutes = 60
+        finalCurrency = 'BRL'
+      }
+    }
+
+    // Bloquear agendamento no passado (validação backend)
+    const now = new Date()
+    const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0')
+    const timeNowStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0')
+    
+    if (date < todayStr) {
+      return NextResponse.json({ success: false, error: 'Não é possível agendar em datas passadas' }, { status: 400 })
+    }
+    if (date === todayStr && time <= timeNowStr) {
+      return NextResponse.json({ success: false, error: 'Este horário já passou' }, { status: 400 })
+    }
+
+    // Obter o offset do fuso horário do terapeuta (ex: -03:00) para criar a data UTC correta
+    let tzOffset = '-03:00'
+    if (therapist.timezone) {
+      try {
+        const tzString = new Date().toLocaleString('en-US', { timeZone: therapist.timezone, timeZoneName: 'longOffset' })
+        const match = tzString.match(/GMT([-+]\d{1,2}):?(\d{2})?/)
+        if (match) {
+          const hours = match[1]
+          const sign = hours.startsWith('-') ? '-' : '+'
+          const absHours = hours.replace(/[-+]/, '').padStart(2, '0')
+          const minutes = match[2] || '00'
+          tzOffset = `${sign}${absHours}:${minutes}`
+        }
+      } catch (e) {
+        console.error('[Timezone Offset Error]', e)
+      }
+    }
+    const dateObj = new Date(`${date}T${time}:00${tzOffset}`)
+    
+    // Obter o dia da semana imune a deslocamentos de fuso horário
+    const [yr, mo, dy] = date.split('-').map(Number)
+    const dayOfWeek = new Date(yr, mo - 1, dy).getDay()
+    
+    const timeStr = time
+
+
+    // Verificar disponibilidade: o início da sessão deve estar dentro do bloco E
+    // a sessão deve terminar antes ou no limite do endTime configurado.
+    const sessionStartMin = timeToMinutes(timeStr)
+    const sessionEndMin = sessionStartMin + durationMinutes
+
+    const specificAvail = therapist.availability.filter(
+      (a) => a.date && a.date.toISOString().split('T')[0] === date
+    )
+
+    let hasAvailability = false
+
+    if (specificAvail.length > 0) {
+      const activeSpecific = specificAvail.filter((a) => a.active)
+      hasAvailability = activeSpecific.some((a) => {
+        const blockStart = timeToMinutes(a.startTime)
+        const blockEnd = timeToMinutes(a.endTime)
+        return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
+      })
+    } else {
+      const weeklyAvail = therapist.availability.filter(
+        (a) => a.dayOfWeek === dayOfWeek && !a.date && a.active
+      )
+      hasAvailability = weeklyAvail.some((a) => {
+        const blockStart = timeToMinutes(a.startTime)
+        const blockEnd = timeToMinutes(a.endTime)
+        return sessionStartMin >= blockStart && sessionEndMin <= blockEnd
+      })
+    }
+
+    if (!hasAvailability) {
+      return NextResponse.json({ success: false, error: 'Horário não disponível' }, { status: 400 })
+    }
+
+    // Verificar conflitos de agendamento (overlap / double booking)
+    const dateObjStartMs = dateObj.getTime()
+    const dateObjEndMs = dateObjStartMs + durationMinutes * 60 * 1000
+
+    const dayAppointments = await prisma.appointment.findMany({
+      where: {
+        therapistId: therapist.id,
+        // Apenas agendamentos pagos ou confirmados de fato bloqueiam o horário
+        status: { in: ['PENDENTE', 'CONFIRMADO'] },
+        date: {
+          gte: new Date(`${date}T00:00:00`),
+          lte: new Date(`${date}T23:59:59`),
+        },
+      },
+      select: {
+        date: true,
+        durationMinutes: true,
+      },
+    })
+
+    const hasConflict = dayAppointments.some((apt) => {
+      const bookedStartMs = apt.date.getTime()
+      const bookedEndMs = bookedStartMs + apt.durationMinutes * 60 * 1000
+      return dateObjStartMs < bookedEndMs && bookedStartMs < dateObjEndMs
+    })
+
+    if (hasConflict) {
+      return NextResponse.json(
+        { success: false, error: 'Este horário já está reservado por outra sessão.' },
+        { status: 400 }
+      )
+    }
+
+    const config = await prisma.platformConfig.findFirst({ orderBy: { updatedAt: 'desc' } })
+    const commissionRate = Number(config?.commissionRate ?? 10)
+
+    const { commission, therapistNet, platformRevenue } = calculateCommission(price, commissionRate)
+
+    const appointment = await prisma.$transaction(async (tx) => {
+      let patientPkgId = usedPackageId
+
+      // Se está comprando, cria o vínculo
+      if (buyPackageId) {
+        const pkg = await tx.therapyPackage.findUnique({ where: { id: buyPackageId } })
+        if (!pkg) throw new Error('Falha ao processar pacote')
+
+        const expiresAt = pkg.expirationDays 
+          ? new Date(Date.now() + pkg.expirationDays * 24 * 60 * 60 * 1000) 
+          : null
+
+        const patientPkg = await tx.patientPackage.create({
+          data: {
+            patientId: patientProfile.id,
+            packageId: buyPackageId,
+            totalSessions: pkg.sessionCount,
+            remainingSessions: pkg.sessionCount - 1, // Já desconta a desta reserva
+            expiresAt,
+            status: 'ACTIVE'
+          }
+        })
+        patientPkgId = patientPkg.id
+      }
+
+      // Se está usando pacote, desconta saldo dentro da tx (atômico — evita race condition)
+      if (usedPackageId) {
+        const updated = await tx.patientPackage.updateMany({
+          where: { id: usedPackageId, remainingSessions: { gt: 0 } },
+          data: { remainingSessions: { decrement: 1 } },
+        })
+        if (updated.count === 0) {
+          throw new Error('Pacote sem saldo disponível ou expirado.')
+        }
+      }
+
+      // Uso de pacote não requer pagamento → status PENDENTE diretamente
+      // Pagamento via Stripe → status AGUARDANDO_PAGAMENTO até webhook confirmar
+      const initialStatus = usedPackageId ? 'PENDENTE' : 'AGUARDANDO_PAGAMENTO'
+
+      return await tx.appointment.create({
+        data: {
+          therapistId: therapist.id,
+          patientId: patientProfile.id,
+          serviceId: finalServiceId,
+          patientPackageId: patientPkgId,
+          date: dateObj,
+          durationMinutes,
+          price,
+          currency: finalCurrency,
+          commissionRate,
+          commission,
+          therapistNet,
+          platformRevenue,
+          notes: notes || null,
+          stripePaymentIntentId: paymentIntentId || null,
+          status: initialStatus as any,
+        },
+      })
+    })
+
+    // Notificação WhatsApp só é enviada após confirmação do pagamento (webhook Stripe)
+    // Para agendamentos via pacote (sem pagamento), notifica imediatamente
+    if (usedPackageId) {
+      void WhatsAppService.notifyNewAppointment(appointment.id).catch((err) => {
+        console.error('[WhatsApp Notification Error] Erro ao disparar notificação:', err)
+      })
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: appointment.id,
+        date: appointment.date.toISOString(),
+        status: appointment.status,
+        price: Number(appointment.price),
+      },
+    })
+  } catch (error) {
+    console.error('[POST APPOINTMENT]', error)
+    return NextResponse.json({ success: false, error: 'Erro ao criar agendamento' }, { status: 500 })
+  }
+}

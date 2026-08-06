@@ -1,0 +1,16 @@
+{
+  "name": "ea-lumina-app",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/emails",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-pending-payments",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

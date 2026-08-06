@@ -123,10 +123,12 @@ export async function PATCH(
         }
       })
 
-      // Notificações de Cancelamento
-      void WhatsAppService.notifyCancelled(appointment.id, isPatient ? 'PATIENT' : 'THERAPIST').catch((err) => {
+      // Notificações de Cancelamento — falha não deve reverter o cancelamento
+      try {
+        await WhatsAppService.notifyCancelled(appointment.id, isPatient ? 'PATIENT' : 'THERAPIST')
+      } catch (err) {
         console.error('[WhatsApp Cancel Error]', err)
-      })
+      }
 
       return NextResponse.json({ success: true, message: 'Agendamento cancelado com sucesso.' })
     }
@@ -146,10 +148,12 @@ export async function PATCH(
         },
       })
 
-      // Notificação de Confirmação para o Paciente
-      void WhatsAppService.notifyConfirmed(appointment.id).catch((err) => {
+      // Notificação de Confirmação para Paciente e Terapeuta — falha não deve reverter confirmação
+      try {
+        await WhatsAppService.notifyConfirmed(appointment.id)
+      } catch (err) {
         console.error('[WhatsApp Confirm Error]', err)
-      })
+      }
 
       return NextResponse.json({ success: true, message: 'Agendamento confirmado' })
     }
@@ -196,14 +200,22 @@ export async function PATCH(
       }
     }
 
-    await prisma.appointment.update({
-      where: { id: params.id },
-      data: {
-        status: validated.data.status || appointment.status,
-        date: validated.data.date ? new Date(validated.data.date) : appointment.date,
-        ...(validated.data.cancelReason && { cancelReason: validated.data.cancelReason }),
-      },
-    })
+    // Limpar lembretes pendentes quando a data do agendamento muda,
+    // para que o cron de lembretes dispare novamente para a nova data.
+    if (validated.data.date) {
+      try {
+        await prisma.whatsAppNotification.deleteMany({
+          where: {
+            appointmentId: params.id,
+            event: {
+              in: ['BOOKING_REMINDER_PATIENT', 'BOOKING_REMINDER_THERAPIST'],
+            },
+          },
+        })
+      } catch (err) {
+        console.error('[WhatsApp Reminder Cleanup Error]', err)
+      }
+    }
 
     return NextResponse.json({ success: true, message: 'Agendamento atualizado' })
   } catch (error) {
