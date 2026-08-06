@@ -3,6 +3,8 @@ import { getServerSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { deleteTherapistVideo, createTherapistVideoUploadUrl } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/therapist/profile/video?ext=mp4
  * Gera uma URL de upload assinada diretamente para o Supabase Storage.
