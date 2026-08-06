@@ -1,8 +1,25 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+let _supabase: SupabaseClient | null = null
+let _supabaseAdmin: SupabaseClient | null = null
+
+function getSupabaseUrl(): string {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url) throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set')
+  return url
+}
+
+function getSupabaseAnonKey(): string {
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!key) throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not set')
+  return key
+}
+
+function getSupabaseServiceKey(): string {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
+  return key
+}
 
 function storageConfigured(): boolean {
   return Boolean(
@@ -22,16 +39,40 @@ function friendlyStorageError(message: string | null | undefined): string {
   return message
 }
 
-// Cliente público (frontend) — usa a chave anon, respeita Row Level Security
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Cliente público (frontend) — lazy, usa a chave anon, respeita Row Level Security
+export function getSupabaseClient(): SupabaseClient {
+  if (!_supabase) {
+    _supabase = createClient(getSupabaseUrl(), getSupabaseAnonKey())
+  }
+  return _supabase
+}
 
-// Cliente admin (backend/server-side) — usa service_role, bypassa RLS
+// Exporta instância pública para compatibilidade com código existente
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    return (getSupabaseClient() as any)[prop]
+  }
+})
+
+// Cliente admin (backend/server-side) — lazy, usa service_role, bypassa RLS
 // Usar SOMENTE em Server Actions e API Routes seguras
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
+function getSupabaseAdmin(): SupabaseClient {
+  if (!_supabaseAdmin) {
+    _supabaseAdmin = createClient(getSupabaseUrl(), getSupabaseServiceKey(), {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    })
+  }
+  return _supabaseAdmin
+}
+
+// Alias exportado como supabaseAdmin para retrocompatibilidade
+export const supabaseAdmin = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    return (getSupabaseAdmin() as any)[prop]
+  }
 })
 
 // ==========================================
