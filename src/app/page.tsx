@@ -171,18 +171,15 @@ export default function LandingPage() {
           {/* COLUNA ESQUERDA: EMBLEMA + NOME + HEADLINE COLORIDA + SUBTÍTULO */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left pr-0 lg:pr-8">
             
-            {/* LOGO EMBLEMA + EALUMINA */}
-            <div className="flex flex-col items-center lg:items-start mb-2">
-              <div className="w-24 h-24 md:w-32 md:h-32 mb-1">
+            {/* LOGO OFICIAL EALUMINA */}
+            <div className="flex flex-col items-center lg:items-start mb-3">
+              <div className="w-56 md:w-72 lg:w-80 h-auto">
                 <img
-                  src="/img/ea-lumina-emblem.png"
-                  alt="EALUMINA Emblem"
-                  className="w-full h-full object-contain filter drop-shadow-[0_0_20px_rgba(197,160,63,0.6)]"
+                  src="/img/logo-official.png"
+                  alt="EALUMINA"
+                  className="w-full h-auto object-contain mix-blend-screen filter drop-shadow-[0_0_20px_rgba(197,160,63,0.5)]"
                 />
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif tracking-[0.22em] uppercase font-bold text-white">
-                EALUMINA
-              </h1>
             </div>
 
             {/* HEADLINE PRINCIPAL COM CORES EXATAS DO MODELO */}
