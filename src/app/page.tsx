@@ -73,7 +73,7 @@ const SocialIcons = () => (
 const LogoSmall = () => (
   <div className="hidden md:block absolute top-4 right-8 z-30">
     <img src="/logo-dark.jpg" alt="EA Lumina" className="w-[90px] h-[90px] object-contain"
-      style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }}
+      style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 10px rgba(197,160,63,0.5))' }}
     />
   </div>
 )
@@ -175,12 +175,11 @@ export default function LandingPage() {
 
           {/* ESQUERDA — Logo + Título + Subtítulo (centralizado) */}
           <div className="w-full md:w-1/2 flex flex-col items-center gap-4 md:gap-5">
-            <div className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] shrink-0">
+            <div className="w-[200px] h-[200px] md:w-[260px] md:h-[260px] shrink-0 relative flex items-center justify-center">
               <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain"
                 style={{
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 62%, transparent 82%)',
-                  maskImage: 'radial-gradient(circle at center, black 62%, transparent 82%)',
-                  filter: 'drop-shadow(0 0 16px rgba(197,160,63,0.5))',
+                  mixBlendMode: 'screen',
+                  filter: 'drop-shadow(0 0 25px rgba(197,160,63,0.65)) drop-shadow(0 0 8px rgba(255,215,0,0.4))',
                 }}
               />
             </div>
@@ -422,7 +421,7 @@ export default function LandingPage() {
         <div className="relative z-30 flex items-center gap-4 px-5 md:px-10 pt-6 md:pt-8 shrink-0">
           <SocialIcons />
           <img src="/logo-dark.jpg" alt="EA Lumina" className="w-10 h-10 md:w-12 md:h-12 object-contain ml-2"
-            style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)', maskImage: 'radial-gradient(circle at center, black 55%, transparent 80%)' }}
+            style={{ mixBlendMode: 'screen', filter: 'drop-shadow(0 0 6px rgba(197,160,63,0.5))' }}
           />
         </div>
 
