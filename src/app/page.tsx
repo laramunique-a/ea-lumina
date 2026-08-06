@@ -182,14 +182,14 @@ export default function LandingPage() {
         {/* Imagem de herói (fundo) */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/img/hero-home.png"
-            alt=""
+            src="/img/portal-cosmic-bg.jpg"
+            alt="Portal Cósmico"
             aria-hidden="true"
-            className="w-full h-full object-cover object-center opacity-60"
+            className="w-full h-full object-cover object-center filter brightness-110 contrast-105"
           />
-          {/* Overlay gradiente para legibilidade */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#010814]/95 via-[#010814]/60 to-[#010814]/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#010814]/80 via-transparent to-[#010814]/20" />
+          {/* Overlay gradiente suave para leitura do texto */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#010814]/90 via-[#010814]/40 to-[#010814]/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010814]/90 via-transparent to-[#010814]/30" />
         </div>
 
         {/* Header Mobile */}
