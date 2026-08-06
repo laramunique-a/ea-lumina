@@ -174,12 +174,12 @@ export default function LandingPage() {
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center md:justify-between px-6 pt-4 pb-12 md:p-12 lg:p-20 gap-10 md:gap-8 md:h-full shrink-0">
 
           {/* ESQUERDA — Logo + Título + Subtítulo (centralizado) */}
-          <div className="w-full md:w-1/2 flex flex-col items-center gap-4 md:gap-5">
-            <div className="w-[200px] h-[200px] md:w-[260px] md:h-[260px] shrink-0 relative flex items-center justify-center">
+          <div className="w-full md:w-1/2 flex flex-col items-center gap-3 md:gap-4">
+            <div className="w-[260px] h-[260px] md:w-[380px] md:h-[380px] lg:w-[440px] lg:h-[440px] shrink-0 relative flex items-center justify-center -mb-4">
               <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain"
                 style={{
                   mixBlendMode: 'screen',
-                  filter: 'drop-shadow(0 0 25px rgba(197,160,63,0.65)) drop-shadow(0 0 8px rgba(255,215,0,0.4))',
+                  filter: 'drop-shadow(0 0 40px rgba(197,160,63,0.75)) drop-shadow(0 0 15px rgba(255,215,0,0.5))',
                 }}
               />
             </div>
