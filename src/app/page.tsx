@@ -146,10 +146,8 @@ export default function LandingPage() {
       ════════════════════════════════════════════════════════════════ */}
       <section
         id="home"
-        className="w-full min-w-full h-[100dvh] snap-center relative flex flex-col bg-[#010814] overflow-y-auto shrink-0"
+        className="w-full min-w-full h-[100dvh] snap-center relative flex flex-col bg-[#010409] overflow-y-auto shrink-0"
       >
-        <HeroBg src="/img/hero-home.png" />
-
         {/* Header Mobile */}
         <div className="flex md:hidden w-full items-center justify-between px-5 pt-5 pb-2 z-30 shrink-0 relative">
           <SocialIcons />
@@ -176,12 +174,7 @@ export default function LandingPage() {
           {/* ESQUERDA — Logo + Título + Subtítulo (centralizado) */}
           <div className="w-full md:w-1/2 flex flex-col items-center gap-3 md:gap-4">
             <div className="w-[260px] h-[260px] md:w-[380px] md:h-[380px] lg:w-[440px] lg:h-[440px] shrink-0 relative flex items-center justify-center -mb-4">
-              <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain"
-                style={{
-                  mixBlendMode: 'screen',
-                  filter: 'drop-shadow(0 0 40px rgba(197,160,63,0.75)) drop-shadow(0 0 15px rgba(255,215,0,0.5))',
-                }}
-              />
+              <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" />
             </div>
 
             <h1 className={S.heading}>
