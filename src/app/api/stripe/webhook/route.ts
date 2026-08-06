@@ -135,10 +135,12 @@ export async function POST(req: NextRequest) {
 
         console.log(`[Stripe Webhook] Agendamento ${appointment.id} pago com sucesso. Status: AGUARDANDO_PAGAMENTO → PENDENTE.`)
 
-        // Notificar terapeuta e paciente via WhatsApp APENAS após pagamento confirmado
-        void WhatsAppService.notifyNewAppointment(updatedAppointment.id).catch((err) => {
+        // Notificar SOMENTE o terapeuta via WhatsApp após pagamento confirmado
+        try {
+          await WhatsAppService.notifyNewAppointment(updatedAppointment.id)
+        } catch (err) {
           console.error('[WhatsApp Webhook Notification Error]', err)
-        })
+        }
         break;
 
       case 'payment_intent.payment_failed':
