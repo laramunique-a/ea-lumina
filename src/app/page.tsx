@@ -117,7 +117,7 @@ export default function LandingPage() {
             src="/img/hero-home.jpg"
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover object-center opacity-45 mix-blend-screen scale-105"
+            className="w-full h-full object-contain object-center opacity-50 mix-blend-screen"
           />
           {/* Overlays de gradiente para transição 100% suave com o fundo #010409 */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409]/90" />
