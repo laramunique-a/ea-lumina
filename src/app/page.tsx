@@ -109,8 +109,26 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="home"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col relative bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] overflow-y-auto md:overflow-hidden shrink-0 justify-between pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 justify-between pb-6 md:pb-0"
       >
+        {/* Fundo de imagem exclusivo da página principal (home) com transição suave */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <img
+            src="/img/hero-home.jpg"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center opacity-45 mix-blend-screen scale-105"
+          />
+          {/* Overlays de gradiente para transição 100% suave com o fundo #010409 */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409]/90" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, transparent 20%, #010409 85%)',
+            }}
+          />
+        </div>
 
         {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
         <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
