@@ -113,7 +113,7 @@ export default function LandingPage() {
       >
         {/* Fundo de imagem exclusivo da página principal (home) — centralizado entre os elementos com transição 100% suave */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
-          <div className="relative w-full max-w-[650px] lg:max-w-[750px] h-[80vh] max-h-[650px]">
+          <div className="relative w-full max-w-[850px] lg:max-w-[1020px] xl:max-w-[1150px] h-[88vh] max-h-[800px]">
             <img
               src="/img/hero-home.jpg"
               alt=""
@@ -126,7 +126,7 @@ export default function LandingPage() {
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: 'radial-gradient(circle at 50% 50%, transparent 20%, #010409 80%)',
+                background: 'radial-gradient(circle at 50% 50%, transparent 25%, #010409 82%)',
               }}
             />
           </div>
@@ -173,7 +173,7 @@ export default function LandingPage() {
         </div>
 
         {/* CONTEÚDO PRINCIPAL */}
-        <div className="w-full max-w-7xl mx-auto flex-1 flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-6 pt-4 md:pt-10 lg:pt-12 pb-4 md:pb-6 md:px-12 lg:px-16 gap-4 md:gap-8 relative z-10 md:overflow-hidden my-auto shrink-0">
+        <div className="w-full max-w-[1550px] mx-auto flex-1 flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-6 pt-4 md:pt-10 lg:pt-12 pb-4 md:pb-6 md:px-10 lg:px-16 xl:px-20 gap-4 md:gap-8 relative z-10 md:overflow-hidden my-auto shrink-0">
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center shrink-0">
