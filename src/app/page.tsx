@@ -175,11 +175,11 @@ export default function LandingPage() {
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center shrink-0">
-            <div className="relative w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[220px] md:h-[220px] lg:w-[250px] lg:h-[250px] max-w-[28vw] max-h-[28vh]">
+            <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] max-w-[42vw] max-h-[40vh] -mb-2 md:-mb-4 transition-all duration-300">
               <img
                 src="/logo-dark.png"
                 alt="EA Lumina"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_25px_rgba(197,160,63,0.45)] drop-shadow-[0_0_10px_rgba(0,144,255,0.25)]"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                   e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.png" na pasta "public"</div>';
