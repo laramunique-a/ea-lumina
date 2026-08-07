@@ -111,23 +111,25 @@ export default function LandingPage() {
         id="home"
         className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 justify-between pb-6 md:pb-0"
       >
-        {/* Fundo de imagem exclusivo da página principal (home) — nítido, vibrante com profundidade */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <img
-            src="/img/hero-home.jpg"
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover object-center scale-125 sm:scale-115 md:scale-105 lg:scale-100 transition-transform duration-500 opacity-85 brightness-105 contrast-105"
-          />
-          {/* Overlays de vinheta suave para manter o foco e leitura dos elementos sem escurecer a imagem */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#010409]/95 via-transparent to-[#010409]/70 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#010409]/75 via-transparent to-[#010409]/75 pointer-events-none" />
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at 50% 50%, transparent 35%, rgba(1,4,9,0.85) 92%)',
-            }}
-          />
+        {/* Fundo de imagem exclusivo da página principal (home) — centralizado entre os elementos com transição 100% suave */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className="relative w-full max-w-[650px] lg:max-w-[750px] h-[80vh] max-h-[650px]">
+            <img
+              src="/img/hero-home.jpg"
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-contain object-center opacity-90 brightness-105 contrast-105"
+            />
+            {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'radial-gradient(circle at 50% 50%, transparent 20%, #010409 80%)',
+              }}
+            />
+          </div>
         </div>
 
         {/* ── HEADER MOBILE: em fluxo normal, não sobrepõe nada ── */}
