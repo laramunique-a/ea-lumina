@@ -56,7 +56,7 @@ export default function LandingPage() {
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
     <div className="hidden md:block absolute top-8 right-8 w-[180px] h-[180px] z-30 opacity-80 pointer-events-none">
-      <img src="/logo-dark.jpg" alt="EA Lumina" className="w-full h-full object-contain" style={{ WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)', maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)' }} />
+      <img src="/logo-dark.png" alt="EA Lumina" className="w-full h-full object-contain" />
     </div>
   )
 
@@ -177,16 +177,12 @@ export default function LandingPage() {
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center shrink-0">
             <div className="relative w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] md:w-[220px] md:h-[220px] lg:w-[250px] lg:h-[250px] max-w-[28vw] max-h-[28vh]">
               <img
-                src="/logo-dark.jpg"
+                src="/logo-dark.png"
                 alt="EA Lumina"
                 className="w-full h-full object-contain"
-                style={{
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
-                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
-                }}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
+                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.png" na pasta "public"</div>';
                 }}
               />
             </div>
