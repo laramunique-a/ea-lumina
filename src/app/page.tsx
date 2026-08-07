@@ -173,7 +173,7 @@ export default function LandingPage() {
         </div>
 
         {/* CONTEÚDO PRINCIPAL */}
-        <div className="w-full max-w-[1550px] mx-auto flex-1 flex flex-col md:flex-row items-center justify-center md:justify-between px-4 sm:px-6 pt-4 md:pt-10 lg:pt-12 pb-4 md:pb-6 md:px-10 lg:px-16 xl:px-20 gap-4 md:gap-8 relative z-10 md:overflow-hidden my-auto shrink-0">
+        <div className="w-full max-w-[1850px] mx-auto flex-1 flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 pt-4 md:pt-10 lg:pt-12 pb-4 md:pb-6 md:px-8 lg:px-12 xl:px-16 gap-6 md:gap-12 relative z-10 md:overflow-hidden my-auto shrink-0">
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-1/2 flex flex-col items-center justify-center shrink-0">
