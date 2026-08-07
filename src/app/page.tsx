@@ -179,7 +179,7 @@ export default function LandingPage() {
               <img
                 src="/logo-dark.png"
                 alt="EA Lumina"
-                className="w-full h-full object-contain filter drop-shadow-[0_0_25px_rgba(197,160,63,0.45)] drop-shadow-[0_0_10px_rgba(0,144,255,0.25)]"
+                className="w-full h-full object-contain mix-blend-screen filter drop-shadow-[0_0_25px_rgba(197,160,63,0.4)]"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                   e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.png" na pasta "public"</div>';
