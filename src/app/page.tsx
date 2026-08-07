@@ -176,8 +176,8 @@ export default function LandingPage() {
         <div className="w-full max-w-[1850px] mx-auto flex-1 flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 pt-4 md:pt-10 lg:pt-12 pb-4 md:pb-6 md:px-8 lg:px-12 xl:px-16 gap-6 md:gap-12 relative z-10 md:overflow-hidden my-auto shrink-0">
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
-          <div className="w-full md:w-1/2 flex flex-col items-center justify-center shrink-0">
-            <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] max-w-[42vw] max-h-[40vh] -mb-2 md:-mb-4 transition-all duration-300">
+          <div className="w-full md:w-5/12 flex flex-col items-center md:items-start justify-center shrink-0">
+            <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] max-w-[42vw] max-h-[40vh] -mb-2 md:-mb-4 transition-all duration-300 md:-ml-3">
               <img
                 src="/logo-dark.png"
                 alt="EA Lumina"
@@ -189,21 +189,21 @@ export default function LandingPage() {
               />
             </div>
 
-            <div className="text-center max-w-[480px] px-2 md:px-0 mt-1">
+            <div className="text-center md:text-left max-w-[520px] px-2 md:px-0 mt-1">
               <h1
                 className={LANDING_THEME.typography.titleGradient}
                 style={LANDING_THEME.typography.titleGradientStyle}
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
-              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto mt-1">
+              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-medium md:max-w-[440px] md:mx-0 mt-1">
                 A EA Lumina é o encontro entre quem precisa e quem já transformou. Um ecossistema de terapias, conhecimento e propósito para uma vida mais equilibrada, consciente e com sentido.
               </p>
             </div>
           </div>
 
           {/* LADO DIREITO: BOXES */}
-          <div className="w-full md:w-1/2 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
+          <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-[11px] md:text-[13px] mb-1 text-center md:text-left pl-2 opacity-80">
                 Qual é o seu objetivo hoje?
