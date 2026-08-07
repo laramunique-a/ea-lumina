@@ -178,10 +178,10 @@ export default function LandingPage() {
                 className={LANDING_THEME.typography.titleGradient}
                 style={LANDING_THEME.typography.titleGradientStyle}
               >
-                Conectando você ao<br className="hidden md:block" /> Equilíbrio e Luz.
+                Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
               <p className="text-[10px] md:text-sm lg:text-base text-slate-300 leading-relaxed font-medium md:max-w-[400px] mx-auto">
-                O ecossistema premium de terapias integrativas. Escolha como deseja iniciar sua transformação profunda e encontre a paz que você busca.
+                A EA Lumina é o encontro entre quem precisa e quem já transformou. Um ecossistema de terapias, conhecimento e propósito para uma vida mais equilibrada, consciente e com sentido.
               </p>
             </div>
           </div>
