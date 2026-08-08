@@ -221,8 +221,8 @@ export default function LandingPage() {
           {/* LADO DIREITO: BOXES */}
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
-              <h3 className="text-slate-400 font-bold uppercase tracking-[0.15em] text-2xl sm:text-3xl md:text-5xl lg:text-6xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-85 leading-snug md:leading-tight">
-                Qual é o seu objetivo hoje?
+              <h3 className="text-slate-400 font-light tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight">
+                Qual o seu objetivo hoje?
               </h3>
 
               {[
