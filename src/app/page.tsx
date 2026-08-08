@@ -336,7 +336,7 @@ export default function LandingPage() {
                 <div className="mb-2 bg-slate-900/80 w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-6 md:[&>svg]:h-6 shadow-md border border-white/5">
                   {terapia.icon}
                 </div>
-                <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-widest mb-1.5 line-clamp-1">
+                <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-widest mb-1.5 line-clamp-2 min-h-[2.5rem] flex items-center justify-center">
                   {terapia.nome}
                 </h3>
                 <p className="text-[10px] md:text-xs text-[#768294] leading-relaxed font-normal line-clamp-3">
