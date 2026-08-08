@@ -222,7 +222,7 @@ export default function LandingPage() {
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3
-                className="text-slate-400 font-light normal-case tracking-tight text-lg sm:text-xl md:text-2xl lg:text-3xl -mt-1 md:-mt-3 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight"
+                className="text-slate-400 font-normal normal-case tracking-tight text-lg sm:text-xl md:text-2xl lg:text-3xl -mt-1 md:-mt-3 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight"
                 style={{ textTransform: 'none', fontVariant: 'normal' }}
               >
                 Qual o seu objetivo hoje?
