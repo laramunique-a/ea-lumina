@@ -53,6 +53,7 @@ const TERAPIAS = [
 export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showSaibaMaisModal, setShowSaibaMaisModal] = useState(false)
+  const [showSaibaMaisTerapeutasModal, setShowSaibaMaisTerapeutasModal] = useState(false)
 
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
@@ -574,14 +575,13 @@ export default function LandingPage() {
 
           {/* BOTÃO SAIBA MAIS */}
           <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
-            <Link href="/register?role=TERAPEUTA" className="shrink-0">
-              <button
-                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md inline-flex items-center gap-2 justify-center cursor-pointer"
-                style={{ color: '#0063c6' }}
-              >
-                Saiba Mais <ArrowRight size={14} />
-              </button>
-            </Link>
+            <button
+              onClick={() => setShowSaibaMaisTerapeutasModal(true)}
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
+              style={{ color: '#0063c6' }}
+            >
+              Saiba Mais
+            </button>
           </div>
 
         </div>
@@ -740,6 +740,97 @@ export default function LandingPage() {
             <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
               <button
                 onClick={() => setShowSaibaMaisModal(false)}
+                className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+      {/* ── MODAL FLUTUANTE: SAIBA MAIS (TERAPEUTAS) ── */}
+      {showSaibaMaisTerapeutasModal && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+          onWheel={(e) => e.stopPropagation()}
+        >
+          <div className="relative w-full max-w-3xl max-h-[85vh] bg-[#010409]/95 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden">
+            {/* Header do Modal com botão X */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0 bg-white/[0.02]">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0063c6]">
+                EALUMINA — Carta para Terapeutas
+              </span>
+              <button
+                onClick={() => setShowSaibaMaisTerapeutasModal(false)}
+                className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Fechar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Conteúdo com scroll interno */}
+            <div className="p-6 md:p-8 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed font-normal" style={{ color: '#768294' }}>
+              <p className="font-semibold text-white text-sm sm:text-base">
+                Olá, seja muito bem-vindo(a) à Rede EALUMINA.
+              </p>
+
+              <p className="italic font-medium text-slate-300">
+                Você nunca veio até aqui para trabalhar sozinho(a). Agradecemos por estar aqui conosco.
+              </p>
+
+              <p>
+                Antes de falarmos sobre tecnologia, inteligência artificial ou ferramentas, queremos reconhecer a sua trajetória. Sabemos que ninguém escolhe cuidar dos outros sem antes ter enfrentado a sua própria dor. Cada desafio vivenciado, cada lição aprendida e cada transformação moldaram o terapeuta que você é hoje. É exatamente essa história que torna o seu trabalho único. Por isso, antes de ser uma plataforma, a EALUMINA é um ponto de encontro para pessoas que compartilham o mesmo propósito.
+              </p>
+
+              <p>
+                Nossa missão baseia-se na crença de que a transformação de uma pessoa fortalece toda a humanidade. Nenhum terapeuta muda o mundo sozinho, mas uma comunidade de terapeutas trabalhando com um propósito comum pode transformar milhares de vidas. Quando um paciente encontra o equilíbrio, toda a comunidade cresce. Quando um terapeuta prospera, todos nós avançamos juntos. Quando uma vida se transforma, nasce uma nova possibilidade para muitas outras. Porque a verdadeira abundância nunca diminui quando é compartilhada; ela se multiplica.
+              </p>
+
+              <p>
+                A EALUMINA é muito mais do que uma plataforma digital, um marketplace ou um simples catálogo de profissionais. Ela nasceu para conectar pessoas. Para criar colaboração onde antes existia isolamento. Para transformar a competição em cooperação e provar que existe uma nova forma de crescer: juntos. Sozinhos, podemos ajudar algumas pessoas; juntos, podemos transformar uma geração.
+              </p>
+
+              <p>
+                Vivemos um momento único, onde cada vez mais pessoas buscam equilíbrio emocional, desenvolvimento pessoal e uma nova forma de viver. Ao mesmo tempo, milhares de terapeutas possuem um conhecimento extraordinário, mas permanecem invisíveis. Nossa missão é aproximar esses dois mundos, construindo pontes, criando oportunidades e promovendo encontros que talvez nunca acontecessem sem essa conexão.
+              </p>
+
+              <p className="font-semibold text-white text-sm sm:text-base">
+                Você não está sozinho(a).
+              </p>
+
+              <p>
+                Durante muito tempo, fomos levados a acreditar que cada terapeuta deveria construir tudo por conta própria: divulgar seu trabalho sozinho, aprender sozinho, errar sozinho e prosperar na solidão. Nós acreditamos no oposto. A verdadeira força reside na união. Quando caminhamos juntos, compartilhamos conhecimento, experiências e oportunidades. E, o mais importante, compartilhamos um propósito.
+              </p>
+
+              <p>
+                Sonhamos com uma comunidade onde os terapeutas cresçam sem competir entre si. Onde a prosperidade de um inspire o crescimento de todos. Onde a tecnologia amplie o alcance humano, mas sem jamais substituir o contato humano. Onde o conhecimento flua livremente e a colaboração valha muito mais do que a competição. Afinal, uma comunidade consciente possui muito mais poder do que qualquer indivíduo isolado.
+              </p>
+
+              <p>
+                Nossa filosofia é clara: juntos, somos mais fortes. Não porque pensamos da mesma forma, mas porque caminhamos na mesma direção. Cada terapeuta tem a sua própria história, a sua própria técnica e a sua própria frequência. E é justamente essa diversidade que fortalece a nossa comunidade. Na EALUMINA, não buscamos a uniformidade; buscamos a unidade.
+              </p>
+
+              <p>
+                Talvez o maior desafio da nossa profissão nunca tenha sido aprender uma técnica, mas sim aprender a confiar. Confiar em si mesmo. Confiar na abundância. Confiar que há espaço para todos e que compartilhar nos fortalece. Acreditamos que a escassez surge da separação, enquanto a abundância nasce da colaboração.
+              </p>
+
+              <p>
+                Hoje, fazemos um convite para que você faça parte de algo muito maior. Convidamos você a se juntar a uma comunidade comprometida com o desenvolvimento humano. Uma rede onde a tecnologia, o conhecimento e a consciência caminham de mãos dadas. Uma comunidade onde cada terapeuta continua sendo o protagonista da sua própria história, mas sem nunca mais precisar caminhar sozinho.
+              </p>
+
+              <p className="font-medium text-slate-300">
+                Juntos somos mais fortes, porque a transformação de uma pessoa fortalece a toda a humanidade.
+              </p>
+
+              <div className="pt-3 border-t border-white/10">
+                <p className="font-semibold text-white">Com união e propósito,</p>
+                <p className="font-bold text-[#E19B28]">Equipe EALUMINA.</p>
+              </div>
+            </div>
+
+            {/* Footer do Modal com botão 'Fechar' */}
+            <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
+              <button
+                onClick={() => setShowSaibaMaisTerapeutasModal(false)}
                 className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
               >
                 Fechar
