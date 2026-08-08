@@ -200,7 +200,8 @@ export default function LandingPage() {
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
                   WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
                 }}
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
