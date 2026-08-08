@@ -414,73 +414,132 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="terapeutas"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 py-2 md:py-3 lg:py-4"
       >
         <HeaderLogo />
 
-        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Início
+        {/* ── HEADER MOBILE DA PÁGINA 3 ── */}
+        <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
+            <ChevronLeft size={14} /> Voltar
           </button>
+          <div className="flex items-center gap-2">
+            <Link href="/login">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Entrar
+              </button>
+            </Link>
+            <Link href="/register">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Criar conta
+              </button>
+            </Link>
+          </div>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex-1 flex flex-col items-center justify-center text-center py-4 shrink-0 overflow-y-auto md:overflow-hidden">
+        {/* ── HEADER DESKTOP DA PÁGINA 3 ── */}
+        <div className="hidden md:flex absolute top-6 left-8 items-center gap-4 z-40">
+          <button onClick={() => scrollToSection('home')} className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
+            <ChevronLeft size={14} /> Voltar
+          </button>
+        </div>
+        <div className="hidden md:flex absolute top-6 right-8 items-center gap-3 z-40">
+          <Link href="/login">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#0063c6' }}
+            >
+              Entrar
+            </button>
+          </Link>
+          <Link href="/register">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#0063c6' }}
+            >
+              Criar conta
+            </button>
+          </Link>
+        </div>
 
-          <div className="w-full mb-4 md:mb-6 text-center">
-            <h5 className={LANDING_THEME.tag.gold}>Para Terapeutas</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-4 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
+
+          <div className="mb-1 md:mb-2 text-center flex flex-col items-center max-w-[760px] px-2 shrink-0">
+            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-0.5 md:mb-1" style={{ color: '#768294' }}>
+              Para Terapeutas
+            </h5>
+            <h2
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-0.5 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+              style={{
+                background: '#E19B28',
+                backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
+              }}
+            >
               Expanda sua Luz.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6 text-left w-full">
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-3.5 md:p-5 hover:bg-white/5 transition-colors group">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-4 text-left w-full max-w-4xl my-1 md:my-2">
+            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
               <div className="flex items-center gap-3 mb-1.5">
                 <div className="bg-[#C5A03F]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
                   <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-[#C5A03F]" />
                 </div>
                 <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Vitrine Premium</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
+              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
             </div>
 
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-3.5 md:p-5 hover:bg-white/5 transition-colors group">
+            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
               <div className="flex items-center gap-3 mb-1.5">
                 <div className="bg-[#0090FF]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
                   <Calendar className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" />
                 </div>
                 <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Gestão Inteligente</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
+              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
             </div>
 
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-3.5 md:p-5 hover:bg-white/5 transition-colors group">
+            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
               <div className="flex items-center gap-3 mb-1.5">
                 <div className="bg-white/10 p-2 rounded-xl group-hover:scale-110 transition-transform">
                   <FileText className="w-4 h-4 md:w-5 md:h-5 text-slate-300" />
                 </div>
                 <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Prontuários e Segurança</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
+              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
             </div>
 
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-3.5 md:p-5 hover:bg-white/5 transition-colors group">
+            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
               <div className="flex items-center gap-3 mb-1.5">
                 <div className="bg-[#8A2BE2]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
                   <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#8A2BE2]" />
                 </div>
                 <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Lumina IA</h3>
               </div>
-              <p className="text-slate-400 text-[11px] md:text-sm leading-relaxed">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
+              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
             </div>
           </div>
 
-          <Link href="/register?role=TERAPEUTA" className="shrink-0">
-            <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-2 whitespace-nowrap justify-center`}>
-              Quero Atender <ArrowRight size={14} />
-            </button>
-          </Link>
+          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20">
+            <Link href="/register?role=TERAPEUTA" className="shrink-0">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md inline-flex items-center gap-2 justify-center cursor-pointer"
+                style={{ color: '#0063c6' }}
+              >
+                Quero Atender <ArrowRight size={14} />
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 
