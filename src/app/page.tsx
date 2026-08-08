@@ -470,15 +470,15 @@ export default function LandingPage() {
 
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO À DIREITA) */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center shrink-0">
-            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (COL 7) */}
-            <div className="md:col-span-7 text-left flex flex-col items-start w-full shrink-0 z-10">
-              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-2.5" style={{ color: '#768294' }}>
+          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO MAIS DESTACADA À DIREITA) */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 lg:gap-4 items-center shrink-0">
+            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (COL 6) */}
+            <div className="md:col-span-6 text-left flex flex-col items-start w-full shrink-0 z-10">
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2" style={{ color: '#768294' }}>
                 Para Terapeutas
               </h5>
               <h2
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-2 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -499,7 +499,7 @@ export default function LandingPage() {
                 Nós ajudamos o mundo a encontrar você!
               </p>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[700px]"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[650px]"
                 style={{
                   color: '#768294',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -509,27 +509,27 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA TERAPEUTAS (COL 5) - MESMOS PARÂMETROS DA HOME */}
-            <div className="md:col-span-5 relative w-full h-[150px] sm:h-[180px] md:h-[220px] lg:h-[250px] mt-6 md:mt-10 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            {/* LADO DIREITO: IMAGEM HERO MAIS AMPLA E DESTACADA (COL 6) */}
+            <div className="md:col-span-6 relative w-full h-[180px] sm:h-[220px] md:h-[270px] lg:h-[310px] mt-4 md:mt-6 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-terapeutas.jpg"
                 alt="Comunidade de Terapeutas EA Lumina"
-                className="w-full h-full object-contain object-center opacity-90 brightness-105 contrast-105"
+                className="w-full h-full object-contain object-center opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
               />
-              {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 (Idênticos à Home) */}
+              {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none" />
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  background: 'radial-gradient(circle at 50% 50%, transparent 25%, #010409 82%)',
+                  background: 'radial-gradient(circle at 50% 50%, transparent 35%, #010409 88%)',
                 }}
               />
             </div>
           </div>
 
-          {/* BOX ÚNICO CENTRALIZADO NA TELA (NÃO SOBREPOSTO PELA IMAGEM) */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2 self-center mx-auto z-10">
+          {/* BOX ÚNICO CENTRALIZADO NA TELA (REDUZIDO CONFORME SOLICITADO) */}
+          <div className="w-full max-w-3xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 md:p-6 min-h-[140px] md:min-h-[170px] flex items-center justify-center shadow-lg my-1 md:my-1.5 self-center mx-auto z-10">
             {/* Por enquanto em branco */}
           </div>
 
