@@ -56,7 +56,7 @@ export default function LandingPage() {
 
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
-    <div className="hidden md:block absolute top-8 right-8 w-[180px] h-[180px] z-30 opacity-80 pointer-events-none">
+    <div className="hidden md:block absolute top-20 right-8 w-[140px] h-[140px] z-20 opacity-30 pointer-events-none">
       <img src="/logo-dark.png" alt="EA Lumina" className="w-full h-full object-contain" />
     </div>
   )
@@ -291,11 +291,54 @@ export default function LandingPage() {
       >
         <HeaderLogo />
 
-        {/* Botão Voltar: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-2 md:pt-0 md:absolute md:top-6 md:left-8 md:w-auto z-40">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
+        {/* ── HEADER MOBILE DA PÁGINA 2 ── */}
+        <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
+          <div className="flex items-center gap-2">
+            <Link href="/login">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Entrar
+              </button>
+            </Link>
+            <Link href="/register">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Criar conta
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        {/* ── HEADER DESKTOP DA PÁGINA 2 ── */}
+        <div className="hidden md:flex absolute top-6 left-8 items-center gap-4 z-40">
+          <button onClick={() => scrollToSection('home')} className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
+            <ChevronLeft size={14} /> Voltar
+          </button>
+        </div>
+        <div className="hidden md:flex absolute top-6 right-8 items-center gap-3 z-40">
+          <Link href="/login">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#0063c6' }}
+            >
+              Entrar
+            </button>
+          </Link>
+          <Link href="/register">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#0063c6' }}
+            >
+              Criar conta
+            </button>
+          </Link>
         </div>
 
         <div className="max-w-[1380px] mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-4 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
