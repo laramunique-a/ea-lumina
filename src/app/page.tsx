@@ -144,12 +144,22 @@ export default function LandingPage() {
             </a>
           </div>
           {/* Auth */}
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">
-              Entrar
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link href="/login">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#626d7d' }}
+              >
+                Entrar
+              </button>
             </Link>
             <Link href="/register">
-              <button className={LANDING_THEME.button.ghost}>Criar conta</button>
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                style={{ color: '#626d7d' }}
+              >
+                Criar conta
+              </button>
             </Link>
           </div>
         </div>
@@ -163,12 +173,22 @@ export default function LandingPage() {
             <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </a>
         </div>
-        <div className="hidden md:flex absolute top-6 right-8 items-center gap-4 z-30">
-          <Link href="/login" className="text-xs lg:text-sm font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors px-2">
-            Entrar
+        <div className="hidden md:flex absolute top-6 right-8 items-center gap-3 z-30">
+          <Link href="/login">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#626d7d' }}
+            >
+              Entrar
+            </button>
           </Link>
           <Link href="/register">
-            <button className={LANDING_THEME.button.ghost}>Criar conta</button>
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+              style={{ color: '#626d7d' }}
+            >
+              Criar conta
+            </button>
           </Link>
         </div>
 
