@@ -65,6 +65,7 @@ export default function LandingPage() {
     const element = document.getElementById(id)
     const container = scrollContainerRef.current
     if (element && container) {
+      element.scrollTop = 0
       container.scrollTo({
         left: element.offsetLeft,
         top: 0,
@@ -285,7 +286,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
       >
         <HeaderLogo />
 
@@ -296,10 +297,12 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex-1 flex flex-col justify-center items-center py-4 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex-1 flex flex-col justify-start md:justify-center items-center pt-2 pb-4 md:py-4 shrink-0 overflow-y-auto md:overflow-hidden">
 
           <div className="mb-4 md:mb-6 text-center flex flex-col items-center max-w-[780px] px-2 shrink-0">
-            <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
+            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-2 md:mb-3" style={{ color: '#768294' }}>
+              Para Pacientes
+            </h5>
             <h2
               className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
               style={{
