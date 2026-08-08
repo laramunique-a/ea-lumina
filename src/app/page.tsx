@@ -207,7 +207,7 @@ export default function LandingPage() {
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
               <p
-                className="text-[10px] sm:text-xs md:text-xs lg:text-sm leading-relaxed font-light md:max-w-[440px] text-center mx-auto mt-1"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-light md:max-w-[480px] text-center mx-auto mt-1"
                 style={{
                   color: '#6a7686',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -412,11 +412,11 @@ export default function LandingPage() {
             </button>
           </div>
           <div className="hidden md:flex h-52 lg:h-72 rounded-3xl border border-slate-800 bg-black/50 items-center justify-center p-6 relative overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-tr from-[#0090FF]/10 to-transparent" />
-             <div className="text-center relative z-10">
-                <Wind className="w-12 h-12 lg:w-16 lg:h-16 text-[#0090FF] mx-auto mb-3 opacity-80" />
-                <h4 className="text-base lg:text-xl font-black text-white uppercase tracking-widest">Corporativo</h4>
-             </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#0090FF]/10 to-transparent" />
+            <div className="text-center relative z-10">
+              <Wind className="w-12 h-12 lg:w-16 lg:h-16 text-[#0090FF] mx-auto mb-3 opacity-80" />
+              <h4 className="text-base lg:text-xl font-black text-white uppercase tracking-widest">Corporativo</h4>
+            </div>
           </div>
         </div>
       </section>
@@ -441,7 +441,7 @@ export default function LandingPage() {
           <div className="w-full mb-4 md:mb-6 text-center">
             <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
             <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Jornada de <br className="hidden md:block"/>Aprendizado.
+              Jornada de <br className="hidden md:block" />Aprendizado.
             </h2>
           </div>
           <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[800px] px-2 md:px-4"}>
