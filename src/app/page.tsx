@@ -510,7 +510,7 @@ export default function LandingPage() {
             </div>
 
             {/* LADO DIREITO: IMAGEM HERO DA PÁGINA TERAPEUTAS (COL 5) - MESMOS PARÂMETROS DA HOME */}
-            <div className="md:col-span-5 relative w-full h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px] flex items-center justify-center overflow-hidden shrink-0 z-0">
+            <div className="md:col-span-5 relative w-full h-[150px] sm:h-[180px] md:h-[220px] lg:h-[250px] mt-6 md:mt-10 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-terapeutas.jpg"
                 alt="Comunidade de Terapeutas EA Lumina"
