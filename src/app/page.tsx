@@ -288,30 +288,34 @@ export default function LandingPage() {
         id="pacientes"
         className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 py-2 md:py-3 lg:py-4"
       >
-        <HeaderLogo />
-
         {/* ── HEADER MOBILE DA PÁGINA 2 ── */}
         <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
           <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
-          <div className="flex items-center gap-2">
-            <Link href="/login">
-              <button
-                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
-                style={{ color: '#0063c6' }}
-              >
-                Entrar
-              </button>
-            </Link>
-            <Link href="/register">
-              <button
-                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
-                style={{ color: '#0063c6' }}
-              >
-                Criar conta
-              </button>
-            </Link>
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2">
+              <Link href="/login">
+                <button
+                  className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                  style={{ color: '#0063c6' }}
+                >
+                  Entrar
+                </button>
+              </Link>
+              <Link href="/register">
+                <button
+                  className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                  style={{ color: '#0063c6' }}
+                >
+                  Criar conta
+                </button>
+              </Link>
+            </div>
+            {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (MOBILE) */}
+            <div className="w-[100px] h-auto opacity-90 pointer-events-none mt-0.5 flex items-center justify-center">
+              <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
+            </div>
           </div>
         </div>
 
@@ -321,23 +325,29 @@ export default function LandingPage() {
             <ChevronLeft size={14} /> Voltar
           </button>
         </div>
-        <div className="hidden md:flex absolute top-6 right-8 items-center gap-3 z-40">
-          <Link href="/login">
-            <button
-              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
-              style={{ color: '#0063c6' }}
-            >
-              Entrar
-            </button>
-          </Link>
-          <Link href="/register">
-            <button
-              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
-              style={{ color: '#0063c6' }}
-            >
-              Criar conta
-            </button>
-          </Link>
+        <div className="hidden md:flex absolute top-6 right-8 flex-col items-center gap-2.5 z-40">
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Entrar
+              </button>
+            </Link>
+            <Link href="/register">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Criar conta
+              </button>
+            </Link>
+          </div>
+          {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (DESKTOP) */}
+          <div className="w-[140px] lg:w-[160px] h-auto opacity-90 pointer-events-none drop-shadow-md flex items-center justify-center">
+            <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
+          </div>
         </div>
 
         <div className="max-w-[1380px] mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-4 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
@@ -418,7 +428,7 @@ export default function LandingPage() {
           <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
-          <div className="flex flex-col items-end gap-1">
+          <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-2">
               <Link href="/login">
                 <button
@@ -437,9 +447,9 @@ export default function LandingPage() {
                 </button>
               </Link>
             </div>
-            {/* LOGO EALUMINA LOGO ABAIXO DOS BOTÕES (MOBILE) */}
-            <div className="w-[100px] h-auto opacity-90 pointer-events-none pr-0.5 mt-0.5">
-              <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain" />
+            {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (MOBILE) */}
+            <div className="w-[100px] h-auto opacity-90 pointer-events-none mt-0.5 flex items-center justify-center">
+              <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
             </div>
           </div>
         </div>
@@ -450,7 +460,7 @@ export default function LandingPage() {
             <ChevronLeft size={14} /> Voltar
           </button>
         </div>
-        <div className="hidden md:flex absolute top-6 right-8 flex-col items-end gap-2.5 z-40">
+        <div className="hidden md:flex absolute top-6 right-8 flex-col items-center gap-2.5 z-40">
           <div className="flex items-center gap-3">
             <Link href="/login">
               <button
@@ -469,9 +479,9 @@ export default function LandingPage() {
               </button>
             </Link>
           </div>
-          {/* LOGO EALUMINA LOGO ABAIXO DOS BOTÕES (DESKTOP) */}
-          <div className="w-[150px] lg:w-[170px] h-auto opacity-90 pointer-events-none drop-shadow-md pr-1">
-            <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain" />
+          {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (DESKTOP) */}
+          <div className="w-[140px] lg:w-[160px] h-auto opacity-90 pointer-events-none drop-shadow-md flex items-center justify-center">
+            <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
           </div>
         </div>
 
