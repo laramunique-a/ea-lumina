@@ -177,14 +177,18 @@ export default function LandingPage() {
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-start justify-center shrink-0">
-            <div className="relative w-[150px] h-[150px] sm:w-[190px] sm:h-[190px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] max-w-[42vw] max-h-[40vh] -mb-2 md:-mb-4 transition-all duration-300 md:-ml-3">
+            <div className="relative w-[180px] h-[180px] sm:w-[230px] sm:h-[230px] md:w-[340px] md:h-[340px] lg:w-[420px] lg:h-[420px] max-w-[52vw] max-h-[50vh] -mt-3 md:-mt-8 -mb-4 md:-mb-8 transition-all duration-300 md:-ml-4">
               <img
-                src="/logo-dark.png"
+                src="/logo-dark.jpg"
                 alt="EA Lumina"
-                className="w-full h-full object-contain mix-blend-screen filter drop-shadow-[0_0_25px_rgba(197,160,63,0.4)]"
+                className="w-full h-full object-contain"
+                style={{
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
+                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
+                }}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.png" na pasta "public"</div>';
+                  e.currentTarget.parentElement!.innerHTML = '<div class="text-xs text-slate-500 font-light tracking-widest text-center h-full flex flex-col justify-center border border-dashed border-slate-800 rounded-3xl p-6">[ LOGOTIPO ]<br/>Salve a imagem anexa como<br/>"logo-dark.jpg" na pasta "public"</div>';
                 }}
               />
             </div>
