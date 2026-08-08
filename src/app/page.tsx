@@ -24,14 +24,14 @@ const TERAPIAS = [
     icon: "/icon-eft.png"
   },
   {
-    nome: "Terapia Multidimensional",
-    desc: "Atua em múltiplos níveis do ser para promover equilíbrio físico, emocional, mental e espiritual.",
-    icon: "/icon-terapia-multidimensional.png"
-  },
-  {
     nome: "Mesa Arcturiana",
     desc: "Ferramenta de alta frequência que conecta com energias dos Arcturianos para alinhamento e expansão da consciência.",
     icon: "/icon-mesa-arcturiana.png"
+  },
+  {
+    nome: "Terapia Multidimensional",
+    desc: "Atua em múltiplos níveis do ser para promover equilíbrio físico, emocional, mental e espiritual.",
+    icon: "/icon-terapia-multidimensional.png"
   },
   {
     nome: "Mesa Metatrônica",
