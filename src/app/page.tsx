@@ -298,10 +298,10 @@ export default function LandingPage() {
 
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex-1 flex flex-col justify-center items-center py-4 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          <div className="mb-4 md:mb-6 text-center shrink-0">
+          <div className="mb-4 md:mb-6 text-center flex flex-col items-center max-w-[780px] px-2 shrink-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
             <h2
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
               style={{
                 background: '#E19B28',
                 backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -310,8 +310,17 @@ export default function LandingPage() {
                 filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
               }}
             >
-              Sua jornada de<br />Luz e Equilíbrio.
+              Toda transformação começa dentro.
             </h2>
+            <p
+              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-[700px] text-center mx-auto mt-1"
+              style={{
+                color: '#768294',
+                filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+              }}
+            >
+              Encontre terapeutas preparados para ajudar você a compreender e transformar a origem emocional do seu sofrimento. Conectamos pessoas que buscam compreender sua dor com terapeutas preparados para caminhar ao seu lado.
+            </p>
           </div>
 
           {/* GRID ESTÁTICO DE 8 CARDS (4 EM CIMA, 4 EM BAIXO NO DESKTOP) */}
