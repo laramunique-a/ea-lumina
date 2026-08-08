@@ -416,8 +416,6 @@ export default function LandingPage() {
         id="terapeutas"
         className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 py-2 md:py-3 lg:py-4"
       >
-        <HeaderLogo />
-
         {/* ── HEADER MOBILE DA PÁGINA 3 ── */}
         <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
           <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
