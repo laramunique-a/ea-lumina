@@ -352,8 +352,11 @@ export default function LandingPage() {
 
           <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0">
             <Link href="/register?role=PACIENTE">
-              <button className={LANDING_THEME.button.gold}>
-                Começar agora
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Saiba Mais
               </button>
             </Link>
           </div>
