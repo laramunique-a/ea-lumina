@@ -82,6 +82,8 @@ export default function LandingPage() {
 
     const handleWheel = (e: WheelEvent) => {
       if (window.innerWidth < 768) return // ignora no mobile
+      if (showSaibaMaisModal) return // ignora quando o modal estiver aberto, permitindo scroll vertical do mouse no texto
+
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
         container.scrollBy({
@@ -93,7 +95,7 @@ export default function LandingPage() {
 
     container.addEventListener('wheel', handleWheel, { passive: false })
     return () => container.removeEventListener('wheel', handleWheel)
-  }, [])
+  }, [showSaibaMaisModal])
 
   return (
     /*
@@ -556,7 +558,10 @@ export default function LandingPage() {
 
       {/* ── MODAL FLUTUANTE: SAIBA MAIS (PACIENTES) ── */}
       {showSaibaMaisModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+          onWheel={(e) => e.stopPropagation()}
+        >
           <div className="relative w-full max-w-3xl max-h-[85vh] bg-[#010409]/95 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden">
             {/* Header do Modal com botão X */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0 bg-white/[0.02]">
