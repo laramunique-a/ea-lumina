@@ -177,7 +177,7 @@ export default function LandingPage() {
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-start justify-center shrink-0">
-            <div className="relative w-[180px] h-[180px] sm:w-[230px] sm:h-[230px] md:w-[340px] md:h-[340px] lg:w-[420px] lg:h-[420px] max-w-[52vw] max-h-[50vh] -mt-3 md:-mt-8 -mb-4 md:-mb-8 transition-all duration-300 md:-ml-4">
+            <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[300px] md:h-[300px] lg:w-[360px] lg:h-[360px] max-w-[45vw] max-h-[42vh] -mt-2 md:-mt-6 mb-2 md:mb-4 transition-all duration-300 md:-ml-3">
               <img
                 src="/logo-dark.jpg"
                 alt="EA Lumina"
