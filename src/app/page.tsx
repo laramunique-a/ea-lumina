@@ -470,45 +470,66 @@ export default function LandingPage() {
 
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          {/* BLOCO DE TÍTULO E SUBTÍTULOS ALINHADOS TOTALMENTE À ESQUERDA (PADRÃO PÁGINA 1) */}
-          <div className="mb-2 md:mb-3 text-left flex flex-col items-start w-full max-w-[950px] shrink-0">
-            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-2.5" style={{ color: '#768294' }}>
-              Para Terapeutas
-            </h5>
-            <h2
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-2 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
-              style={{
-                background: '#E19B28',
-                backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
-              }}
-            >
-              Você nasceu para cuidar de pessoas.
-            </h2>
-            <p
-              className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-left"
-              style={{
-                color: '#fbfbfb',
-                filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
-              }}
-            >
-              Nós ajudamos o mundo a encontrar você!
-            </p>
-            <p
-              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[880px]"
-              style={{
-                color: '#768294',
-                filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
-              }}
-            >
-              Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis. Na EA Lumina você faz parte de uma comunidade que cresce unida, compartilha propósito e utiliza tecnologia para ampliar seu alcance sem perder sua essência.
-            </p>
+          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO À DIREITA) */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center shrink-0">
+            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (COL 7) */}
+            <div className="md:col-span-7 text-left flex flex-col items-start w-full shrink-0 z-10">
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-2.5" style={{ color: '#768294' }}>
+                Para Terapeutas
+              </h5>
+              <h2
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-2 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
+                style={{
+                  background: '#E19B28',
+                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
+                }}
+              >
+                Você nasceu para cuidar de pessoas.
+              </h2>
+              <p
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-left"
+                style={{
+                  color: '#fbfbfb',
+                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+                }}
+              >
+                Nós ajudamos o mundo a encontrar você!
+              </p>
+              <p
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[700px]"
+                style={{
+                  color: '#768294',
+                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+                }}
+              >
+                Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis. Na EA Lumina você faz parte de uma comunidade que cresce unida, compartilha propósito e utiliza tecnologia para ampliar seu alcance sem perder sua essência.
+              </p>
+            </div>
+
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA TERAPEUTAS (COL 5) - MESMOS PARÂMETROS DA HOME */}
+            <div className="md:col-span-5 relative w-full h-[180px] sm:h-[220px] md:h-[260px] lg:h-[300px] flex items-center justify-center overflow-hidden shrink-0 z-0">
+              <img
+                src="/hero-terapeutas.jpg"
+                alt="Comunidade de Terapeutas EA Lumina"
+                className="w-full h-full object-contain object-center opacity-90 brightness-105 contrast-105"
+              />
+              {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 (Idênticos à Home) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, transparent 25%, #010409 82%)',
+                }}
+              />
+            </div>
           </div>
 
-          {/* BOX ÚNICO CENTRALIZADO NA TELA */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2 self-center mx-auto">
+          {/* BOX ÚNICO CENTRALIZADO NA TELA (NÃO SOBREPOSTO PELA IMAGEM) */}
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2 self-center mx-auto z-10">
             {/* Por enquanto em branco */}
           </div>
 
