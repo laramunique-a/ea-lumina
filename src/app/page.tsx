@@ -285,7 +285,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
       >
         <HeaderLogo />
 
@@ -300,7 +300,16 @@ export default function LandingPage() {
 
           <div className="mb-4 md:mb-6 text-center shrink-0">
             <h5 className={LANDING_THEME.tag.blue}>Para Pacientes</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
+            <h2
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+              style={{
+                background: '#E19B28',
+                backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
+              }}
+            >
               Sua jornada de<br />Luz e Equilíbrio.
             </h2>
           </div>
