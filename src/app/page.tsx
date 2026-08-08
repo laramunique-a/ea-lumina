@@ -11,42 +11,42 @@ const TERAPIAS = [
   {
     nome: "ThetaHealing",
     desc: "Técnica quântica que atua na raiz das crenças limitantes e promove cura profunda no nível da alma.",
-    icon: <Sparkles className="text-[#C5A03F]" />
+    icon: "/icon-thetahealing.png"
   },
   {
     nome: "TQA - Terapia Quântica Atlante",
     desc: "Terapia ancestral que acessa memórias profundas e harmoniza o campo energético.",
-    icon: <Zap className="text-[#0090FF]" />
+    icon: "/icon-tqa.png"
   },
   {
     nome: "EFT",
     desc: "Técnica de liberação emocional que remove bloqueios e reduz ansiedade e estresse.",
-    icon: <Heart className="text-[#C5A03F]" />
+    icon: "/icon-eft.png"
   },
   {
     nome: "Terapia Multidimensional",
     desc: "Atua em múltiplos níveis do ser para promover equilíbrio físico, emocional, mental e espiritual.",
-    icon: <Compass className="text-[#0090FF]" />
+    icon: "/icon-terapia-multidimensional.png"
   },
   {
     nome: "Mesa Arcturiana",
     desc: "Ferramenta de alta frequência que conecta com energias dos Arcturianos para alinhamento e expansão da consciência.",
-    icon: <Sun className="text-[#C5A03F]" />
+    icon: "/icon-mesa-arcturiana.png"
   },
   {
     nome: "Mesa Metatrônica",
     desc: "Tecnologia energética que restaura o equilíbrio dos corpos sutis e identifica padrões energéticos.",
-    icon: <Wind className="text-[#0090FF]" />
+    icon: "/icon-mesa-metatronica.png"
   },
   {
     nome: "Meditação",
     desc: "Práticas que acalmam a mente, equilibram as emoções e fortalecem o autoconhecimento.",
-    icon: <Moon className="text-[#C5A03F]" />
+    icon: "/icon-meditacao.png"
   },
   {
     nome: "Constelação Familiar",
     desc: "Técnica que revela dinâmicas familiares inconscientes e promove cura nas relações e padrões do sistema.",
-    icon: <Brain className="text-[#0090FF]" />
+    icon: "/icon-constelacao-familiar.png"
   }
 ]
 
@@ -333,8 +333,12 @@ export default function LandingPage() {
                 key={i}
                 className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3 md:p-3.5 lg:p-4 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg flex flex-col items-center text-center justify-center min-h-[135px] md:min-h-[145px] lg:min-h-[160px]"
               >
-                <div className="mb-1.5 bg-slate-900/80 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center shrink-0 [&>svg]:w-4 [&>svg]:h-4 md:[&>svg]:w-4.5 md:[&>svg]:h-4.5 shadow-md border border-white/5">
-                  {terapia.icon}
+                <div className="mb-1.5 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center shrink-0">
+                  <img
+                    src={terapia.icon}
+                    alt={terapia.nome}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <h3 className="text-[11px] md:text-xs lg:text-sm font-black text-white uppercase tracking-widest mb-1 line-clamp-2 min-h-[2rem] md:min-h-[2.25rem] flex items-center justify-center">
                   {terapia.nome}
