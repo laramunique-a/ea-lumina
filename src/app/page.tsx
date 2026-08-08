@@ -468,14 +468,15 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-4 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          <div className="mb-1 md:mb-2 text-center flex flex-col items-center max-w-[760px] px-2 shrink-0">
+          {/* BLOCO DE TÍTULO E SUBTÍTULOS ALINHADOS À ESQUERDA */}
+          <div className="mb-2 md:mb-3 text-left flex flex-col items-start w-full max-w-4xl px-2 shrink-0">
             <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-0.5 md:mb-1" style={{ color: '#768294' }}>
               Para Terapeutas
             </h5>
             <h2
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-0.5 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-2 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
               style={{
                 background: '#E19B28',
                 backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -484,62 +485,45 @@ export default function LandingPage() {
                 filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
               }}
             >
-              Expanda sua Luz.
+              Você nasceu para cuidar de pessoas.
             </h2>
+            <p
+              className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-left"
+              style={{
+                color: '#fbfbfb',
+                filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+              }}
+            >
+              Nós ajudamos o mundo a encontrar você
+            </p>
+            <p
+              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[850px]"
+              style={{
+                color: '#768294',
+                filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+              }}
+            >
+              Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis. Na EA Lumina você faz parte de uma comunidade que cresce unida, compartilha propósito e utiliza tecnologia para ampliar seu alcance sem perder sua essência
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3 lg:gap-4 text-left w-full max-w-4xl my-1 md:my-2">
-            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
-              <div className="flex items-center gap-3 mb-1.5">
-                <div className="bg-[#C5A03F]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
-                  <UserCircle className="w-4 h-4 md:w-5 md:h-5 text-[#C5A03F]" />
-                </div>
-                <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Vitrine Premium</h3>
-              </div>
-              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Perfil de alto padrão desenhado para destacar suas especialidades e conectar sua energia a pacientes em busca de transformação.</p>
-            </div>
-
-            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
-              <div className="flex items-center gap-3 mb-1.5">
-                <div className="bg-[#0090FF]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
-                  <Calendar className="w-4 h-4 md:w-5 md:h-5 text-[#0090FF]" />
-                </div>
-                <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Gestão Inteligente</h3>
-              </div>
-              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Controle total sobre sua agenda com agendamentos automáticos e gestão de pagamentos integrados em um só lugar.</p>
-            </div>
-
-            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
-              <div className="flex items-center gap-3 mb-1.5">
-                <div className="bg-white/10 p-2 rounded-xl group-hover:scale-110 transition-transform">
-                  <FileText className="w-4 h-4 md:w-5 md:h-5 text-slate-300" />
-                </div>
-                <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Prontuários e Segurança</h3>
-              </div>
-              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Ambiente digital criptografado e organizado para você registrar a evolução holística e clínica de cada paciente com total segurança.</p>
-            </div>
-
-            <div className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3.5 md:p-4.5 lg:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg group">
-              <div className="flex items-center gap-3 mb-1.5">
-                <div className="bg-[#8A2BE2]/20 p-2 rounded-xl group-hover:scale-110 transition-transform">
-                  <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#8A2BE2]" />
-                </div>
-                <h3 className="text-white font-bold text-xs md:text-base tracking-wide uppercase">Lumina IA</h3>
-              </div>
-              <p className="text-[#768294] text-[11px] md:text-sm leading-relaxed font-normal">Sua assistente de inteligência artificial exclusiva. Receba auxílio para criar conteúdos e direcionamentos clínicos de alta performance.</p>
-            </div>
+          {/* BOX ÚNICO CENTRALIZADO (EQUIVALENTE AO TAMANHO DE 2 BOXES PADRÃO JUNTOS, EM BRANCO) */}
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2">
+            {/* Por enquanto em branco */}
           </div>
 
+          {/* BOTÃO SAIBA MAIS */}
           <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20">
             <Link href="/register?role=TERAPEUTA" className="shrink-0">
               <button
                 className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md inline-flex items-center gap-2 justify-center cursor-pointer"
                 style={{ color: '#0063c6' }}
               >
-                Quero Atender <ArrowRight size={14} />
+                Saiba Mais <ArrowRight size={14} />
               </button>
             </Link>
           </div>
+
         </div>
       </section>
 
