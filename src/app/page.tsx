@@ -470,10 +470,10 @@ export default function LandingPage() {
 
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO MAIS DESTACADA À DIREITA) */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 lg:gap-4 items-center shrink-0">
+          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO MAIS AMPLA E PRÓXIMA À DIREITA) */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-1 items-center shrink-0">
             {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (COL 6) */}
-            <div className="md:col-span-6 text-left flex flex-col items-start w-full shrink-0 z-10">
+            <div className="md:col-span-6 text-left flex flex-col items-start w-full shrink-0 z-10 pr-0 md:pr-2">
               <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2" style={{ color: '#768294' }}>
                 Para Terapeutas
               </h5>
@@ -509,12 +509,12 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO MAIS AMPLA E DESTACADA (COL 6) */}
-            <div className="md:col-span-6 relative w-full h-[180px] sm:h-[220px] md:h-[270px] lg:h-[310px] mt-4 md:mt-6 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            {/* LADO DIREITO: IMAGEM HERO AMPLIADA E LEVEMENTE ENCOSTANDO NO TEXTO (COL 6) */}
+            <div className="md:col-span-6 relative w-full h-[200px] sm:h-[240px] md:h-[290px] lg:h-[330px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-terapeutas.jpg"
                 alt="Comunidade de Terapeutas EA Lumina"
-                className="w-full h-full object-contain object-center opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
+                className="w-full h-full object-contain object-center scale-105 md:scale-110 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
               />
               {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
@@ -522,7 +522,7 @@ export default function LandingPage() {
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  background: 'radial-gradient(circle at 50% 50%, transparent 35%, #010409 88%)',
+                  background: 'radial-gradient(circle at 50% 50%, transparent 40%, #010409 90%)',
                 }}
               />
             </div>
