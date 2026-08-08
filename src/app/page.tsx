@@ -232,18 +232,21 @@ export default function LandingPage() {
                 { id: 'pacientes', label: 'Sou Paciente', icon: <Heart className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
                 { id: 'terapeutas', label: 'Sou Terapeuta', icon: <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
                 { id: 'empresas', label: 'Para Empresas', icon: <Brain className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> },
-                { id: 'cursos', label: 'Ver Cursos', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> }
+                { id: 'cursos', label: 'Academia', icon: <Compass className="w-4 h-4 md:w-5 md:h-5 text-[#0066CC]" /> }
               ].map((box) => (
                 <button
                   key={box.id}
                   onClick={() => scrollToSection(box.id)}
-                  className="group flex items-center justify-between px-4 py-3 md:px-5 md:py-4.5 rounded-2xl md:rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-1 backdrop-blur-md"
+                  className="group flex items-center justify-between px-5 py-4 md:px-6 md:py-5 rounded-3xl md:rounded-[2rem] bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 transition-all shadow-lg hover:shadow-2xl hover:-translate-y-1 backdrop-blur-md"
                 >
                   <div className="flex items-center gap-3 md:gap-5">
                     <div className="group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
                       {box.icon}
                     </div>
-                    <span className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] text-white transition-colors">
+                    <span
+                      className="text-[10px] md:text-xs lg:text-sm font-black uppercase tracking-[0.2em] transition-colors"
+                      style={{ color: '#626d7d' }}
+                    >
                       {box.label}
                     </span>
                   </div>
