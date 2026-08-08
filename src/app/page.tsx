@@ -196,7 +196,12 @@ export default function LandingPage() {
             <div className="text-center md:text-left max-w-[520px] px-2 md:px-0 mt-1">
               <h1
                 className={LANDING_THEME.typography.titleGradient}
-                style={LANDING_THEME.typography.titleGradientStyle}
+                style={{
+                  background: '#E19B28',
+                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
