@@ -286,7 +286,7 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[#010409] overflow-y-auto shrink-0 py-3 md:py-4"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-center relative bg-[#010409] overflow-y-auto shrink-0 py-3 md:py-6"
       >
         <HeaderLogo />
 
@@ -297,7 +297,7 @@ export default function LandingPage() {
           </button>
         </div>
 
-        <div className="max-w-[1380px] mx-auto px-4 md:px-10 w-full flex-1 flex flex-col justify-between items-center py-2 md:py-3 shrink-0 overflow-y-auto">
+        <div className="max-w-[1380px] mx-auto px-4 md:px-10 w-full flex-1 flex flex-col justify-center gap-3 md:gap-4 lg:gap-6 items-center py-2 md:py-4 shrink-0 overflow-y-auto">
 
           <div className="mb-2 md:mb-3 text-center flex flex-col items-center max-w-[780px] px-2 shrink-0">
             <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-2" style={{ color: '#768294' }}>
