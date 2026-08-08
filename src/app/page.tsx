@@ -206,7 +206,7 @@ export default function LandingPage() {
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
-              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-medium md:max-w-[440px] text-center mx-auto mt-1">
+              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-normal md:max-w-[440px] text-center mx-auto mt-1">
                 A EA Lumina é o encontro entre quem precisa e quem já transformou. Um ecossistema de terapias, conhecimento e propósito para uma vida mais equilibrada, consciente e com sentido.
               </p>
             </div>
@@ -215,7 +215,7 @@ export default function LandingPage() {
           {/* LADO DIREITO: BOXES */}
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
-              <h3 className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-[11px] md:text-[13px] mb-1 text-center md:text-left pl-2 opacity-80">
+              <h3 className="text-slate-400 font-bold uppercase tracking-[0.15em] text-2xl sm:text-3xl md:text-5xl lg:text-6xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-85 leading-snug md:leading-tight">
                 Qual é o seu objetivo hoje?
               </h3>
 
