@@ -209,7 +209,7 @@ export default function LandingPage() {
               <p
                 className="text-xs sm:text-sm md:text-base leading-relaxed font-light md:max-w-[480px] text-center mx-auto mt-1"
                 style={{
-                  color: '#6a7686',
+                  color: '#768294',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
                 }}
               >
@@ -221,7 +221,10 @@ export default function LandingPage() {
           {/* LADO DIREITO: BOXES */}
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
-              <h3 className="text-slate-400 font-light tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight">
+              <h3
+                className="text-slate-400 font-light normal-case tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight"
+                style={{ textTransform: 'none' }}
+              >
                 Qual o seu objetivo hoje?
               </h3>
 
