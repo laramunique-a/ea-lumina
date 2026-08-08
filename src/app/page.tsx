@@ -468,15 +468,15 @@ export default function LandingPage() {
 
         <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS À ESQUERDA, IMAGEM HERO MAIS AMPLA E PRÓXIMA À DIREITA) */}
+          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS CENTRALIZADOS, IMAGEM HERO À DIREITA) */}
           <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-1 items-center shrink-0">
-            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (COL 6) */}
-            <div className="md:col-span-6 text-left flex flex-col items-start w-full shrink-0 z-10 pr-0 md:pr-2">
-              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2" style={{ color: '#768294' }}>
+            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (CENTRALIZADOS) */}
+            <div className="md:col-span-6 text-center flex flex-col items-center justify-center w-full shrink-0 z-10 px-2">
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2 text-center" style={{ color: '#768294' }}>
                 Para Terapeutas
               </h5>
               <h2
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-left"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -488,7 +488,7 @@ export default function LandingPage() {
                 Você nasceu para cuidar de pessoas.
               </h2>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-left"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-center"
                 style={{
                   color: '#fbfbfb',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -497,7 +497,7 @@ export default function LandingPage() {
                 Nós ajudamos o mundo a encontrar você!
               </p>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[650px]"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-center max-w-[650px] mx-auto"
                 style={{
                   color: '#768294',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -507,7 +507,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO AMPLIADA E LEVEMENTE ENCOSTANDO NO TEXTO (COL 6) */}
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA TERAPEUTAS (COL 6) */}
             <div className="md:col-span-6 relative w-full h-[200px] sm:h-[240px] md:h-[290px] lg:h-[330px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-terapeutas.jpg"
@@ -528,10 +528,10 @@ export default function LandingPage() {
 
           {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
           <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-[140px] md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg my-1 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
-            {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO */}
-            <div className="flex-1 text-left flex flex-col items-start pr-0 md:pr-4">
+            {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO (CENTRALIZADOS) */}
+            <div className="flex-1 text-center flex flex-col items-center justify-center px-2 md:px-4">
               <h3
-                className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight mb-1 leading-snug bg-clip-text text-transparent text-left"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight mb-1 leading-snug bg-clip-text text-transparent text-center"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -543,7 +543,7 @@ export default function LandingPage() {
                 Você não está sozinho(a)!
               </h3>
               <p
-                className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-left max-w-[540px]"
+                className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-center max-w-[540px] mx-auto"
                 style={{
                   color: '#768294',
                   filter: 'drop-shadow(1px 1px 3px #010409)'
