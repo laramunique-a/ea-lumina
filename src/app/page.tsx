@@ -305,21 +305,24 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="relative w-full overflow-hidden group">
-            {/* CAROUSEL TRACK (MARQUEE) */}
-            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] py-2">
-              {[...TERAPIAS, ...TERAPIAS].map((terapia, i) => (
-                <div key={i} className="w-[75vw] max-w-[300px] md:w-[320px] lg:w-[350px] flex-shrink-0 px-2 md:px-3">
-                  <div className="bg-black/40 backdrop-blur-sm border border-slate-800 rounded-3xl p-4 md:p-6 hover:border-slate-600 transition-colors flex flex-col items-center text-center h-full min-h-[180px] md:min-h-[240px] justify-center">
-                    <div className="mb-2 md:mb-3 bg-slate-900 w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-7 md:[&>svg]:h-7 shadow-lg">
-                      {terapia.icon}
-                    </div>
-                    <h3 className="text-xs md:text-base lg:text-lg font-black text-white uppercase tracking-widest mb-1.5 line-clamp-2">{terapia.nome}</h3>
-                    <p className="text-[10px] md:text-xs text-slate-400 leading-relaxed font-medium line-clamp-3">{terapia.desc}</p>
-                  </div>
+          {/* GRID ESTÁTICO DE 8 CARDS (4 EM CIMA, 4 EM BAIXO NO DESKTOP) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full max-w-[1320px] px-2 md:px-4 my-2 md:my-4">
+            {TERAPIAS.map((terapia, i) => (
+              <div
+                key={i}
+                className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-3xl p-4 md:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-1 shadow-lg flex flex-col items-center text-center justify-center min-h-[160px] md:min-h-[190px]"
+              >
+                <div className="mb-2 bg-slate-900/80 w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-6 md:[&>svg]:h-6 shadow-md border border-white/5">
+                  {terapia.icon}
                 </div>
-              ))}
-            </div>
+                <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-widest mb-1.5 line-clamp-1">
+                  {terapia.nome}
+                </h3>
+                <p className="text-[10px] md:text-xs text-[#768294] leading-relaxed font-normal line-clamp-3">
+                  {terapia.desc}
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="mt-4 md:mt-6 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0">
