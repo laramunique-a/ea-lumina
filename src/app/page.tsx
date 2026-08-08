@@ -526,9 +526,50 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* BOX ÚNICO CENTRALIZADO NA TELA (REDUZIDO CONFORME SOLICITADO) */}
-          <div className="w-full max-w-3xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 md:p-6 min-h-[140px] md:min-h-[170px] flex items-center justify-center shadow-lg my-1 md:my-1.5 self-center mx-auto z-10">
-            {/* Por enquanto em branco */}
+          {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-[140px] md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg my-1 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
+            {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO */}
+            <div className="flex-1 text-left flex flex-col items-start pr-0 md:pr-4">
+              <h3
+                className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight mb-1 leading-snug bg-clip-text text-transparent text-left"
+                style={{
+                  background: '#E19B28',
+                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(2px 3px 6px #010409)'
+                }}
+              >
+                Você não está sozinho(a)!
+              </h3>
+              <p
+                className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-left max-w-[540px]"
+                style={{
+                  color: '#768294',
+                  filter: 'drop-shadow(1px 1px 3px #010409)'
+                }}
+              >
+                Na EA Lumina acreditamos que terapeutas unidos criam uma força maior do que qualquer competição. Quando uma comunidade cresce em propósito, todos crescem juntos.
+              </p>
+            </div>
+
+            {/* DIVISÓRIA VERTICAL | (Sem encostar no topo nem na base do box) */}
+            <div className="hidden md:block w-[1px] h-[70px] lg:h-[85px] bg-white/10 mx-4 lg:mx-6 shrink-0" />
+
+            {/* LADO DIREITO DO BOX: TEXTO CURSIVO RISCADO E INCLINADO COM SUBTRACE */}
+            <div className="shrink-0 flex flex-col items-center justify-center pt-1 md:pt-0 transform -rotate-3 hover:-rotate-1 transition-transform">
+              <span
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#E19B28] leading-tight text-center font-normal tracking-wide"
+                style={{
+                  fontFamily: "'Caveat', 'Dancing Script', cursive",
+                  textShadow: '0px 2px 4px rgba(1, 4, 9, 0.9)'
+                }}
+              >
+                Juntos somos<br />mais fortes
+              </span>
+              {/* Linha riscada de sublinhado inclinado */}
+              <div className="w-[110px] md:w-[130px] h-[2px] bg-[#E19B28] rounded-full mt-1 opacity-90 shadow-sm" />
+            </div>
           </div>
 
           {/* BOTÃO SAIBA MAIS */}
