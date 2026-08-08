@@ -195,7 +195,7 @@ export default function LandingPage() {
 
             <div className="text-center flex flex-col items-center max-w-[520px] px-2 md:px-0 mt-1">
               <h1
-                className={`${LANDING_THEME.typography.titleGradient} text-center`}
+                className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-2 md:mb-6 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -206,7 +206,7 @@ export default function LandingPage() {
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
-              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-normal md:max-w-[440px] text-center mx-auto mt-1">
+              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-light md:max-w-[440px] text-center mx-auto mt-1">
                 A EA Lumina é o encontro entre quem precisa e quem já transformou. Um ecossistema de terapias, conhecimento e propósito para uma vida mais equilibrada, consciente e com sentido.
               </p>
             </div>
