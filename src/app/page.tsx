@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText } from 'lucide-react'
+import { ArrowRight, ChevronLeft, Sparkles, Brain, Heart, Zap, Compass, Wind, Moon, Sun, Youtube, Instagram, UserCircle, Calendar, FileText, X } from 'lucide-react'
 import { LANDING_THEME } from '@/constants/theme'
 import { Footer } from '@/components/Footer'
 
@@ -52,6 +52,7 @@ const TERAPIAS = [
 
 export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [showSaibaMaisModal, setShowSaibaMaisModal] = useState(false)
 
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
@@ -350,15 +351,14 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0">
-            <Link href="/register?role=PACIENTE">
-              <button
-                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
-                style={{ color: '#0063c6' }}
-              >
-                Saiba Mais
-              </button>
-            </Link>
+          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20">
+            <button
+              onClick={() => setShowSaibaMaisModal(true)}
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
+              style={{ color: '#0063c6' }}
+            >
+              Saiba Mais
+            </button>
           </div>
 
         </div>
@@ -510,6 +510,93 @@ export default function LandingPage() {
         </div>
         <Footer />
       </section>
+
+      {/* ── MODAL FLUTUANTE: SAIBA MAIS (PACIENTES) ── */}
+      {showSaibaMaisModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+          <div className="relative w-full max-w-3xl max-h-[85vh] bg-[#010409]/95 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden">
+            {/* Header do Modal com botão X */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0 bg-white/[0.02]">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0063c6]">
+                EALUMINA — Carta de Boas-Vindas
+              </span>
+              <button
+                onClick={() => setShowSaibaMaisModal(false)}
+                className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Fechar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Conteúdo com scroll interno */}
+            <div className="p-6 md:p-8 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed font-normal" style={{ color: '#768294' }}>
+              <p className="font-semibold text-white text-sm sm:text-base">
+                Olá, seja muito bem-vindo(a) à EALUMINA!
+              </p>
+
+              <p className="italic font-medium text-slate-300">
+                A chave sempre esteve dentro de você. Obrigado por permitir que nossos caminhos se cruzem.
+              </p>
+
+              <p>
+                Se você está lendo estas palavras, talvez haja uma parte de você que já não busca apenas aliviar os sintomas. Talvez você esteja tentando entender o que sente, compreender o que vivencia e, acima de tudo, compreender a si mesmo. Na EALUMINA, acreditamos que ninguém chega aqui por acaso. Toda busca nasce de uma profunda necessidade da alma de redescobrir o equilíbrio, o sentido e a paz.
+              </p>
+
+              <p>
+                Antes de continuarmos, queremos lhe agradecer por ter a coragem de buscar um novo caminho e por nos permitir fazer parte da sua jornada. Esta plataforma foi criada pensando exatamente em você.
+              </p>
+
+              <p>
+                Vivemos em um mundo que nos ensinou a buscar as respostas fora de nós mesmos — seja esperando que alguém resolva nossos problemas, seja procurando uma técnica perfeita ou uma solução imediata. Mas acreditamos que a verdadeira transformação nasce quando decidimos olhar para o nosso interior. Nenhum terapeuta possui esse poder, e nenhuma técnica fará isso por você. O terapeuta simplesmente ilumina as possibilidades, a tecnologia fornece as ferramentas, mas a transformação sempre pertence àqueles que decidem vivenciá-la.
+              </p>
+
+              <p>
+                Por isso, nossa missão é simples: conectar pessoas que buscam compreender sua dor a terapeutas preparados para acompanhá-las nesse processo.
+              </p>
+
+              <p>
+                Cada terapeuta da EALUMINA percorreu um caminho próprio, assim como você. Quando essas duas histórias se encontram, nasce um espaço de confiança. Não acreditamos que exista um terapeuta perfeito para todo mundo, mas sim o encontro certo, no momento certo. Mais do que encontrar uma técnica, você encontrará alguém capaz de apoiá-lo com respeito, escuta e humanidade.
+              </p>
+
+              <p>
+                Sabemos que, às vezes, o corpo fala, as emoções transbordam e a mente pede ajuda. Independentemente da abordagem, há uma pergunta que merece ser feita: <span className="text-white italic">&quot;O que a vida está tentando me ensinar?&quot;</span> Como combinamos diferentes abordagens terapêuticas, entendemos que não existe uma resposta única, pois cada ser humano tem uma história e um caminho únicos.
+              </p>
+
+              <p>
+                Você é muito maior do que parece ser. Mais do que um simples corpo físico, do que simples pensamentos ou emoções. Você possui uma profunda dimensão de consciência, capaz de aprender, transformar-se e reconstruir a sua própria história. Nosso trabalho não consiste em mudar quem você é, mas em ajudá-lo a lembrar da sua própria força.
+              </p>
+
+              <p>
+                Nós sonhamos com um futuro onde o cuidado seja centrado no ser humano — mais consciente, preventivo e colaborativo. Um lugar onde as pessoas possam encontrar apoio antes que o sofrimento se transforme em doença e onde se lembrem de uma verdade profunda: <strong className="text-[#E19B28] font-bold">&quot;EU SOU O QUE SOU&quot;</strong>. Ninguém precisa se transformar em outra pessoa; a verdadeira transformação acontece quando deixamos de viver pelo medo, escolhemos viver conscientemente e reconhecemos a luz que sempre existiu dentro de nós.
+              </p>
+
+              <p>
+                A decisão sempre será sua. Nenhuma mudança acontece sem vontade, e nenhum terapeuta pode caminhar por você. Mas você não precisa caminhar sozinho. Estamos aqui para oferecer ferramentas, conhecimento, escuta, tecnologia, comunidade e profissionais comprometidos em acompanhá-lo com respeito e responsabilidade.
+              </p>
+
+              <p className="font-medium text-slate-300">
+                A chave sempre esteve dentro de você. Nós simplesmente ajudamos você a encontrá-la.
+              </p>
+
+              <div className="pt-3 border-t border-white/10">
+                <p className="font-semibold text-white">Com carinho e dedicação,</p>
+                <p className="font-bold text-[#E19B28]">Equipe EALUMINA.</p>
+              </div>
+            </div>
+
+            {/* Footer do Modal com botão 'Fechar' */}
+            <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
+              <button
+                onClick={() => setShowSaibaMaisModal(false)}
+                className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )
