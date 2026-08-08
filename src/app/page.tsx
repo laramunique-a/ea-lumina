@@ -286,25 +286,25 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="pacientes"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[#010409] overflow-y-auto shrink-0 py-3 md:py-4"
       >
         <HeaderLogo />
 
         {/* Botão Voltar: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
+        <div className="w-full px-4 md:px-12 pt-2 md:pt-0 md:absolute md:top-6 md:left-8 md:w-auto">
           <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
             <ChevronLeft size={14} /> Voltar
           </button>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 w-full flex-1 flex flex-col justify-start md:justify-center items-center pt-2 pb-4 md:py-4 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-[1380px] mx-auto px-4 md:px-10 w-full flex-1 flex flex-col justify-between items-center py-2 md:py-3 shrink-0 overflow-y-auto">
 
-          <div className="mb-4 md:mb-6 text-center flex flex-col items-center max-w-[780px] px-2 shrink-0">
-            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-2 md:mb-3" style={{ color: '#768294' }}>
+          <div className="mb-2 md:mb-3 text-center flex flex-col items-center max-w-[780px] px-2 shrink-0">
+            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-2" style={{ color: '#768294' }}>
               Para Pacientes
             </h5>
             <h2
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-2 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
               style={{
                 background: '#E19B28',
                 backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -316,7 +316,7 @@ export default function LandingPage() {
               Toda transformação começa dentro.
             </h2>
             <p
-              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-[700px] text-center mx-auto mt-1"
+              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal max-w-[700px] text-center mx-auto mt-0.5"
               style={{
                 color: '#768294',
                 filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -327,16 +327,16 @@ export default function LandingPage() {
           </div>
 
           {/* GRID ESTÁTICO DE 8 CARDS (4 EM CIMA, 4 EM BAIXO NO DESKTOP) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full max-w-[1320px] px-2 md:px-4 my-2 md:my-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3 lg:gap-3.5 w-full max-w-[1320px] px-2 md:px-4 my-1 md:my-2">
             {TERAPIAS.map((terapia, i) => (
               <div
                 key={i}
-                className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-3xl p-4 md:p-5 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-1 shadow-lg flex flex-col items-center text-center justify-center min-h-[160px] md:min-h-[190px]"
+                className="bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-3 md:p-3.5 lg:p-4 hover:bg-white/[0.08] hover:border-white/10 transition-all hover:-translate-y-0.5 shadow-lg flex flex-col items-center text-center justify-center min-h-[135px] md:min-h-[145px] lg:min-h-[160px]"
               >
-                <div className="mb-2 bg-slate-900/80 w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 [&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-6 md:[&>svg]:h-6 shadow-md border border-white/5">
+                <div className="mb-1.5 bg-slate-900/80 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center shrink-0 [&>svg]:w-4 [&>svg]:h-4 md:[&>svg]:w-4.5 md:[&>svg]:h-4.5 shadow-md border border-white/5">
                   {terapia.icon}
                 </div>
-                <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-widest mb-1.5 line-clamp-2 min-h-[2.5rem] flex items-center justify-center">
+                <h3 className="text-[11px] md:text-xs lg:text-sm font-black text-white uppercase tracking-widest mb-1 line-clamp-2 min-h-[2rem] md:min-h-[2.25rem] flex items-center justify-center">
                   {terapia.nome}
                 </h3>
                 <p className="text-[10px] md:text-xs text-[#768294] leading-relaxed font-normal line-clamp-3">
@@ -346,7 +346,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-4 md:mt-6 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0">
+          <div className="mt-2 md:mt-3 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0">
             <Link href="/register?role=PACIENTE">
               <button className={LANDING_THEME.button.gold}>
                 Começar agora
