@@ -10,43 +10,43 @@ import { Footer } from '@/components/Footer'
 const TERAPIAS = [
   {
     nome: "ThetaHealing",
-    desc: "Identifique e transforme crenças limitantes no nível subconsciente para criar uma realidade mais leve e abundante.",
+    desc: "Técnica quântica que atua na raiz das crenças limitantes e promove cura profunda no nível da alma.",
     icon: <Sparkles className="text-[#C5A03F]" />
   },
   {
-    nome: "TQA — Terapia Quântica",
-    desc: "Reequilíbrio vibracional profundo, atuando nos campos sutis para restaurar a harmonia física e emocional.",
+    nome: "TQA - Terapia Quântica Atlante",
+    desc: "Terapia ancestral que acessa memórias profundas e harmoniza o campo energético.",
     icon: <Zap className="text-[#0090FF]" />
   },
   {
-    nome: "Terapia Multidimensional",
-    desc: "Cura através do coração, trabalhando com seres de luz para limpar energias estagnadas de vidas passadas e do presente.",
+    nome: "EFT",
+    desc: "Técnica de liberação emocional que remove bloqueios e reduz ansiedade e estresse.",
     icon: <Heart className="text-[#C5A03F]" />
   },
   {
-    nome: "Mesa Metrônica MAQ",
-    desc: "Ferramenta quântica de realinhamento energético que harmoniza todas as áreas da vida com geometrias sagradas.",
+    nome: "Terapia Multidimensional",
+    desc: "Atua em múltiplos níveis do ser para promover equilíbrio físico, emocional, mental e espiritual.",
     icon: <Compass className="text-[#0090FF]" />
   },
   {
-    nome: "Constelação Familiar",
-    desc: "Libere emaranhamentos sistêmicos e padrões familiares repetitivos, trazendo paz e fluxo para sua ancestralidade.",
-    icon: <Brain className="text-[#C5A03F]" />
-  },
-  {
-    nome: "Meditação",
-    desc: "Práticas guiadas para acalmar a mente, reduzir a ansiedade e reconectar-se com a sua essência interior.",
-    icon: <Moon className="text-[#0090FF]" />
-  },
-  {
-    nome: "Mesa Arcturiana Multidimensional",
-    desc: "Sistema de cura baseado na tecnologia de luz arcturiana, focado na elevação de frequência e limpeza espiritual.",
+    nome: "Mesa Arcturiana",
+    desc: "Ferramenta de alta frequência que conecta com energias dos Arcturianos para alinhamento e expansão da consciência.",
     icon: <Sun className="text-[#C5A03F]" />
   },
   {
-    nome: "EMF Balancing Technique",
-    desc: "Harmonização da malha de calibração universal. Fortaleça sua energia e alinhe-se com seu propósito mais elevado.",
+    nome: "Mesa Metatrônica",
+    desc: "Tecnologia energética que restaura o equilíbrio dos corpos sutis e identifica padrões energéticos.",
     icon: <Wind className="text-[#0090FF]" />
+  },
+  {
+    nome: "Meditação",
+    desc: "Práticas que acalmam a mente, equilibram as emoções e fortalecem o autoconhecimento.",
+    icon: <Moon className="text-[#C5A03F]" />
+  },
+  {
+    nome: "Constelação Familiar",
+    desc: "Técnica que revela dinâmicas familiares inconscientes e promove cura nas relações e padrões do sistema.",
+    icon: <Brain className="text-[#0090FF]" />
   }
 ]
 
