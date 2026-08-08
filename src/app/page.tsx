@@ -472,7 +472,7 @@ export default function LandingPage() {
 
           {/* BLOCO DE TÍTULO E SUBTÍTULOS ALINHADOS TOTALMENTE À ESQUERDA (PADRÃO PÁGINA 1) */}
           <div className="mb-2 md:mb-3 text-left flex flex-col items-start w-full max-w-[950px] shrink-0">
-            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-0.5 md:mb-1" style={{ color: '#768294' }}>
+            <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-2.5" style={{ color: '#768294' }}>
               Para Terapeutas
             </h5>
             <h2
