@@ -195,7 +195,7 @@ export default function LandingPage() {
 
             <div className="text-center flex flex-col items-center max-w-[520px] px-2 md:px-0 mt-1">
               <h1
-                className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-2 md:mb-6 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -207,7 +207,7 @@ export default function LandingPage() {
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-light md:max-w-[480px] text-center mx-auto mt-1"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal md:max-w-[480px] text-center mx-auto mt-1"
                 style={{
                   color: '#768294',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -222,7 +222,7 @@ export default function LandingPage() {
           <div className="w-full md:w-5/12 flex flex-col items-center md:items-end md:h-full md:justify-center shrink-0">
             <div className="flex flex-col gap-2.5 md:gap-4 w-full max-w-[380px] animate-in slide-in-from-right-8 duration-1000">
               <h3
-                className="text-slate-400 font-light normal-case tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl -mt-2 md:-mt-5 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight"
+                className="text-slate-400 font-light normal-case tracking-tight text-lg sm:text-xl md:text-2xl lg:text-3xl -mt-1 md:-mt-3 mb-2 md:mb-3 text-center md:text-left pl-2 opacity-90 leading-snug md:leading-tight"
                 style={{ textTransform: 'none', fontVariant: 'normal' }}
               >
                 Qual o seu objetivo hoje?
