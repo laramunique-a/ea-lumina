@@ -197,7 +197,7 @@ export default function LandingPage() {
 
           {/* LADO ESQUERDO: LOGO E TEXTO */}
           <div className="w-full md:w-5/12 flex flex-col items-center justify-center shrink-0">
-            <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[300px] md:h-[300px] lg:w-[360px] lg:h-[360px] max-w-[45vw] max-h-[42vh] -mt-2 md:-mt-6 mb-2 md:mb-4 transition-all duration-300">
+            <div className="relative w-[160px] h-[160px] sm:w-[200px] sm:h-[200px] md:w-[300px] md:h-[300px] lg:w-[360px] lg:h-[360px] max-w-[45vw] max-h-[42vh] -mt-2 md:-mt-6 mb-0.5 md:mb-1 transition-all duration-300">
               <img
                 src="/logo-dark.jpg"
                 alt="EA Lumina"
@@ -213,7 +213,7 @@ export default function LandingPage() {
               />
             </div>
 
-            <div className="text-center flex flex-col items-center max-w-[520px] px-2 md:px-0 mt-1">
+            <div className="text-center flex flex-col items-center max-w-[520px] px-2 md:px-0 mt-0">
               <h1
                 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-2 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
                 style={{
