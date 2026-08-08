@@ -136,10 +136,10 @@ export default function LandingPage() {
         <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
           {/* Redes sociais */}
           <div className="flex items-center gap-4">
-            <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
+            <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" style={{ color: '#e19b28' }}>
               <Youtube className="w-5 h-5" />
             </a>
-            <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors">
+            <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" style={{ color: '#e19b28' }}>
               <Instagram className="w-5 h-5" />
             </a>
           </div>
@@ -166,10 +166,10 @@ export default function LandingPage() {
 
         {/* ── HEADER DESKTOP: absoluto, apenas visível em telas grandes ── */}
         <div className="hidden md:flex absolute top-6 left-8 items-center gap-4 z-30">
-          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+          <a href="https://www.youtube.com/@ealumina4444" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity group" style={{ color: '#e19b28' }}>
             <Youtube className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </a>
-          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 transition-colors group">
+          <a href="https://www.instagram.com/ealumina4444?utm_source=qr&igsh=MTJncnppN256cmpnaQ%3D%3D" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity group" style={{ color: '#e19b28' }}>
             <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </a>
         </div>
