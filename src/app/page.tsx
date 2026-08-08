@@ -83,7 +83,7 @@ export default function LandingPage() {
 
     const handleWheel = (e: WheelEvent) => {
       if (window.innerWidth < 768) return // ignora no mobile
-      if (showSaibaMaisModal) return // ignora quando o modal estiver aberto, permitindo scroll vertical do mouse no texto
+      if (showSaibaMaisModal || showSaibaMaisTerapeutasModal) return // ignora quando qualquer um dos modais estiver aberto, permitindo scroll vertical do mouse no texto
 
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
