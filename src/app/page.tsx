@@ -206,7 +206,13 @@ export default function LandingPage() {
               >
                 Conectar quem busca transformar sua vida com quem já percorreu esse caminho.
               </h1>
-              <p className="text-[10px] sm:text-xs md:text-xs lg:text-sm text-slate-300 leading-relaxed font-light md:max-w-[440px] text-center mx-auto mt-1">
+              <p
+                className="text-[10px] sm:text-xs md:text-xs lg:text-sm leading-relaxed font-light md:max-w-[440px] text-center mx-auto mt-1"
+                style={{
+                  color: '#6a7686',
+                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+                }}
+              >
                 A EA Lumina é o encontro entre quem precisa e quem já transformou. Um ecossistema de terapias, conhecimento e propósito para uma vida mais equilibrada, consciente e com sentido.
               </p>
             </div>
