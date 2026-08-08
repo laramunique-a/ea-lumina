@@ -148,7 +148,7 @@ export default function LandingPage() {
             <Link href="/login">
               <button
                 className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
-                style={{ color: '#626d7d' }}
+                style={{ color: '#0063c6' }}
               >
                 Entrar
               </button>
@@ -156,7 +156,7 @@ export default function LandingPage() {
             <Link href="/register">
               <button
                 className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
-                style={{ color: '#626d7d' }}
+                style={{ color: '#0063c6' }}
               >
                 Criar conta
               </button>
@@ -177,7 +177,7 @@ export default function LandingPage() {
           <Link href="/login">
             <button
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
-              style={{ color: '#626d7d' }}
+              style={{ color: '#0063c6' }}
             >
               Entrar
             </button>
@@ -185,7 +185,7 @@ export default function LandingPage() {
           <Link href="/register">
             <button
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
-              style={{ color: '#626d7d' }}
+              style={{ color: '#0063c6' }}
             >
               Criar conta
             </button>
