@@ -565,7 +565,7 @@ export default function LandingPage() {
                   textShadow: '0px 2px 4px rgba(1, 4, 9, 0.9)'
                 }}
               >
-                Juntos somos<br />mais fortes
+                Juntos somos<br />mais fortes!
               </span>
               {/* Linha riscada de sublinhado inclinado */}
               <div className="w-[110px] md:w-[130px] h-[2px] bg-[#E19B28] rounded-full mt-1 opacity-90 shadow-sm" />
