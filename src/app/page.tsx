@@ -468,10 +468,10 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-10 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
-          {/* BLOCO DE TÍTULO E SUBTÍTULOS ALINHADOS À ESQUERDA */}
-          <div className="mb-2 md:mb-3 text-left flex flex-col items-start w-full max-w-4xl px-2 shrink-0">
+          {/* BLOCO DE TÍTULO E SUBTÍTULOS ALINHADOS TOTALMENTE À ESQUERDA (PADRÃO PÁGINA 1) */}
+          <div className="mb-2 md:mb-3 text-left flex flex-col items-start w-full max-w-[950px] shrink-0">
             <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-0.5 md:mb-1" style={{ color: '#768294' }}>
               Para Terapeutas
             </h5>
@@ -494,26 +494,26 @@ export default function LandingPage() {
                 filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
               }}
             >
-              Nós ajudamos o mundo a encontrar você
+              Nós ajudamos o mundo a encontrar você!
             </p>
             <p
-              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[850px]"
+              className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-left max-w-[880px]"
               style={{
                 color: '#768294',
                 filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
               }}
             >
-              Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis. Na EA Lumina você faz parte de uma comunidade que cresce unida, compartilha propósito e utiliza tecnologia para ampliar seu alcance sem perder sua essência
+              Muitos terapeutas possuem conhecimento extraordinário, mas permanecem invisíveis. Na EA Lumina você faz parte de uma comunidade que cresce unida, compartilha propósito e utiliza tecnologia para ampliar seu alcance sem perder sua essência.
             </p>
           </div>
 
-          {/* BOX ÚNICO CENTRALIZADO (EQUIVALENTE AO TAMANHO DE 2 BOXES PADRÃO JUNTOS, EM BRANCO) */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2">
+          {/* BOX ÚNICO CENTRALIZADO NA TELA */}
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 min-h-[180px] md:min-h-[220px] flex items-center justify-center shadow-lg my-1.5 md:my-2 self-center mx-auto">
             {/* Por enquanto em branco */}
           </div>
 
           {/* BOTÃO SAIBA MAIS */}
-          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20">
+          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <Link href="/register?role=TERAPEUTA" className="shrink-0">
               <button
                 className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md inline-flex items-center gap-2 justify-center cursor-pointer"
