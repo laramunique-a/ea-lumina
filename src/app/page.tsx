@@ -791,7 +791,7 @@ export default function LandingPage() {
             {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (CENTRALIZADOS) */}
             <div className="md:col-span-6 text-center flex flex-col items-center justify-center w-full shrink-0 z-10 px-2">
               <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-3 text-center" style={{ color: '#768294' }}>
-                Educação e Evolução
+                ACADEMIA
               </h5>
               <h2
                 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-3 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[820px]"
@@ -816,12 +816,12 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA CURSOS (COL 6) */}
-            <div className="md:col-span-6 relative w-full h-[200px] sm:h-[260px] md:h-[340px] lg:h-[380px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA ACADEMIA (COL 6 - TAMANHO EXPANDIDO) */}
+            <div className="md:col-span-6 relative w-full h-[230px] sm:h-[300px] md:h-[390px] lg:h-[440px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-cursos.jpg"
-                alt="Jornada de Aprendizado e Cursos EA Lumina"
-                className="w-full h-full object-contain object-center scale-105 md:scale-110 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
+                alt="Academia e Cursos EA Lumina"
+                className="w-full h-full object-contain object-center scale-110 md:scale-115 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
               />
               {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
