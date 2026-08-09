@@ -45,14 +45,32 @@ export async function POST(request: NextRequest) {
     }
 
     const { email, password } = validated.data
+    const normalizedEmail = email.toLowerCase().trim()
 
-    const user = await prisma.user.findUnique({ 
-      where: { email },
-      include: {
-        patientProfile: { select: { socialName: true } },
-        therapistProfile: { select: { professionalName: true } }
-      }
-    })
+    let user = null
+    try {
+      user = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          password: true,
+          role: true,
+          active: true,
+          avatarUrl: true,
+          patientProfile: { select: { socialName: true } },
+          therapistProfile: { select: { professionalName: true } },
+        },
+      })
+    } catch (dbErr) {
+      const err = dbErr instanceof Error ? dbErr : new Error(String(dbErr))
+      console.error('[LOGIN_DB_ERROR]', err.message, err.stack)
+      return NextResponse.json(
+        { success: false, error: 'Erro ao conectar ao banco de dados: ' + err.message },
+        { status: 500 }
+      )
+    }
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return NextResponse.json(
@@ -97,7 +115,7 @@ export async function POST(request: NextRequest) {
     return response
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error))
-    console.error('[LOGIN]', err.message, err.stack)
-    return NextResponse.json({ success: false, error: 'Erro interno do servidor' }, { status: 500 })
+    console.error('[LOGIN_FATAL_ERROR]', err.message, err.stack)
+    return NextResponse.json({ success: false, error: err.message || 'Erro ao realizar login' }, { status: 500 })
   }
 }
