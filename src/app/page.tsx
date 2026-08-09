@@ -800,30 +800,186 @@ export default function LandingPage() {
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[radial-gradient(circle_at_center,_#1e293b_0%,_#0f172a_50%,_#020617_100%)] overflow-y-auto md:overflow-hidden shrink-0 pb-6 md:pb-0"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 py-2 md:py-3 lg:py-4"
       >
-        <HeaderLogo />
-
-        {/* Botão Início: estático no mobile (no topo do fluxo), absoluto no desktop */}
-        <div className="w-full px-4 md:px-12 pt-4 md:pt-0 md:absolute md:top-8 md:left-8 md:w-auto">
-          <button onClick={() => scrollToSection('home')} className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2 z-40">
-            <ChevronLeft size={14} /> Início
+        {/* ── HEADER MOBILE DA PÁGINA 5 ── */}
+        <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
+          <button onClick={() => scrollToSection('home')} className="text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1 z-40">
+            <ChevronLeft size={14} /> Voltar
           </button>
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2">
+              <Link href="/login">
+                <button
+                  className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                  style={{ color: '#0063c6' }}
+                >
+                  Entrar
+                </button>
+              </Link>
+              <Link href="/register">
+                <button
+                  className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all shadow-md backdrop-blur-md"
+                  style={{ color: '#0063c6' }}
+                >
+                  Criar conta
+                </button>
+              </Link>
+            </div>
+            {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (MOBILE) */}
+            <div className="w-[100px] h-auto opacity-90 pointer-events-none mt-0.5 flex items-center justify-center">
+              <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
+            </div>
+          </div>
         </div>
 
-        <div className="max-w-5xl mx-auto px-4 md:px-12 w-full flex-1 flex flex-col items-center justify-center text-center py-4 shrink-0 overflow-y-auto md:overflow-hidden">
-          <div className="w-full mb-4 md:mb-6 text-center">
-            <h5 className={LANDING_THEME.tag.gold}>Educação e Evolução</h5>
-            <h2 className={LANDING_THEME.typography.titleGradient} style={LANDING_THEME.typography.titleGradientStyle}>
-              Jornada de <br className="hidden md:block" />Aprendizado.
-            </h2>
-          </div>
-          <p className={LANDING_THEME.typography.paragraph + " mb-6 md:mb-8 max-w-[800px] px-2 md:px-4"}>
-            Aprofunde seus conhecimentos e expanda sua consciência. Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
-          </p>
-          <button className={`${LANDING_THEME.button.gold} inline-flex items-center gap-3 justify-center whitespace-nowrap mx-auto`}>
-            Explorar Catálogo <ArrowRight size={14} />
+        {/* ── HEADER DESKTOP DA PÁGINA 5 ── */}
+        <div className="hidden md:flex absolute top-6 left-8 items-center gap-4 z-40">
+          <button onClick={() => scrollToSection('home')} className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-2">
+            <ChevronLeft size={14} /> Voltar
           </button>
+        </div>
+        <div className="hidden md:flex absolute top-6 right-8 flex-col items-center gap-2.5 z-40">
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Entrar
+              </button>
+            </Link>
+            <Link href="/register">
+              <button
+                className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-5 py-2.5 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md"
+                style={{ color: '#0063c6' }}
+              >
+                Criar conta
+              </button>
+            </Link>
+          </div>
+          {/* LOGO EALUMINA CENTRALIZADO NO MEIO DOS BOTÕES (DESKTOP) */}
+          <div className="w-[140px] lg:w-[160px] h-auto opacity-90 pointer-events-none drop-shadow-md flex items-center justify-center">
+            <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain mx-auto" />
+          </div>
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
+
+          {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS CENTRALIZADOS, IMAGEM HERO À DIREITA) */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-1 items-center shrink-0">
+            {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (CENTRALIZADOS) */}
+            <div className="md:col-span-6 text-center flex flex-col items-center justify-center w-full shrink-0 z-10 px-2">
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2 text-center" style={{ color: '#768294' }}>
+                Educação e Evolução
+              </h5>
+              <h2
+                className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[780px]"
+                style={{
+                  background: '#E19B28',
+                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
+                }}
+              >
+                Jornada de Aprendizado.
+              </h2>
+              <p
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-center max-w-[720px] mx-auto"
+                style={{
+                  color: '#fbfbfb',
+                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+                }}
+              >
+                Aprofunde seus conhecimentos e expanda sua consciência.
+              </p>
+              <p
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-center max-w-[680px] mx-auto"
+                style={{
+                  color: '#768294',
+                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
+                }}
+              >
+                Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
+              </p>
+            </div>
+
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA CURSOS (COL 6) */}
+            <div className="md:col-span-6 relative w-full h-[140px] sm:h-[180px] md:h-[290px] lg:h-[330px] mt-1 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+              <img
+                src="/hero-cursos.jpg"
+                alt="Jornada de Aprendizado e Cursos EA Lumina"
+                className="w-full h-full object-contain object-center scale-105 md:scale-110 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
+              />
+              {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none" />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, transparent 40%, #010409 90%)',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-fit md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg mt-2 mb-3 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
+            {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO (CENTRALIZADOS) */}
+            <div className="flex-1 text-center flex flex-col items-center justify-center px-2 md:px-4">
+              <h3
+                className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight mb-1 leading-snug bg-clip-text text-transparent text-center"
+                style={{
+                  background: '#E19B28',
+                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(2px 3px 6px #010409)'
+                }}
+              >
+                Conhecimento que transforma vidas.
+              </h3>
+              <p
+                className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-center max-w-[540px] mx-auto"
+                style={{
+                  color: '#768294',
+                  filter: 'drop-shadow(1px 1px 3px #010409)'
+                }}
+              >
+                Aprenda técnicas integrativas e científicas para elevar sua prática e expansão da consciência.
+              </p>
+            </div>
+
+            {/* DIVISÓRIA VERTICAL | (Sem encostar no topo nem na base do box) */}
+            <div className="hidden md:block w-[1px] h-[70px] lg:h-[85px] bg-white/10 mx-4 lg:mx-6 shrink-0" />
+
+            {/* LADO DIREITO DO BOX: TEXTO CURSIVO RISCADO E INCLINADO COM SUBTRACE */}
+            <div className="shrink-0 flex flex-col items-center justify-center pt-1 md:pt-0 transform -rotate-3 hover:-rotate-1 transition-transform">
+              <span
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#E19B28] leading-tight text-center font-normal tracking-wide"
+                style={{
+                  fontFamily: "'Caveat', 'Dancing Script', cursive",
+                  textShadow: '0px 2px 4px rgba(1, 4, 9, 0.9)'
+                }}
+              >
+                Conhecimento é<br />transformação!
+              </span>
+              {/* Linha riscada de sublinhado inclinado */}
+              <div className="w-[110px] md:w-[130px] h-[2px] bg-[#E19B28] rounded-full mt-1 opacity-90 shadow-sm" />
+            </div>
+          </div>
+
+          {/* BOTÃO EXPLORAR CATÁLOGO */}
+          <div className="mt-3 md:mt-2 mb-6 md:mb-0 pb-4 md:pb-0 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
+            <button
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer inline-flex items-center gap-3 justify-center"
+              style={{ color: '#0063c6' }}
+            >
+              Explorar Catálogo <ArrowRight size={14} />
+            </button>
+          </div>
+
         </div>
         <Footer />
       </section>
