@@ -527,7 +527,7 @@ export default function LandingPage() {
             </div>
 
             {/* LADO DIREITO: IMAGEM HERO DA PÁGINA TERAPEUTAS (COL 6) */}
-            <div className="md:col-span-6 relative w-full h-[200px] sm:h-[240px] md:h-[290px] lg:h-[330px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            <div className="md:col-span-6 relative w-full h-[140px] sm:h-[180px] md:h-[290px] lg:h-[330px] mt-1 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-terapeutas.jpg"
                 alt="Comunidade de Terapeutas EA Lumina"
@@ -546,7 +546,7 @@ export default function LandingPage() {
           </div>
 
           {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-[140px] md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg my-1 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-fit md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg mt-2 mb-3 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
             {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO (CENTRALIZADOS) */}
             <div className="flex-1 text-center flex flex-col items-center justify-center px-2 md:px-4">
               <h3
@@ -592,7 +592,7 @@ export default function LandingPage() {
           </div>
 
           {/* BOTÃO SAIBA MAIS */}
-          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
+          <div className="mt-3 md:mt-2 mb-6 md:mb-0 pb-4 md:pb-0 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
               onClick={() => setShowSaibaMaisTerapeutasModal(true)}
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
@@ -716,7 +716,7 @@ export default function LandingPage() {
             </div>
 
             {/* LADO DIREITO: IMAGEM HERO DA PÁGINA EMPRESAS (COL 6) */}
-            <div className="md:col-span-6 relative w-full h-[200px] sm:h-[240px] md:h-[290px] lg:h-[330px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            <div className="md:col-span-6 relative w-full h-[140px] sm:h-[180px] md:h-[290px] lg:h-[330px] mt-1 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-empresas.jpg"
                 alt="Saúde e Bem-estar Corporativo EA Lumina"
@@ -735,7 +735,7 @@ export default function LandingPage() {
           </div>
 
           {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-[140px] md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg my-1 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
+          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-fit md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg mt-2 mb-3 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
             {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO (CENTRALIZADOS) */}
             <div className="flex-1 text-center flex flex-col items-center justify-center px-2 md:px-4">
               <h3
@@ -781,7 +781,7 @@ export default function LandingPage() {
           </div>
 
           {/* BOTÃO FALAR COM CONSULTOR */}
-          <div className="mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
+          <div className="mt-3 md:mt-2 mb-6 md:mb-0 pb-4 md:pb-0 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
               style={{ color: '#0063c6' }}
