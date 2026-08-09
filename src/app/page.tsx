@@ -54,6 +54,7 @@ export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showSaibaMaisModal, setShowSaibaMaisModal] = useState(false)
   const [showSaibaMaisTerapeutasModal, setShowSaibaMaisTerapeutasModal] = useState(false)
+  const [showSaibaMaisEmpresasModal, setShowSaibaMaisEmpresasModal] = useState(false)
 
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
@@ -83,7 +84,7 @@ export default function LandingPage() {
 
     const handleWheel = (e: WheelEvent) => {
       if (window.innerWidth < 768) return // ignora no mobile
-      if (showSaibaMaisModal || showSaibaMaisTerapeutasModal) return // ignora quando qualquer um dos modais estiver aberto, permitindo scroll vertical do mouse no texto
+      if (showSaibaMaisModal || showSaibaMaisTerapeutasModal || showSaibaMaisEmpresasModal) return // ignora quando qualquer um dos modais estiver aberto, permitindo scroll vertical do mouse no texto
 
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
@@ -96,7 +97,7 @@ export default function LandingPage() {
 
     container.addEventListener('wheel', handleWheel, { passive: false })
     return () => container.removeEventListener('wheel', handleWheel)
-  }, [showSaibaMaisModal, showSaibaMaisTerapeutasModal])
+  }, [showSaibaMaisModal, showSaibaMaisTerapeutasModal, showSaibaMaisEmpresasModal])
 
   return (
     <div
@@ -780,13 +781,14 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* BOTÃO FALAR COM CONSULTOR */}
+          {/* BOTÃO SAIBA MAIS (EMPRESAS) */}
           <div className="mt-3 md:mt-2 mb-6 md:mb-0 pb-4 md:pb-0 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
+              onClick={() => setShowSaibaMaisEmpresasModal(true)}
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
               style={{ color: '#0063c6' }}
             >
-              Falar com Consultor
+              Saiba Mais
             </button>
           </div>
 
@@ -1001,6 +1003,119 @@ export default function LandingPage() {
             <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
               <button
                 onClick={() => setShowSaibaMaisTerapeutasModal(false)}
+                className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL FLUTUANTE: SAIBA MAIS (EMPRESAS) ── */}
+      {showSaibaMaisEmpresasModal && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+          onWheel={(e) => e.stopPropagation()}
+        >
+          <div className="relative w-full max-w-3xl max-h-[85vh] bg-[#010409]/95 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden">
+            {/* Header do Modal com botão X */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0 bg-white/[0.02]">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0063c6]">
+                EALUMINA — Proposta Corporativa
+              </span>
+              <button
+                onClick={() => setShowSaibaMaisEmpresasModal(false)}
+                className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Fechar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Conteúdo com scroll interno */}
+            <div className="p-6 md:p-8 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed font-normal" style={{ color: '#768294' }}>
+              <p className="font-semibold text-white text-sm sm:text-base">
+                Olá,
+              </p>
+
+              <p className="italic font-medium text-slate-300">
+                Acreditamos que o bem-estar das pessoas é o maior ativo de qualquer organização. É com esse princípio que a EALUMINA apresenta uma nova forma de cuidar das pessoas, oferecendo soluções integradas para o desenvolvimento humano, o bem-estar emocional e o fortalecimento da cultura organizacional.
+              </p>
+
+              <p>
+                As organizações mais inovadoras já compreenderam que resultados sustentáveis começam com o equilíbrio humano. Equipes emocionalmente saudáveis se comunicam melhor, lideram com maior clareza, tomam decisões mais bem informadas e constroem relações de confiança. O resultado? Ambientes de trabalho muito mais produtivos.
+              </p>
+
+              <p className="font-semibold text-white text-sm sm:text-base pt-2 border-t border-white/5">
+                Muito além dos benefícios corporativos
+              </p>
+
+              <p>
+                Sabemos que cada organização tem sua própria cultura, seus próprios desafios e sua própria identidade. Por isso, não oferecemos soluções padronizadas. Ajudamos a sua empresa a criar programas totalmente personalizados, desenhados sob medida para os seus objetivos e necessidades.
+              </p>
+
+              <p className="font-semibold text-white text-sm sm:text-base pt-2 border-t border-white/5">
+                Ecossistemas de Desenvolvimento Humano
+              </p>
+
+              <p>
+                Em estreita colaboração com a sua organização, criamos ambientes integrados de cuidado que podem incluir:
+              </p>
+
+              <ul className="list-disc pl-5 space-y-1 text-slate-300 font-medium">
+                <li>Atendimento terapêutico individualizado;</li>
+                <li>Programas de desenvolvimento de liderança;</li>
+                <li>Desenvolvimento emocional de equipes;</li>
+                <li>Jornadas de autodescoberta e formação contínua;</li>
+                <li>Palestras e workshops;</li>
+                <li>Plataformas digitais exclusivas;</li>
+                <li>Inteligência artificial aplicada ao fomento do bem-estar.</li>
+              </ul>
+
+              <p className="font-semibold text-white text-sm sm:text-base pt-2 border-t border-white/5">
+                As melhores pessoas constroem as melhores empresas
+              </p>
+
+              <p>
+                Acreditamos que empresas saudáveis são construídas por pessoas emocionalmente equilibradas. Quando um colaborador encontra o seu equilíbrio, a relação consigo mesmo melhora. Quando as equipes se equilibram, toda a organização avança. E quando os líderes desenvolvem essa consciência, toda a cultura da empresa evolui.
+              </p>
+
+              <p>
+                Para apoiar essa jornada, reunimos profissionais especializados em diversas abordagens de desenvolvimento humano e terapias integrativas. Nossa missão não é apenas aplicar uma técnica, mas construir um verdadeiro ecossistema de cuidado que apoie as pessoas em todas as etapas de seus processos.
+              </p>
+
+              <p>
+                Tudo isso com a tecnologia a serviço das pessoas. Desenvolvemos plataformas inteligentes que facilitam o acesso dos colaboradores aos nossos profissionais, conteúdos e recursos. A tecnologia nos aproxima, mas o cuidado permanece, fundamentalmente, humano.
+              </p>
+
+              <p className="font-semibold text-white text-sm sm:text-base pt-2 border-t border-white/5">
+                Um convite para a sua empresa
+              </p>
+
+              <p>
+                Nossa visão é clara: o futuro será construído por empresas capazes de cuidar de suas pessoas com a mesma dedicação que dedicam aos seus resultados — afinal, produtividade e bem-estar não caminham em direções opostas; eles crescem juntos.
+              </p>
+
+              <p>
+                As grandes transformações começam com uma decisão. A decisão de cuidar das pessoas. A decisão de investir em uma cultura mais consciente e de criar organizações onde bem-estar, alto desempenho e propósito andem de mãos dadas.
+              </p>
+
+              <p className="italic font-medium text-slate-300">
+                Estamos prontos para desenvolver um ecossistema único para a sua empresa. Solicite uma reunião para conhecer nossa proposta personalizada.
+              </p>
+
+              <div className="pt-3 border-t border-white/10">
+                <p className="font-semibold text-white">Um abraço,</p>
+                <p className="font-bold text-[#E19B28]">Equipe EALUMINA</p>
+                <p className="text-xs text-slate-400 mt-1 italic">Transformando pessoas. Fortalecendo organizações. Inspirando o futuro.</p>
+              </div>
+            </div>
+
+            {/* Footer do Modal com botão 'Fechar' */}
+            <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
+              <button
+                onClick={() => setShowSaibaMaisEmpresasModal(false)}
                 className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
               >
                 Fechar
