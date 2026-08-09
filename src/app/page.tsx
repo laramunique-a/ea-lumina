@@ -757,7 +757,7 @@ export default function LandingPage() {
                   filter: 'drop-shadow(1px 1px 3px #010409)'
                 }}
               >
-                Na harmonia e na paz a vida floresce. Viva mais leve. Viva mais feliz!
+                Na harmonia e na paz a vida floresce.<br />Viva mais leve. Viva mais feliz!
               </p>
             </div>
 
