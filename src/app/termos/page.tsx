@@ -4,7 +4,6 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { Footer } from '@/components/Footer'
 
 export default function TermsPage() {
   return (
@@ -127,7 +126,10 @@ export default function TermsPage() {
         </div>
       </div>
       
-      <Footer />
+      {/* Rodapé discreto de encerramento */}
+      <div className="z-20 text-xs text-slate-400 font-medium tracking-wide shrink-0 pb-8 pt-4 text-center">
+        © {new Date().getFullYear()} EALUMINA. Todos os direitos reservados.
+      </div>
     </div>
   )
 }
