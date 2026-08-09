@@ -1,11 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Mail, Lock, User, Stethoscope, Heart, ArrowRight, ChevronLeft } from 'lucide-react'
+import { Mail, Lock, User, Stethoscope, Heart, Eye, EyeOff, ArrowRight, ChevronLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
@@ -39,6 +40,9 @@ export default function RegisterForm() {
   const searchParams = useSearchParams()
   const defaultRole = searchParams.get('role') === 'TERAPEUTA' ? 'TERAPEUTA' : 'PACIENTE'
   const { setUser, setAccessToken } = useAuthStore()
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const {
     register,
@@ -192,11 +196,19 @@ export default function RegisterForm() {
                 <div className="relative flex items-center">
                   <Lock size={15} className="absolute left-3.5 text-slate-400 pointer-events-none" />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     {...register('password')}
-                    className="w-full bg-white/5 border border-white/15 text-white placeholder:text-slate-400 rounded-full pl-10 pr-4 py-2 text-xs focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.08] transition-all"
+                    className="w-full bg-white/5 border border-white/15 text-white placeholder:text-slate-400 rounded-full pl-10 pr-9 py-2 text-xs focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.08] transition-all"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 text-slate-400 hover:text-white transition-colors cursor-pointer p-0.5"
+                    title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  >
+                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.password.message}</p>
@@ -210,11 +222,19 @@ export default function RegisterForm() {
                 <div className="relative flex items-center">
                   <Lock size={15} className="absolute left-3.5 text-slate-400 pointer-events-none" />
                   <input
-                    type="password"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     {...register('confirmPassword')}
-                    className="w-full bg-white/5 border border-white/15 text-white placeholder:text-slate-400 rounded-full pl-10 pr-4 py-2 text-xs focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.08] transition-all"
+                    className="w-full bg-white/5 border border-white/15 text-white placeholder:text-slate-400 rounded-full pl-10 pr-9 py-2 text-xs focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.08] transition-all"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 text-slate-400 hover:text-white transition-colors cursor-pointer p-0.5"
+                    title={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  >
+                    {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  </button>
                 </div>
                 {errors.confirmPassword && (
                   <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.confirmPassword.message}</p>
