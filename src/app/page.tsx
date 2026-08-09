@@ -748,7 +748,7 @@ export default function LandingPage() {
                   filter: 'drop-shadow(2px 3px 6px #010409)'
                 }}
               >
-                Invista no maior ativo da sua empresa.
+                Grandes mudanças começam por uma decisão correta.
               </h3>
               <p
                 className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-center max-w-[540px] mx-auto"
@@ -757,7 +757,7 @@ export default function LandingPage() {
                   filter: 'drop-shadow(1px 1px 3px #010409)'
                 }}
               >
-                Programas customizados de prevenção ao burnout, redução de estresse e melhoria de clima organizacional com relatórios de impacto.
+                Na harmonia e na paz a vida floresce. Viva mais leve. Viva mais feliz!
               </p>
             </div>
 
@@ -773,7 +773,7 @@ export default function LandingPage() {
                   textShadow: '0px 2px 4px rgba(1, 4, 9, 0.9)'
                 }}
               >
-                Equipes de<br />alta performance!
+                Viva a felicidade.<br />Viva a alegria!
               </span>
               {/* Linha riscada de sublinhado inclinado */}
               <div className="w-[110px] md:w-[130px] h-[2px] bg-[#E19B28] rounded-full mt-1 opacity-90 shadow-sm" />
