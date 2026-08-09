@@ -874,7 +874,7 @@ export default function LandingPage() {
                 Educação e Evolução
               </h5>
               <h2
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[780px]"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-3 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[820px]"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -883,25 +883,16 @@ export default function LandingPage() {
                   filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
                 }}
               >
-                Jornada de Aprendizado.
+                Educação para transformar vidas.
               </h2>
               <p
-                className="text-sm sm:text-base md:text-lg leading-relaxed font-semibold mb-2 text-center max-w-[720px] mx-auto"
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-semibold mb-2 text-center max-w-[720px] mx-auto"
                 style={{
                   color: '#fbfbfb',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
                 }}
               >
-                Aprofunde seus conhecimentos e expanda sua consciência.
-              </p>
-              <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-center max-w-[680px] mx-auto"
-                style={{
-                  color: '#768294',
-                  filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
-                }}
-              >
-                Cursos ministrados por especialistas renomados em terapias integrativas, pensados para o seu desenvolvimento pessoal e certificação profissional.
+                Conhecimento que expande.<br />Comunidade que compartilha.
               </p>
             </div>
 
