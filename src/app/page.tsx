@@ -809,7 +809,7 @@ export default function LandingPage() {
               <p
                 className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-semibold mb-2 text-center max-w-[720px] mx-auto"
                 style={{
-                  color: '#fbfbfb',
+                  color: '#636d7d',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
                 }}
               >
@@ -817,12 +817,12 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA ACADEMIA (COL 6 - TAMANHO EXPANDIDO) */}
-            <div className="md:col-span-6 relative w-full h-[230px] sm:h-[300px] md:h-[390px] lg:h-[440px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA ACADEMIA (COL 6 - OCUPANDO METADE DA TELA NO COMPUTADOR) */}
+            <div className="md:col-span-6 relative w-full h-[240px] sm:h-[300px] md:h-[480px] lg:h-[540px] xl:h-[580px] mt-2 md:mt-2 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-cursos.jpg"
                 alt="Academia e Cursos EA Lumina"
-                className="w-full h-full object-contain object-center scale-110 md:scale-115 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
+                className="w-full h-full object-contain object-center scale-110 md:scale-125 lg:scale-130 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
               />
               {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
