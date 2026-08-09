@@ -864,17 +864,17 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-start gap-1.5 md:gap-2.5 lg:gap-3.5 pt-2 pb-4 md:py-2 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-4 md:gap-6 lg:gap-8 pt-4 pb-6 md:py-4 shrink-0 overflow-y-auto md:overflow-hidden">
 
           {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS CENTRALIZADOS, IMAGEM HERO À DIREITA) */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-1 items-center shrink-0">
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center shrink-0">
             {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (CENTRALIZADOS) */}
             <div className="md:col-span-6 text-center flex flex-col items-center justify-center w-full shrink-0 z-10 px-2">
-              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-1.5 lg:mb-2 text-center" style={{ color: '#768294' }}>
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-3 text-center" style={{ color: '#768294' }}>
                 Educação e Evolução
               </h5>
               <h2
-                className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[780px]"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[780px]"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -886,7 +886,7 @@ export default function LandingPage() {
                 Jornada de Aprendizado.
               </h2>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-center max-w-[720px] mx-auto"
+                className="text-sm sm:text-base md:text-lg leading-relaxed font-semibold mb-2 text-center max-w-[720px] mx-auto"
                 style={{
                   color: '#fbfbfb',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -906,7 +906,7 @@ export default function LandingPage() {
             </div>
 
             {/* LADO DIREITO: IMAGEM HERO DA PÁGINA CURSOS (COL 6) */}
-            <div className="md:col-span-6 relative w-full h-[140px] sm:h-[180px] md:h-[290px] lg:h-[330px] mt-1 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            <div className="md:col-span-6 relative w-full h-[200px] sm:h-[260px] md:h-[340px] lg:h-[380px] mt-2 md:mt-4 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-cursos.jpg"
                 alt="Jornada de Aprendizado e Cursos EA Lumina"
@@ -924,54 +924,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* BOX ÚNICO CENTRALIZADO NA TELA COM CONTEÚDO E DIVISÓRIA | */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 backdrop-blur-md rounded-2xl md:rounded-3xl p-4 sm:p-5 md:p-6 min-h-fit md:min-h-[160px] flex flex-col md:flex-row items-center justify-between shadow-lg mt-2 mb-3 md:my-1.5 self-center mx-auto z-10 gap-3 md:gap-0">
-            {/* LADO ESQUERDO DO BOX: TÍTULO E SUBTÍTULO (CENTRALIZADOS) */}
-            <div className="flex-1 text-center flex flex-col items-center justify-center px-2 md:px-4">
-              <h3
-                className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold tracking-tight mb-1 leading-snug bg-clip-text text-transparent text-center"
-                style={{
-                  background: '#E19B28',
-                  backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  filter: 'drop-shadow(2px 3px 6px #010409)'
-                }}
-              >
-                Conhecimento que transforma vidas.
-              </h3>
-              <p
-                className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-normal text-center max-w-[540px] mx-auto"
-                style={{
-                  color: '#768294',
-                  filter: 'drop-shadow(1px 1px 3px #010409)'
-                }}
-              >
-                Aprenda técnicas integrativas e científicas para elevar sua prática e expansão da consciência.
-              </p>
-            </div>
-
-            {/* DIVISÓRIA VERTICAL | (Sem encostar no topo nem na base do box) */}
-            <div className="hidden md:block w-[1px] h-[70px] lg:h-[85px] bg-white/10 mx-4 lg:mx-6 shrink-0" />
-
-            {/* LADO DIREITO DO BOX: TEXTO CURSIVO RISCADO E INCLINADO COM SUBTRACE */}
-            <div className="shrink-0 flex flex-col items-center justify-center pt-1 md:pt-0 transform -rotate-3 hover:-rotate-1 transition-transform">
-              <span
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#E19B28] leading-tight text-center font-normal tracking-wide"
-                style={{
-                  fontFamily: "'Caveat', 'Dancing Script', cursive",
-                  textShadow: '0px 2px 4px rgba(1, 4, 9, 0.9)'
-                }}
-              >
-                Conhecimento é<br />transformação!
-              </span>
-              {/* Linha riscada de sublinhado inclinado */}
-              <div className="w-[110px] md:w-[130px] h-[2px] bg-[#E19B28] rounded-full mt-1 opacity-90 shadow-sm" />
-            </div>
-          </div>
-
           {/* BOTÃO EXPLORAR CATÁLOGO */}
-          <div className="mt-3 md:mt-2 mb-6 md:mb-0 pb-4 md:pb-0 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
+          <div className="mt-4 md:mt-6 mb-6 md:mb-4 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer inline-flex items-center gap-3 justify-center"
               style={{ color: '#0063c6' }}
@@ -981,7 +935,6 @@ export default function LandingPage() {
           </div>
 
         </div>
-        <Footer />
       </section>
 
       {/* ── MODAL FLUTUANTE: SAIBA MAIS (PACIENTES) ── */}
