@@ -684,7 +684,7 @@ export default function LandingPage() {
                 Para Empresas
               </h5>
               <h2
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center"
+                className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold tracking-tight mb-1 md:mb-1.5 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[780px]"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -693,25 +693,25 @@ export default function LandingPage() {
                   filter: 'drop-shadow(3px 5px 8px #010409) drop-shadow(0px 2px 4px rgba(1, 4, 9, 0.95))'
                 }}
               >
-                Bem-estar elevado.
+                Empresas saudáveis começam por pessoas emocionalmente saudáveis.
               </h2>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-center"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-semibold mb-1 text-center max-w-[720px] mx-auto"
                 style={{
                   color: '#fbfbfb',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
                 }}
               >
-                Saúde mental e resiliência corporativa!
+                Equipes emocionalmente equilibradas comunicam melhor, cooperam mais e desenvolvem ambientes de trabalho mais produtivos.
               </p>
               <p
-                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-center max-w-[650px] mx-auto"
+                className="text-xs sm:text-sm md:text-base leading-relaxed font-normal text-center max-w-[680px] mx-auto"
                 style={{
                   color: '#768294',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
                 }}
               >
-                Proporcione equilíbrio mental e emocional para sua equipe através de pacotes exclusivos de terapias integrativas. Profissionais focados, saudáveis e resilientes transformam completamente o ambiente de trabalho e os resultados da sua empresa.
+                A EA Lumina conecta sua empresa a profissionais especializados em programas de bem-estar emocional, desenvolvimento humano e fortalecimento da cultura organizacional.
               </p>
             </div>
 
