@@ -888,7 +888,7 @@ export default function LandingPage() {
               </p>
 
               <p>
-                Vivemos em um mundo que nos ensinou a buscar as respostas fora de nós mesmos — seja esperando que alguém resolva nossos problemas, seja procurando uma técnica perfeita ou uma solução imediata. Mas acreditamos que a verdadeira transformação nasce quando decidimos olhar para o nosso interior. Nenhum terapeuta possui esse poder, e nenhuma técnica fará isso por você. O terapeuta simplesmente ilumina as possibilidades, a tecnologia fornece as ferramentas, mas a transformação sempre pertence àqueles que decidem vivenciá-la.
+                Vivemos em um mundo que nos ensinou a buscar as respostas fora de nós mesmos — seja esperando que alguém resolva nossos problemas, seja procurando uma técnica perfeita ou uma solução imediata. Mas acreditamos que a verdadeira transformação nasce quando decidimos olhar para o nosso interior. Nenhum terapeuta possui esse poder, e nenhuma técnica fará isso por você. O terapeuta simplesmente ilumina as possibilidades, a tecnologia fornece as ferramentas, mas a transformação sempre pertence aqueles que decidem vivenciá-la.
               </p>
 
               <p>
