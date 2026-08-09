@@ -757,11 +757,11 @@ export default function LandingPage() {
       </section>
 
       {/* ──────────────────────────────────────────────────────────
-          TELA 5: CURSOS
+          TELA 5: CURSOS / ACADEMIA
       ────────────────────────────────────────────────────────── */}
       <section
         id="cursos"
-        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-start md:justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 py-2 md:py-3 lg:py-4"
+        className="w-full min-w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] snap-center flex flex-col items-center justify-between relative bg-[#010409] overflow-y-auto md:overflow-hidden shrink-0 pt-2 pb-6 md:pt-4 md:pb-8"
       >
         {/* ── HEADER MOBILE DA PÁGINA 5 ── */}
         <div className="flex md:hidden w-full items-center justify-between px-4 pt-3 pb-1 z-30 shrink-0">
@@ -785,17 +785,17 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-start md:justify-center items-center gap-4 md:gap-6 lg:gap-8 pt-4 pb-6 md:py-4 shrink-0 overflow-y-auto md:overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-12 lg:px-16 w-full flex-1 flex flex-col justify-between items-center gap-2 md:gap-4 pt-4 md:pt-14 pb-2 shrink-0 overflow-y-auto md:overflow-hidden">
 
           {/* ÁREA SUPERIOR: DIVISÃO 2 COLUNAS (TEXTOS CENTRALIZADOS, IMAGEM HERO À DIREITA) */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center shrink-0">
+          <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-center shrink-0 flex-1 my-auto">
             {/* LADO ESQUERDO: TÍTULO E SUBTÍTULOS (CENTRALIZADOS) */}
             <div className="md:col-span-6 text-center flex flex-col items-center justify-center w-full shrink-0 z-10 px-2">
-              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1.5 md:mb-2 lg:mb-3 text-center" style={{ color: '#768294' }}>
+              <h5 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] mb-1 md:mb-2 text-center" style={{ color: '#768294' }}>
                 ACADEMIA
               </h5>
               <h2
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-3 md:mb-4 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[820px]"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight mb-2 md:mb-3 leading-snug md:leading-tight bg-clip-text text-transparent text-center max-w-[820px]"
                 style={{
                   background: '#E19B28',
                   backgroundImage: 'linear-gradient(to right, #E19B28 29%, #1063C2 50%)',
@@ -807,7 +807,7 @@ export default function LandingPage() {
                 Educação para transformar vidas.
               </h2>
               <p
-                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-semibold mb-2 text-center max-w-[720px] mx-auto"
+                className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-semibold mb-1 text-center max-w-[720px] mx-auto"
                 style={{
                   color: '#636d7d',
                   filter: 'drop-shadow(1px 2px 4px #010409) drop-shadow(0px 1px 2px rgba(0,0,0,0.9))'
@@ -817,27 +817,25 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA ACADEMIA (COL 6 - OCUPANDO METADE DA TELA NO COMPUTADOR) */}
-            <div className="md:col-span-6 relative w-full h-[240px] sm:h-[300px] md:h-[480px] lg:h-[540px] xl:h-[580px] mt-2 md:mt-2 -ml-0 md:-ml-4 lg:-ml-8 flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
+            {/* LADO DIREITO: IMAGEM HERO DA PÁGINA ACADEMIA (SEM BORDAS VISÍVEIS, MÁSCARA GRADIENTE RADIAL) */}
+            <div className="md:col-span-6 relative w-full h-[180px] sm:h-[240px] md:h-[320px] lg:h-[380px] xl:h-[420px] my-auto flex items-center justify-center overflow-hidden shrink-0 z-0 pointer-events-none">
               <img
                 src="/hero-cursos.jpg"
                 alt="Academia e Cursos EA Lumina"
-                className="w-full h-full object-contain object-center scale-110 md:scale-125 lg:scale-130 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
-              />
-              {/* Overlays de gradiente para transição imperceptível com a cor de fundo #010409 */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none" />
-              <div
-                className="absolute inset-0 pointer-events-none"
+                className="w-full h-full object-contain object-center scale-105 md:scale-115 opacity-95 brightness-110 contrast-105 filter drop-shadow-2xl"
                 style={{
-                  background: 'radial-gradient(circle at 50% 50%, transparent 40%, #010409 90%)',
+                  maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)'
                 }}
               />
+              {/* Overlays adicionais de gradiente para suavidade total nas 4 bordas */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010409] via-transparent to-[#010409] pointer-events-none opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#010409] via-transparent to-[#010409] pointer-events-none opacity-80" />
             </div>
           </div>
 
-          {/* BOTÃO SAIBA MAIS (ACADEMIA) */}
-          <div className="mt-4 md:mt-6 mb-6 md:mb-4 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
+          {/* BOTÃO SAIBA MAIS (ACADEMIA - POSICIONADO COM ESPAÇO CONFORTÁVEL DA BASE) */}
+          <div className="mb-2 md:mb-4 mt-1 md:mt-2 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
               onClick={() => setShowSaibaMaisAcademiaModal(true)}
               className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
