@@ -80,7 +80,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="w-full h-[100dvh] max-h-[100dvh] bg-[#010409] text-slate-100 font-outfit flex flex-col items-center justify-between relative overflow-hidden px-4 py-3 sm:p-6 selection:bg-[#E19B28]/20">
+    <div className="w-full h-[100dvh] max-h-[100dvh] bg-[#010409] text-slate-100 font-outfit flex flex-col items-center justify-between relative overflow-hidden px-4 py-2 sm:px-6 sm:py-4 selection:bg-[#E19B28]/20">
       
       {/* ── HEADER DA TELA DE REGISTRO ── */}
       <div className="w-full max-w-[1400px] flex items-center justify-between z-40 shrink-0">
@@ -90,59 +90,64 @@ export default function RegisterForm() {
         >
           <ChevronLeft size={16} /> Voltar ao Início
         </Link>
-        <div className="w-[100px] sm:w-[130px] md:w-[150px] h-auto opacity-95 pointer-events-none drop-shadow-lg">
+        <div className="w-[90px] sm:w-[120px] md:w-[140px] h-auto opacity-95 pointer-events-none drop-shadow-lg">
           <img src="/logo-login.jpg" alt="EA Lumina" className="w-full h-auto object-contain rounded-xl" />
         </div>
       </div>
 
       {/* ── CARD CENTRAL DE REGISTRO ── */}
       <div className="w-full flex-1 flex items-center justify-center z-10 px-2 my-auto">
-        <div className="w-full max-w-[440px] bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col items-center text-center">
+        <div className="w-full max-w-[420px] bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl flex flex-col items-center text-center">
           
           {/* Título & Subtítulo */}
-          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-1">
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-0.5">
             Criar sua conta
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 font-normal mb-4">
+          <p className="text-xs sm:text-sm text-slate-300 font-normal mb-3">
             Sua jornada de bem-estar começa agora
           </p>
 
-          {/* Seleção de Perfil (Paciente / Terapeuta) */}
-          <div className="grid grid-cols-2 gap-3 w-full mb-4">
-            <button
-              type="button"
-              onClick={() => setValue('role', 'PACIENTE')}
-              className={cn(
-                'flex items-center justify-center gap-2 py-2 px-3 rounded-full border transition-all duration-300 text-xs sm:text-sm font-bold cursor-pointer',
-                selectedRole === 'PACIENTE'
-                  ? 'bg-[#0063c6] text-white border-[#0063c6] shadow-md'
-                  : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white'
-              )}
-            >
-              <Heart size={14} className={selectedRole === 'PACIENTE' ? 'text-white' : 'text-slate-400'} />
-              Paciente
-            </button>
-            <button
-              type="button"
-              onClick={() => setValue('role', 'TERAPEUTA')}
-              className={cn(
-                'flex items-center justify-center gap-2 py-2 px-3 rounded-full border transition-all duration-300 text-xs sm:text-sm font-bold cursor-pointer',
-                selectedRole === 'TERAPEUTA'
-                  ? 'bg-[#0063c6] text-white border-[#0063c6] shadow-md'
-                  : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white'
-              )}
-            >
-              <Stethoscope size={14} className={selectedRole === 'TERAPEUTA' ? 'text-white' : 'text-slate-400'} />
-              Terapeuta
-            </button>
+          {/* Seleção de Perfil com Rótulo 'EU SOU:' */}
+          <div className="w-full mb-3 text-left">
+            <span className="text-[11px] font-bold tracking-wider text-slate-300 uppercase pl-1 mb-1 block">
+              EU SOU:
+            </span>
+            <div className="grid grid-cols-2 gap-2.5 w-full">
+              <button
+                type="button"
+                onClick={() => setValue('role', 'PACIENTE')}
+                className={cn(
+                  'flex items-center justify-center gap-2 py-1.5 px-3 rounded-full border transition-all duration-300 text-xs sm:text-sm font-bold cursor-pointer',
+                  selectedRole === 'PACIENTE'
+                    ? 'bg-[#0063c6] text-white border-[#0063c6] shadow-md'
+                    : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white'
+                )}
+              >
+                <Heart size={14} className={selectedRole === 'PACIENTE' ? 'text-white' : 'text-slate-400'} />
+                Paciente
+              </button>
+              <button
+                type="button"
+                onClick={() => setValue('role', 'TERAPEUTA')}
+                className={cn(
+                  'flex items-center justify-center gap-2 py-1.5 px-3 rounded-full border transition-all duration-300 text-xs sm:text-sm font-bold cursor-pointer',
+                  selectedRole === 'TERAPEUTA'
+                    ? 'bg-[#0063c6] text-white border-[#0063c6] shadow-md'
+                    : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white'
+                )}
+              >
+                <Stethoscope size={14} className={selectedRole === 'TERAPEUTA' ? 'text-white' : 'text-slate-400'} />
+                Terapeuta
+              </button>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-3 text-left">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-2.5 text-left">
             <input type="hidden" {...register('role')} />
 
             {/* Nome Completo */}
-            <div className="space-y-1">
-              <label className="text-xs font-semibold tracking-wider text-slate-200 uppercase pl-1">
+            <div className="space-y-0.5">
+              <label className="text-[11px] font-semibold tracking-wider text-slate-200 uppercase pl-1">
                 Nome completo
               </label>
               <div className="relative flex items-center">
@@ -155,13 +160,13 @@ export default function RegisterForm() {
                 />
               </div>
               {errors.name && (
-                <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.name.message}</p>
+                <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.name.message}</p>
               )}
             </div>
 
             {/* Campo E-mail */}
-            <div className="space-y-1">
-              <label className="text-xs font-semibold tracking-wider text-slate-200 uppercase pl-1">
+            <div className="space-y-0.5">
+              <label className="text-[11px] font-semibold tracking-wider text-slate-200 uppercase pl-1">
                 E-mail
               </label>
               <div className="relative flex items-center">
@@ -174,14 +179,14 @@ export default function RegisterForm() {
                 />
               </div>
               {errors.email && (
-                <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.email.message}</p>
+                <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.email.message}</p>
               )}
             </div>
 
             {/* Senha e Confirmar Senha (2 Colunas) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold tracking-wider text-slate-200 uppercase pl-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="space-y-0.5">
+                <label className="text-[11px] font-semibold tracking-wider text-slate-200 uppercase pl-1">
                   Senha
                 </label>
                 <div className="relative flex items-center">
@@ -194,12 +199,12 @@ export default function RegisterForm() {
                   />
                 </div>
                 {errors.password && (
-                  <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.password.message}</p>
+                  <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.password.message}</p>
                 )}
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold tracking-wider text-slate-200 uppercase pl-1">
+              <div className="space-y-0.5">
+                <label className="text-[11px] font-semibold tracking-wider text-slate-200 uppercase pl-1">
                   Confirmar
                 </label>
                 <div className="relative flex items-center">
@@ -212,7 +217,7 @@ export default function RegisterForm() {
                   />
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.confirmPassword.message}</p>
+                  <p className="text-[10px] text-red-400 pl-3 pt-0.5">{errors.confirmPassword.message}</p>
                 )}
               </div>
             </div>
@@ -221,7 +226,7 @@ export default function RegisterForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#0063c6] hover:bg-[#0052a3] text-white rounded-full py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer mt-2 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full bg-[#0063c6] hover:bg-[#0052a3] text-white rounded-full py-2.5 sm:py-3 text-xs sm:text-sm font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer mt-1 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Criando conta...</span>
@@ -235,7 +240,7 @@ export default function RegisterForm() {
           </form>
 
           {/* Termos & Login Link */}
-          <div className="mt-4 pt-3 border-t border-white/10 w-full text-center space-y-2">
+          <div className="mt-3 pt-2.5 border-t border-white/10 w-full text-center space-y-1">
             <p className="text-[10px] text-slate-400">
               Ao se cadastrar, você concorda com nossos{' '}
               <Link href="/termos" className="text-[#E19B28] hover:underline font-semibold">
