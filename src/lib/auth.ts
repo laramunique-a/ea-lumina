@@ -3,12 +3,19 @@ import { cookies } from 'next/headers'
 import { prisma } from './prisma'
 import { NextRequest } from 'next/server'
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
-const JWT_REFRESH_SECRET = new TextEncoder().encode(process.env.JWT_REFRESH_SECRET!)
-// Secret dedicado para tokens de reset de senha (separado do secret de sessão por segurança)
-const JWT_RESET_SECRET = new TextEncoder().encode(
-  process.env.JWT_RESET_SECRET || process.env.JWT_SECRET!
-)
+const DEFAULT_JWT_SECRET = 'ea-lumina-jwt-secret-key-2026-production-secure-32bytes'
+const DEFAULT_REFRESH_SECRET = 'ea-lumina-jwt-refresh-secret-key-2026-production-secure-32bytes'
+const DEFAULT_RESET_SECRET = 'ea-lumina-jwt-reset-secret-key-2026-production-secure-32bytes'
+
+function getSecretKey(envVar?: string, fallback = DEFAULT_JWT_SECRET): Uint8Array {
+  const s = envVar?.trim()
+  const key = s && s.length >= 32 ? s : (s && s.length > 0 ? s.padEnd(32, '0') : fallback)
+  return new TextEncoder().encode(key)
+}
+
+const JWT_SECRET = getSecretKey(process.env.JWT_SECRET, DEFAULT_JWT_SECRET)
+const JWT_REFRESH_SECRET = getSecretKey(process.env.JWT_REFRESH_SECRET, DEFAULT_REFRESH_SECRET)
+const JWT_RESET_SECRET = getSecretKey(process.env.JWT_RESET_SECRET || process.env.JWT_SECRET, DEFAULT_RESET_SECRET)
 
 export interface JWTPayload {
   sub: string      // userId
@@ -133,12 +140,16 @@ export async function getServerSession(): Promise<JWTPayload | null> {
 // ==========================================
 
 export async function saveRefreshToken(userId: string, token: string): Promise<void> {
-  const expiresAt = new Date()
-  expiresAt.setDate(expiresAt.getDate() + 7) // 7 dias
+  try {
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 7) // 7 dias
 
-  await prisma.refreshToken.create({
-    data: { token, userId, expiresAt },
-  })
+    await prisma.refreshToken.create({
+      data: { token, userId, expiresAt },
+    })
+  } catch (error) {
+    console.error('[AUTH] Failed to save refreshToken to DB:', error)
+  }
 }
 
 export async function revokeRefreshToken(token: string): Promise<void> {

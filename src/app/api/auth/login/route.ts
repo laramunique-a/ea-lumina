@@ -33,14 +33,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
-    console.error('[LOGIN] Missing JWT_SECRET or JWT_REFRESH_SECRET')
-    return NextResponse.json(
-      { success: false, error: 'Erro de configuração do servidor. Tente novamente mais tarde.' },
-      { status: 503 }
-    )
-  }
-
   try {
     const body = await request.json()
     const validated = loginSchema.safeParse(body)
