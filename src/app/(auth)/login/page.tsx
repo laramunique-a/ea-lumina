@@ -5,32 +5,32 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
-import { Mail, Lock, ArrowRight } from 'lucide-react'
+import { Mail, Lock, ArrowRight, ChevronLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuthStore } from '@/hooks/useAuth'
-import { Logo } from '@/components/ui/Logo'
-import { Footer } from '@/components/Footer'
 
 const loginSchema = z.object({
-  email:    z.string().email('E-mail inválido'),
+  email: z.string().email('E-mail inválido'),
   password: z.string().min(1, 'Senha obrigatória'),
 })
 
 type LoginForm = z.infer<typeof loginSchema>
 
 const DASHBOARD_BY_ROLE: Record<string, string> = {
-  ADMIN:     '/dashboard/admin',
+  ADMIN: '/dashboard/admin',
   TERAPEUTA: '/dashboard/terapeuta',
-  PACIENTE:  '/dashboard/paciente',
+  PACIENTE: '/dashboard/paciente',
 }
 
 export default function LoginPage() {
   const router = useRouter()
   const { setUser, setAccessToken } = useAuthStore()
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   })
 
@@ -56,101 +56,114 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-between bg-[#010409] bg-[radial-gradient(circle_at_center,_#020c16_0%,_#010810_50%,_#010409_100%)] selection:bg-[#C5A03F]/20 overflow-x-hidden w-full">
+    <div className="w-full h-[100dvh] max-h-[100dvh] bg-[#010409] text-slate-100 font-outfit flex flex-col justify-between items-center relative overflow-hidden p-4 sm:p-6 selection:bg-[#E19B28]/20">
       
-      {/* Espaçador flex para centralizar o card */}
-      <div className="flex-1 flex items-center justify-center w-full px-6 py-12">
-        {/* Conteúdo Principal */}
-        <div className="relative z-10 w-full max-w-[400px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        
-        {/* Logo Centralizado (Aumentado para presença forte com máscara circular) */}
-        <div className="mb-8 flex justify-center">
-          <Link href="/" className="transition-transform hover:scale-105 active:scale-95 duration-500 block">
-            <div className="relative w-32 h-32 md:w-36 md:h-36">
-              <img
-                src="/logo-dark.jpg"
-                alt="EA Lumina"
-                className="w-full h-full object-contain"
-                style={{
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)',
-                  maskImage: 'radial-gradient(circle at center, black 50%, transparent 75%)'
-                }}
-              />
-            </div>
-          </Link>
+      {/* ── HEADER DA TELA DE LOGIN ── */}
+      <div className="w-full max-w-[1400px] flex items-center justify-between z-40 shrink-0">
+        <Link
+          href="/"
+          className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 hover:text-white flex items-center gap-1.5 transition-colors"
+        >
+          <ChevronLeft size={16} /> Voltar ao Início
+        </Link>
+        <div className="w-[110px] sm:w-[130px] h-auto opacity-90 pointer-events-none drop-shadow-md">
+          <img src="/logo-ealumina-header.png" alt="EA Lumina" className="w-full h-auto object-contain" />
         </div>
+      </div>
 
-        {/* Cabeçalho do Card */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-black tracking-tight text-white mb-2">Entrar na sua conta</h1>
-          <p className="text-sm text-slate-400 font-normal tracking-tight max-w-[280px] mx-auto leading-relaxed">
-            Faça seu login e gerencie sua jornada de bem-estar
+      {/* ── CARD CENTRAL DE LOGIN ── */}
+      <div className="w-full flex-1 flex items-center justify-center z-10 px-2 py-2 my-auto">
+        <div className="w-full max-w-[380px] bg-white/[0.03] border border-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col items-center text-center">
+          
+          {/* Destaque Superior */}
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-1">
+            Entrar na sua conta
+          </h1>
+          <p className="text-xs text-[#768294] font-normal mb-6">
+            Acesse seu painel EALUMINA
           </p>
-        </div>
 
-        {/* Formulário com Efeito de Vidro */}
-        <div className="bg-black/40 border border-white/5 backdrop-blur-xl shadow-2xl p-8 md:p-10 rounded-3xl">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <Input
-              label="E-mail"
-              type="email"
-              placeholder="seu@email.com"
-              leftIcon={<Mail size={15} className="text-slate-400" />}
-              error={errors.email?.message}
-              {...register('email')}
-              labelClassName="text-slate-300 font-medium tracking-wide"
-              className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
-            />
-            
-            <div className="space-y-2">
-              <Input
-                label="Senha"
-                type="password"
-                placeholder="••••••••"
-                leftIcon={<Lock size={15} className="text-slate-400" />}
-                error={errors.password?.message}
-                {...register('password')}
-                labelClassName="text-slate-300 font-medium tracking-wide"
-                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:bg-black/30 focus:border-[#C5A03F]/50 focus:ring-[#C5A03F]/10 text-sm h-12 rounded-xl transition-all duration-300"
-              />
-              <div className="flex justify-end">
-                <Link 
-                  href="/forgot-password" 
-                  className="text-xs text-slate-400 hover:text-white font-semibold transition-colors"
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4 text-left">
+            {/* Campo E-mail */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold tracking-wider text-slate-300 uppercase pl-1">
+                E-mail
+              </label>
+              <div className="relative flex items-center">
+                <Mail size={15} className="absolute left-3.5 text-slate-400 pointer-events-none" />
+                <input
+                  type="email"
+                  placeholder="seu@email.com"
+                  {...register('email')}
+                  className="w-full bg-white/5 border border-white/10 text-white placeholder:text-slate-500 rounded-full pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.07] transition-all"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Campo Senha */}
+            <div className="space-y-1">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-[11px] font-semibold tracking-wider text-slate-300 uppercase">
+                  Senha
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-[11px] text-[#768294] hover:text-white transition-colors"
                 >
                   Esqueceu a senha?
                 </Link>
               </div>
+              <div className="relative flex items-center">
+                <Lock size={15} className="absolute left-3.5 text-slate-400 pointer-events-none" />
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  {...register('password')}
+                  className="w-full bg-white/5 border border-white/10 text-white placeholder:text-slate-500 rounded-full pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-[#0063c6] focus:bg-white/[0.07] transition-all"
+                />
+              </div>
+              {errors.password && (
+                <p className="text-[11px] text-red-400 pl-3 pt-0.5">{errors.password.message}</p>
+              )}
             </div>
 
-            <Button 
-              type="submit" 
-              fullWidth 
-              size="lg" 
-              loading={isSubmitting} 
-              className="h-14 rounded-2xl bg-[#C5A03F] text-black font-semibold text-xs uppercase tracking-widest shadow-xl shadow-[#C5A03F]/10 hover:bg-[#d6af4b] transition-all group"
+            {/* Botão Acessar */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[#0063c6] hover:bg-[#0052a3] text-white rounded-full py-2.5 sm:py-3 text-xs font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer mt-2 flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              Acessar
-              {!isSubmitting && <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />}
-            </Button>
+              {isSubmitting ? (
+                <span>Acessando...</span>
+              ) : (
+                <>
+                  <span>Acessar</span>
+                  <ArrowRight size={14} />
+                </>
+              )}
+            </button>
           </form>
 
-          {/* Registro Link */}
-          <p className="text-center text-xs text-slate-400 mt-8 font-medium">
-            Ainda não tem conta?{' '}
-            <Link 
-              href="/register" 
-              className="text-[#C5A03F] font-semibold hover:text-[#d6af4b] hover:underline underline-offset-4"
-            >
-              Criar agora
-            </Link>
-          </p>
-        </div>
+          {/* Link para cadastro */}
+          <div className="mt-6 pt-4 border-t border-white/5 w-full text-center">
+            <p className="text-xs text-[#768294]">
+              Ainda não tem uma conta?{' '}
+              <Link href="/register" className="text-[#E19B28] font-bold hover:underline">
+                Criar conta
+              </Link>
+            </p>
+          </div>
 
         </div>
       </div>
-      
-      <Footer />
+
+      {/* ── FOOTER DISCRETO NO BASE DA TELA ── */}
+      <div className="z-20 text-[10px] text-slate-500 font-medium tracking-wide shrink-0">
+        © {new Date().getFullYear()} EALUMINA. Todos os direitos reservados.
+      </div>
     </div>
   )
 }
