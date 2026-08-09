@@ -107,9 +107,9 @@ export default function RegisterForm() {
             Sua jornada de bem-estar começa agora
           </p>
 
-          {/* Seleção de Perfil com Rótulo 'EU SOU:' */}
-          <div className="w-full mb-3 text-left">
-            <span className="text-[11px] font-bold tracking-wider text-slate-300 uppercase pl-1 mb-1 block">
+          {/* Seleção de Perfil com Rótulo 'EU SOU:' Centralizado */}
+          <div className="w-full mb-3 text-center">
+            <span className="text-[11px] font-bold tracking-wider text-slate-300 uppercase mb-1 block text-center">
               EU SOU:
             </span>
             <div className="grid grid-cols-2 gap-2.5 w-full">
