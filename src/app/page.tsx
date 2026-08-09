@@ -55,6 +55,7 @@ export default function LandingPage() {
   const [showSaibaMaisModal, setShowSaibaMaisModal] = useState(false)
   const [showSaibaMaisTerapeutasModal, setShowSaibaMaisTerapeutasModal] = useState(false)
   const [showSaibaMaisEmpresasModal, setShowSaibaMaisEmpresasModal] = useState(false)
+  const [showSaibaMaisAcademiaModal, setShowSaibaMaisAcademiaModal] = useState(false)
 
   // Logo decorativo visível apenas no desktop
   const HeaderLogo = () => (
@@ -84,7 +85,7 @@ export default function LandingPage() {
 
     const handleWheel = (e: WheelEvent) => {
       if (window.innerWidth < 768) return // ignora no mobile
-      if (showSaibaMaisModal || showSaibaMaisTerapeutasModal || showSaibaMaisEmpresasModal) return // ignora quando qualquer um dos modais estiver aberto, permitindo scroll vertical do mouse no texto
+      if (showSaibaMaisModal || showSaibaMaisTerapeutasModal || showSaibaMaisEmpresasModal || showSaibaMaisAcademiaModal) return // ignora quando qualquer um dos modais estiver aberto, permitindo scroll vertical do mouse no texto
 
       if (e.deltaY !== 0 && e.deltaX === 0) {
         e.preventDefault()
@@ -97,7 +98,7 @@ export default function LandingPage() {
 
     container.addEventListener('wheel', handleWheel, { passive: false })
     return () => container.removeEventListener('wheel', handleWheel)
-  }, [showSaibaMaisModal, showSaibaMaisTerapeutasModal, showSaibaMaisEmpresasModal])
+  }, [showSaibaMaisModal, showSaibaMaisTerapeutasModal, showSaibaMaisEmpresasModal, showSaibaMaisAcademiaModal])
 
   return (
     <div
@@ -835,13 +836,14 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* BOTÃO EXPLORAR CATÁLOGO */}
+          {/* BOTÃO SAIBA MAIS (ACADEMIA) */}
           <div className="mt-4 md:mt-6 mb-6 md:mb-4 flex flex-col md:flex-row items-center justify-center px-4 gap-4 shrink-0 z-20 self-center mx-auto">
             <button
-              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer inline-flex items-center gap-3 justify-center"
+              onClick={() => setShowSaibaMaisAcademiaModal(true)}
+              className="bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-white/10 rounded-full px-6 py-2.5 md:px-8 md:py-3 text-xs lg:text-sm font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 backdrop-blur-md cursor-pointer"
               style={{ color: '#0063c6' }}
             >
-              Explorar Catálogo <ArrowRight size={14} />
+              Saiba Mais
             </button>
           </div>
 
@@ -1136,6 +1138,60 @@ export default function LandingPage() {
             <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
               <button
                 onClick={() => setShowSaibaMaisEmpresasModal(false)}
+                className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL FLUTUANTE: SAIBA MAIS (ACADEMIA) ── */}
+      {showSaibaMaisAcademiaModal && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
+          onWheel={(e) => e.stopPropagation()}
+        >
+          <div className="relative w-full max-w-2xl max-h-[85vh] bg-[#010409]/95 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden">
+            {/* Header do Modal com botão X */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0 bg-white/[0.02]">
+              <span className="text-xs font-black uppercase tracking-widest text-[#0063c6]">
+                EALUMINA — Academia
+              </span>
+              <button
+                onClick={() => setShowSaibaMaisAcademiaModal(false)}
+                className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
+                title="Fechar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Conteúdo com scroll interno */}
+            <div className="p-6 md:p-8 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed font-normal" style={{ color: '#768294' }}>
+              <p className="font-semibold text-white text-sm sm:text-base">
+                Em Breve: Academia EALUMINA
+              </p>
+
+              <p className="text-slate-300 font-medium">
+                Estamos preparando uma nova forma de aprender, evoluir e compartilhar conhecimentos. A Academia trará cursos, programas de formação, mentorias, certificações e experiências desenhadas para gerar consciência, empoderar profissionais e transformar vidas. Afinal, acreditamos que o conhecimento só cumpre seu verdadeiro propósito quando é colocado a serviço da humanidade.
+              </p>
+
+              <p className="italic text-slate-300">
+                Convidamos você a fazer parte dessa jornada conosco.
+              </p>
+
+              <div className="pt-3 border-t border-white/10">
+                <p className="font-semibold text-white">Um abraço,</p>
+                <p className="font-bold text-[#E19B28]">Equipe EALUMINA</p>
+              </div>
+            </div>
+
+            {/* Footer do Modal com botão 'Fechar' */}
+            <div className="flex items-center justify-end px-6 py-4 border-t border-white/10 shrink-0 bg-white/[0.02]">
+              <button
+                onClick={() => setShowSaibaMaisAcademiaModal(false)}
                 className="bg-white/[0.05] border border-white/10 hover:bg-white/10 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-md cursor-pointer"
               >
                 Fechar
